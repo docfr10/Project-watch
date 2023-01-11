@@ -2,6 +2,7 @@ package com.example.newsapplication.screens
 
 import android.app.*
 import android.content.Context
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -67,12 +68,16 @@ fun HomeScreen(
         )
         // Button, to send notification
         Button(onClick = {
-            homeViewModel.createNotificationChannel(activity = activity)
-            homeViewModel.createNotifications(
-                activity = activity,
-                context = context,
-                notificationText = notificationText
-            )
+            // Check the notification text for emptiness
+            if (notificationText.value.isNotEmpty()) {
+                homeViewModel.createNotificationChannel(activity = activity)
+                homeViewModel.createNotifications(
+                    activity = activity,
+                    context = context,
+                    notificationText = notificationText
+                )
+            } else
+                Toast.makeText(context, "Type a notification text", Toast.LENGTH_SHORT).show()
         }, modifier = Modifier.padding(10.dp)) {
             Text(text = "Send notification")
         }
