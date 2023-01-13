@@ -2,6 +2,7 @@ package com.example.newsapplication
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.Window
@@ -43,6 +44,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             NewsApplicationTheme {
+                val activity = LocalContext.current as Activity
+                val context = LocalContext.current
+
                 val provider = ViewModelProvider(this)
                 homeViewModel = provider[HomeViewModel::class.java]
                 authenticationViewModel = provider[AuthenticationViewModel::class.java]
@@ -51,14 +55,15 @@ class MainActivity : ComponentActivity() {
                 // Get recreated on recomposition
                 val navController = rememberNavController()
 
-                val activity = LocalContext.current as Activity
-                val context = LocalContext.current
+                // Shared preference for app settings
+                val sharedPreference = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE)
 
                 AppScreen(
                     activity = activity,
                     context = context,
                     cUser = cUser,
                     navController = navController,
+                    sharedPreference = sharedPreference,
                     auth = auth,
                     authenticationViewModel = authenticationViewModel,
                     homeViewModel = homeViewModel,
@@ -80,12 +85,11 @@ fun AppScreen(
     context: Context,
     authenticationViewModel: AuthenticationViewModel,
     window: Window,
-    cUser: FirebaseUser?
+    cUser: FirebaseUser?,
+    sharedPreference: SharedPreferences
 ) {
     // Hiding the bottom bar
     val isShowBottomBar = remember { mutableStateOf(false) }
-    // Showing the icon label text
-    val isShowIconLabel = remember { mutableStateOf(true) }
 
     Surface(color = MaterialTheme.colorScheme.surface) {
         // Scaffold Component
@@ -94,7 +98,7 @@ fun AppScreen(
             bottomBar = {
                 if (isShowBottomBar.value) BottomNavigationBar(
                     navController = navController,
-                    isShowIconLabel = isShowIconLabel
+                    sharedPreference = sharedPreference
                 )
             },
             content = { padding ->
@@ -103,12 +107,12 @@ fun AppScreen(
                     context = context,
                     cUser = cUser,
                     navController = navController,
+                    sharedPreference = sharedPreference,
                     padding = padding,
                     auth = auth,
                     authenticationViewModel = authenticationViewModel,
                     homeViewModel = homeViewModel,
                     isShowBottomBar = isShowBottomBar,
-                    isShowIconLabel = isShowIconLabel,
                     window = window
                 )
             }
@@ -130,7 +134,7 @@ private fun NavHostContainer(
     window: Window,
     authenticationViewModel: AuthenticationViewModel,
     cUser: FirebaseUser?,
-    isShowIconLabel: MutableState<Boolean>
+    sharedPreference: SharedPreferences
 ) {
     NavHost(
         navController = navController,
@@ -180,7 +184,10 @@ private fun NavHostContainer(
             }
             // route : Settings
             composable("settings") {
-                SettingsScreen(isShowIconLabel = isShowIconLabel)
+                SettingsScreen(
+                    context = context,
+                    sharedPreference = sharedPreference
+                )
                 isShowBottomBar.value = true
             }
         })
@@ -188,7 +195,10 @@ private fun NavHostContainer(
 
 // Output of all screen icons
 @Composable
-fun BottomNavigationBar(navController: NavHostController, isShowIconLabel: MutableState<Boolean>) {
+fun BottomNavigationBar(
+    navController: NavHostController,
+    sharedPreference: SharedPreferences
+) {
     NavigationBar(
         // Set background color
         containerColor = NavigationBarDefaults.containerColor,
@@ -212,7 +222,7 @@ fun BottomNavigationBar(navController: NavHostController, isShowIconLabel: Mutab
                 icon = { Icon(imageVector = navItem.icon, contentDescription = navItem.label) },
                 // Label
                 label = { Text(text = navItem.label) },
-                alwaysShowLabel = isShowIconLabel.value
+                alwaysShowLabel = sharedPreference.getBoolean("show", true)
             )
         }
     }
