@@ -1,4 +1,4 @@
-package com.example.newsapplication.screens
+package com.example.newsapplication.screens.navigationbar
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background

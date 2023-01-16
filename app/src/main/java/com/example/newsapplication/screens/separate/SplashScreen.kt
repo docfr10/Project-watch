@@ -1,4 +1,4 @@
-package com.example.newsapplication.screens
+package com.example.newsapplication.screens.separate
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween

@@ -22,7 +22,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.newsapplication.screens.*
+import com.example.newsapplication.screens.navigationbar.*
+import com.example.newsapplication.screens.separate.AnimatedSplashScreen
+import com.example.newsapplication.screens.separate.AuthenticationScreen
+import com.example.newsapplication.screens.separate.NewNotification
 import com.example.newsapplication.ui.theme.NewsApplicationTheme
 import com.example.newsapplication.utils.Constants
 import com.example.newsapplication.viewmodel.AuthenticationViewModel

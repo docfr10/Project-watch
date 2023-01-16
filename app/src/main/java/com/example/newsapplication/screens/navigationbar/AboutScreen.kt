@@ -1,4 +1,4 @@
-package com.example.newsapplication.screens
+package com.example.newsapplication.screens.navigationbar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

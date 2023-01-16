@@ -1,4 +1,4 @@
-package com.example.newsapplication.screens
+package com.example.newsapplication.screens.separate
 
 import android.app.Activity
 import android.content.Context

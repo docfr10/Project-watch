@@ -1,4 +1,4 @@
-package com.example.newsapplication.screens
+package com.example.newsapplication.screens.navigationbar
 
 import android.content.Intent
 import android.widget.Toast
