@@ -146,6 +146,7 @@ private fun NavHostContainer(
             // route : Splash screen
             composable("splashScreen") {
                 AnimatedSplashScreen(navController = navController, cUser = cUser)
+                isShowBottomBar.value = false
             }
             // route : Authentication
             composable("authentication") {
