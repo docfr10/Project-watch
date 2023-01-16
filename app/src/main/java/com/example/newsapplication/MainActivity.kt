@@ -160,12 +160,7 @@ private fun NavHostContainer(
             }
             // route : Home
             composable("home") {
-                HomeScreen(
-                    activity = activity,
-                    context = context,
-                    navController = navController,
-                    homeViewModel = homeViewModel
-                )
+                HomeScreen(navController = navController)
                 isShowBottomBar.value = true
             }
             // route : Work
@@ -190,6 +185,16 @@ private fun NavHostContainer(
                     sharedPreference = sharedPreference
                 )
                 isShowBottomBar.value = true
+            }
+            // route : New notification
+            composable("newNotification") {
+                NewNotification(
+                    activity = activity,
+                    navController = navController,
+                    context = context,
+                    homeViewModel = homeViewModel
+                )
+                isShowBottomBar.value = false
             }
         })
 }
