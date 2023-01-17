@@ -2,7 +2,10 @@ package com.example.newsapplication.screens.separate
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
+import android.view.Window
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.viewmodel.HomeViewModel
 
+@RequiresApi(Build.VERSION_CODES.R)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewNotification(
@@ -29,11 +33,16 @@ fun NewNotification(
     context: Context,
     homeViewModel: HomeViewModel,
     navController: NavHostController,
+    window: Window,
 ) {
+    // Raise the elements above the keyboard
+    window.setDecorFitsSystemWindows(false)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.colorScheme.background)
+            .imePadding(),
         // Parameters set to place the items in center
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center

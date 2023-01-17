@@ -205,7 +205,8 @@ private fun NavHostContainer(
                     activity = activity,
                     navController = navController,
                     context = context,
-                    homeViewModel = homeViewModel
+                    homeViewModel = homeViewModel,
+                    window = window
                 )
                 isShowBottomBar.value = false
             }
