@@ -9,7 +9,8 @@ import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
@@ -150,12 +151,14 @@ private fun NavHostContainer(
         modifier = Modifier.padding(paddingValues = padding),
         builder = {
             // route : Splash screen
-            composable("splashScreen") {
+            composable(
+                route = "splashScreen",
+                exitTransition = { scaleOut(animationSpec = tween(500)) }) {
                 AnimatedSplashScreen(navController = navController, cUser = cUser)
                 isShowBottomBar.value = false
             }
             // route : Authentication
-            composable("authentication") {
+            composable(route = "authentication") {
                 AuthenticationScreen(
                     context = context,
                     navController = navController,
@@ -165,27 +168,27 @@ private fun NavHostContainer(
                 )
             }
             // route : Home
-            composable("home") {
+            composable(route = "home") {
                 HomeScreen(navController = navController)
                 isShowBottomBar.value = true
             }
             // route : Work
-            composable("projects") {
+            composable(route = "projects") {
                 ProjectsScreen()
                 isShowBottomBar.value = true
             }
             // route : Profile
-            composable("profile") {
+            composable(route = "profile") {
                 ProfileScreen(auth = auth)
                 isShowBottomBar.value = true
             }
             // route : About
-            composable("about") {
+            composable(route = "about") {
                 AboutScreen()
                 isShowBottomBar.value = true
             }
             // route : Settings
-            composable("settings") {
+            composable(route = "settings") {
                 SettingsScreen(
                     context = context,
                     sharedPreference = sharedPreference
@@ -193,7 +196,11 @@ private fun NavHostContainer(
                 isShowBottomBar.value = true
             }
             // route : New notification
-            composable("newNotification") {
+            composable(
+                route = "newNotification",
+                enterTransition = { slideInVertically(animationSpec = tween(250)) },
+                exitTransition = { slideOutVertically(animationSpec = tween(250)) }
+            ) {
                 NewNotification(
                     activity = activity,
                     navController = navController,
