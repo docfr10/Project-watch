@@ -9,6 +9,7 @@ import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
@@ -18,10 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import com.google.accompanist.navigation.animation.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.newsapplication.screens.navigationbar.*
 import com.example.newsapplication.screens.separate.AnimatedSplashScreen
 import com.example.newsapplication.screens.separate.AuthenticationScreen
@@ -30,9 +29,12 @@ import com.example.newsapplication.ui.theme.NewsApplicationTheme
 import com.example.newsapplication.utils.Constants
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
 import com.example.newsapplication.viewmodel.HomeViewModel
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
+@OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
     // Objects for working with Firebase
     private val auth = FirebaseAuth.getInstance()
@@ -56,7 +58,7 @@ class MainActivity : ComponentActivity() {
 
                 // Remember navController so it does not
                 // Get recreated on recomposition
-                val navController = rememberNavController()
+                val navController = rememberAnimatedNavController()
 
                 // Shared preference for app settings
                 val sharedPreference = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE)
@@ -124,6 +126,7 @@ fun AppScreen(
 }
 
 // Screen Navigation
+@OptIn(ExperimentalAnimationApi::class)
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 private fun NavHostContainer(
@@ -139,7 +142,7 @@ private fun NavHostContainer(
     cUser: FirebaseUser?,
     sharedPreference: SharedPreferences
 ) {
-    NavHost(
+    AnimatedNavHost(
         navController = navController,
         // Set the start destination as splash screen
         startDestination = "splashScreen",
