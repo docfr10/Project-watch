@@ -5,15 +5,15 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.newsapplication.*
-
-// Defining the notification ID like a current time
-var notificationID = System.currentTimeMillis().toInt()
 
 // Class responsible for creating notifications
 class NotificationsModel : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        // Defining the notification ID like a current time
+        val notificationID = System.currentTimeMillis().toInt()
         // Creating a login Intent in the app
         val intent1 = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -29,7 +29,6 @@ class NotificationsModel : BroadcastReceiver() {
             .setContentIntent(pendingIntent)
             .setAutoCancel(false)
             .build()
-
         // Sending a notification to a channel
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(notificationID, notification)

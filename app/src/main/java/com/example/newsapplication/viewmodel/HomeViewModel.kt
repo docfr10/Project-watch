@@ -9,7 +9,6 @@ import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import com.example.newsapplication.R
 import com.example.newsapplication.model.notifications.NotificationsModel
-import com.example.newsapplication.model.notifications.notificationID
 
 // ViewModel class of Home screen
 class HomeViewModel : ViewModel() {
@@ -31,7 +30,7 @@ class HomeViewModel : ViewModel() {
         val pendingIntent =
             PendingIntent.getBroadcast(
                 context,
-                notificationID,
+                System.currentTimeMillis().toInt(),
                 intent,
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
