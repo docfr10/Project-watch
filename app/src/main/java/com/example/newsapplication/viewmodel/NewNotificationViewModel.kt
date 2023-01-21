@@ -49,7 +49,7 @@ class NewNotificationViewModel : ViewModel() {
         val name = "Notification Channel"
         val desc = "A Description of the Channel"
         val importance = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            NotificationManager.IMPORTANCE_DEFAULT
+            NotificationManager.IMPORTANCE_HIGH
         } else {
             TODO("VERSION.SDK_INT < N")
         }
@@ -58,6 +58,8 @@ class NewNotificationViewModel : ViewModel() {
         } else {
             TODO("VERSION.SDK_INT < O")
         }
+        channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+        channel.enableVibration(true)
         channel.description = desc
         notificationManager.createNotificationChannel(channel)
     }
