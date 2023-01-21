@@ -11,7 +11,7 @@ import com.example.newsapplication.R
 import com.example.newsapplication.model.notifications.NotificationsModel
 
 // ViewModel class of Home screen
-class HomeViewModel : ViewModel() {
+class NewNotificationViewModel : ViewModel() {
     fun createNotifications(
         activity: Activity,
         context: Context,

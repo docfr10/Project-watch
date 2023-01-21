@@ -29,7 +29,7 @@ import com.example.newsapplication.screens.separate.NewNotification
 import com.example.newsapplication.ui.theme.NewsApplicationTheme
 import com.example.newsapplication.utils.Constants
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
-import com.example.newsapplication.viewmodel.HomeViewModel
+import com.example.newsapplication.viewmodel.NewNotificationViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
     private val cUser = auth.currentUser
 
     // ViewModel objects
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var newNotificationViewModel: NewNotificationViewModel
     private lateinit var authenticationViewModel: AuthenticationViewModel
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
                 val context = LocalContext.current
 
                 val provider = ViewModelProvider(this)
-                homeViewModel = provider[HomeViewModel::class.java]
+                newNotificationViewModel = provider[NewNotificationViewModel::class.java]
                 authenticationViewModel = provider[AuthenticationViewModel::class.java]
 
                 // Remember navController so it does not
@@ -72,7 +72,7 @@ class MainActivity : ComponentActivity() {
                     sharedPreference = sharedPreference,
                     auth = auth,
                     authenticationViewModel = authenticationViewModel,
-                    homeViewModel = homeViewModel,
+                    newNotificationViewModel = newNotificationViewModel,
                     window = window
                 )
             }
@@ -86,7 +86,7 @@ class MainActivity : ComponentActivity() {
 fun AppScreen(
     navController: NavHostController,
     auth: FirebaseAuth,
-    homeViewModel: HomeViewModel,
+    newNotificationViewModel: NewNotificationViewModel,
     activity: Activity,
     context: Context,
     authenticationViewModel: AuthenticationViewModel,
@@ -117,7 +117,7 @@ fun AppScreen(
                     padding = padding,
                     auth = auth,
                     authenticationViewModel = authenticationViewModel,
-                    homeViewModel = homeViewModel,
+                    newNotificationViewModel = newNotificationViewModel,
                     isShowBottomBar = isShowBottomBar,
                     window = window
                 )
@@ -135,7 +135,7 @@ private fun NavHostContainer(
     padding: PaddingValues,
     auth: FirebaseAuth,
     isShowBottomBar: MutableState<Boolean>,
-    homeViewModel: HomeViewModel,
+    newNotificationViewModel: NewNotificationViewModel,
     activity: Activity,
     context: Context,
     window: Window,
@@ -205,7 +205,7 @@ private fun NavHostContainer(
                     activity = activity,
                     navController = navController,
                     context = context,
-                    homeViewModel = homeViewModel,
+                    newNotificationViewModel = newNotificationViewModel,
                     window = window
                 )
                 isShowBottomBar.value = false

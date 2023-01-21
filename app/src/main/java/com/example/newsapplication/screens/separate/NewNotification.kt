@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.newsapplication.viewmodel.HomeViewModel
+import com.example.newsapplication.viewmodel.NewNotificationViewModel
 
 @RequiresApi(Build.VERSION_CODES.R)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,7 +31,7 @@ import com.example.newsapplication.viewmodel.HomeViewModel
 fun NewNotification(
     activity: Activity,
     context: Context,
-    homeViewModel: HomeViewModel,
+    newNotificationViewModel: NewNotificationViewModel,
     navController: NavHostController,
     window: Window,
 ) {
@@ -75,8 +75,8 @@ fun NewNotification(
         Button(onClick = {
             // Check the notification text for emptiness
             if (notificationText.value.isNotEmpty()) {
-                homeViewModel.createNotificationChannel(activity = activity)
-                homeViewModel.createNotifications(
+                newNotificationViewModel.createNotificationChannel(activity = activity)
+                newNotificationViewModel.createNotifications(
                     activity = activity,
                     context = context,
                     notificationText = notificationText
