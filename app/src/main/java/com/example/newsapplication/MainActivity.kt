@@ -204,6 +204,7 @@ private fun NavHostContainer(
                 NewNotification(
                     activity = activity,
                     navController = navController,
+                    sharedPreference = sharedPreference,
                     context = context,
                     newNotificationViewModel = newNotificationViewModel,
                     window = window

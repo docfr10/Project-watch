@@ -2,6 +2,7 @@ package com.example.newsapplication.screens.separate
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.view.Window
 import android.widget.Toast
@@ -34,6 +35,7 @@ fun NewNotification(
     newNotificationViewModel: NewNotificationViewModel,
     navController: NavHostController,
     window: Window,
+    sharedPreference: SharedPreferences,
 ) {
     // Raise the elements above the keyboard
     window.setDecorFitsSystemWindows(false)
@@ -79,6 +81,7 @@ fun NewNotification(
                 newNotificationViewModel.createNotifications(
                     activity = activity,
                     context = context,
+                    sharedPreference = sharedPreference,
                     notificationText = notificationText
                 )
                 navController.navigate("home")

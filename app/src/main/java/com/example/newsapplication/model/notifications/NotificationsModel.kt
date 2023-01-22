@@ -27,7 +27,7 @@ class NotificationsModel : BroadcastReceiver() {
             .setContentTitle(intent.getStringExtra(R.string.titleExtra.toString()))
             .setContentText(intent.getStringExtra(R.string.messageExtra.toString()))
             .setContentIntent(pendingIntent)
-            .setAutoCancel(false)
+            .setAutoCancel(intent.getBooleanExtra(R.bool.setAutoCancel.toString(), false))
             .build()
         // Sending a notification to a channel
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

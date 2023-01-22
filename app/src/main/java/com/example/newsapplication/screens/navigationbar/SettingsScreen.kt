@@ -47,9 +47,16 @@ fun SettingsScreen(
         ) {
             Text(text = "Icon labels at the bottom")
             Switch(
-                checked = sharedPreference.getBoolean("show", true),
+                checked = sharedPreference.getBoolean("showIconLabels", true),
                 onCheckedChange = {
-                    sharedPreference.edit().putBoolean("show", it).apply()
+                    sharedPreference.edit().putBoolean("showIconLabels", it).apply()
+                    context.startActivity(Intent(context, MainActivity::class.java))
+                })
+            Text(text = "Close notification on press")
+            Switch(
+                checked = sharedPreference.getBoolean("closeNotification", false),
+                onCheckedChange = {
+                    sharedPreference.edit().putBoolean("closeNotification", it).apply()
                     context.startActivity(Intent(context, MainActivity::class.java))
                 })
         }

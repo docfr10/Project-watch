@@ -3,6 +3,7 @@ package com.example.newsapplication.viewmodel
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.MutableState
@@ -15,7 +16,8 @@ class NewNotificationViewModel : ViewModel() {
     fun createNotifications(
         activity: Activity,
         context: Context,
-        notificationText: MutableState<String>
+        notificationText: MutableState<String>,
+        sharedPreference: SharedPreferences
     ) {
         val title = "New notification" // Title of notification
         val intent = Intent(context, NotificationsModel::class.java)
@@ -25,6 +27,10 @@ class NewNotificationViewModel : ViewModel() {
         // Passing the name and text of the notification to Notifications
         intent.putExtra(R.string.titleExtra.toString(), title)
         intent.putExtra(R.string.messageExtra.toString(), notificationText.value)
+        intent.putExtra(
+            R.bool.setAutoCancel.toString(),
+            sharedPreference.getBoolean("closeNotification", false)
+        )
 
         // Creating a broadcast signal to send a notification
         val pendingIntent =
