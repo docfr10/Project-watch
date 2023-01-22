@@ -5,15 +5,14 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.newsapplication.MainActivity
 
 // Layout of the settings screen
@@ -39,26 +38,45 @@ fun SettingsScreen(
         )
         // Text to Display the current Screen
         Text(text = "Settings")
-        // Switch changed showing icon label
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+        // Card with the function of changing the display of icon labels
+        Card(
+            modifier = Modifier.padding(5.dp),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
         ) {
-            Text(text = "Icon labels at the bottom")
-            Switch(
-                checked = sharedPreference.getBoolean("showIconLabels", true),
-                onCheckedChange = {
-                    sharedPreference.edit().putBoolean("showIconLabels", it).apply()
-                    context.startActivity(Intent(context, MainActivity::class.java))
-                })
-            Text(text = "Close notification on press")
-            Switch(
-                checked = sharedPreference.getBoolean("closeNotification", false),
-                onCheckedChange = {
-                    sharedPreference.edit().putBoolean("closeNotification", it).apply()
-                    context.startActivity(Intent(context, MainActivity::class.java))
-                })
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "Icon labels at the bottom")
+                Switch(
+                    checked = sharedPreference.getBoolean("showIconLabels", true),
+                    onCheckedChange = {
+                        sharedPreference.edit().putBoolean("showIconLabels", it).apply()
+                        context.startActivity(Intent(context, MainActivity::class.java))
+                    })
+            }
+        }
+        // Card with the function of closing the notification when you click on it
+        Card(
+            modifier = Modifier.padding(5.dp),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "Close notification on press")
+                Switch(
+                    checked = sharedPreference.getBoolean("closeNotification", false),
+                    onCheckedChange = {
+                        sharedPreference.edit().putBoolean("closeNotification", it).apply()
+                        context.startActivity(Intent(context, MainActivity::class.java))
+                    })
+            }
         }
     }
 }

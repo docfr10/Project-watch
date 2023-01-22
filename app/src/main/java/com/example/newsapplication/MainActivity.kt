@@ -243,7 +243,7 @@ fun BottomNavigationBar(
                 icon = { Icon(imageVector = navItem.icon, contentDescription = navItem.label) },
                 // Label
                 label = { Text(text = navItem.label) },
-                alwaysShowLabel = sharedPreference.getBoolean("show", true)
+                alwaysShowLabel = sharedPreference.getBoolean("showIconLabels", true)
             )
         }
     }
