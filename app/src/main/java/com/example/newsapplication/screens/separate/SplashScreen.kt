@@ -30,7 +30,7 @@ fun AnimatedSplashScreen(navController: NavHostController, cUser: FirebaseUser?)
 
     LaunchedEffect(key1 = true) {
         startAnimation.value = true
-        delay(4000)
+        //delay(4000)
         navController.popBackStack()
         if (cUser != null)
             navController.navigate("home")

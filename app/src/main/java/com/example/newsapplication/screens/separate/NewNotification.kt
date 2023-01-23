@@ -1,14 +1,19 @@
 package com.example.newsapplication.screens.separate
 
 import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.view.Window
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
@@ -18,6 +23,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -25,6 +32,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.viewmodel.NewNotificationViewModel
+import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.R)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,6 +81,10 @@ fun NewNotification(
                 imeAction = ImeAction.Done // Keyboard action type
             )
         )
+        // Date creation function from datePicker
+        ShowDataPicker(context = context)
+        // Time creation function from timePicker
+        ShowTimePicker(context = context)
         // Button, to send notification
         Button(onClick = {
             // Check the notification text for emptiness
@@ -91,4 +103,59 @@ fun NewNotification(
             Text(text = "Create notification")
         }
     }
+}
+
+@Composable
+fun ShowDataPicker(context: Context) {
+    // Make a space between elements
+    Spacer(modifier = Modifier.height(10.dp))
+    // Declaring integer values
+    // for year, month and day
+    val mYear: Int
+    val mMonth: Int
+    val mDay: Int
+    // Initializing a Calendar
+    val mCalendar = Calendar.getInstance()
+    // Fetching current year, month and day
+    mYear = mCalendar.get(Calendar.YEAR)
+    mMonth = mCalendar.get(Calendar.MONTH)
+    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
+
+    mCalendar.time = Date()
+    // Declaring a string value to
+    // store date in string format
+    val mDate = remember { mutableStateOf("") }
+
+    val datePickerDialog =
+        DatePickerDialog(context, { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+            mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
+        }, mYear, mMonth, mDay)
+    // Displaying the mDate value in the Text
+    Text(
+        text = "Selected Date: ${mDate.value}",
+        modifier = Modifier.clickable { datePickerDialog.show() })
+}
+
+@Composable
+fun ShowTimePicker(context: Context) {
+    // Make a space between elements
+    Spacer(modifier = Modifier.height(10.dp))
+    // Declaring and initializing a calendar
+    val mCalendar = Calendar.getInstance()
+    val mHour = mCalendar[Calendar.HOUR_OF_DAY]
+    val mMinute = mCalendar[Calendar.MINUTE]
+    // Value for storing time as a string
+    val mTime = remember { mutableStateOf("") }
+    // Creating a TimePicker dialog
+    val timePickerDialog = TimePickerDialog(
+        context,
+        0,
+        { _, mHour: Int, mMinute: Int ->
+            mTime.value = "$mHour:$mMinute"
+        }, mHour, mMinute, true
+    )
+    // Displaying the mTime value in the Text
+    Text(
+        text = "Selected Time: ${mTime.value}",
+        modifier = Modifier.clickable { timePickerDialog.show() })
 }
