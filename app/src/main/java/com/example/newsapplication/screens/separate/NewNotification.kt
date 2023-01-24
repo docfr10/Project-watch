@@ -13,7 +13,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
@@ -23,8 +22,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -107,29 +104,25 @@ fun NewNotification(
 
 @Composable
 fun ShowDataPicker(context: Context) {
+    // Initializing a Calendar
+    val calendar = Calendar.getInstance()
+    // Setting the current date
+    calendar.time = Date()
+    // Declaring a string value to store date in string format
+    val mDate = remember { mutableStateOf("") }
+    // Creating a datePicker dialog
+    val datePickerDialog =
+        DatePickerDialog(
+            context,
+            { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+                mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
     // Make a space between elements
     Spacer(modifier = Modifier.height(10.dp))
-    // Declaring integer values
-    // for year, month and day
-    val mYear: Int
-    val mMonth: Int
-    val mDay: Int
-    // Initializing a Calendar
-    val mCalendar = Calendar.getInstance()
-    // Fetching current year, month and day
-    mYear = mCalendar.get(Calendar.YEAR)
-    mMonth = mCalendar.get(Calendar.MONTH)
-    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
-
-    mCalendar.time = Date()
-    // Declaring a string value to
-    // store date in string format
-    val mDate = remember { mutableStateOf("") }
-
-    val datePickerDialog =
-        DatePickerDialog(context, { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
-        }, mYear, mMonth, mDay)
     // Displaying the mDate value in the Text
     Text(
         text = "Selected Date: ${mDate.value}",
@@ -138,12 +131,8 @@ fun ShowDataPicker(context: Context) {
 
 @Composable
 fun ShowTimePicker(context: Context) {
-    // Make a space between elements
-    Spacer(modifier = Modifier.height(10.dp))
     // Declaring and initializing a calendar
-    val mCalendar = Calendar.getInstance()
-    val mHour = mCalendar[Calendar.HOUR_OF_DAY]
-    val mMinute = mCalendar[Calendar.MINUTE]
+    val calendar = Calendar.getInstance()
     // Value for storing time as a string
     val mTime = remember { mutableStateOf("") }
     // Creating a TimePicker dialog
@@ -152,8 +141,10 @@ fun ShowTimePicker(context: Context) {
         0,
         { _, mHour: Int, mMinute: Int ->
             mTime.value = "$mHour:$mMinute"
-        }, mHour, mMinute, true
+        }, calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE], true
     )
+    // Make a space between elements
+    Spacer(modifier = Modifier.height(10.dp))
     // Displaying the mTime value in the Text
     Text(
         text = "Selected Time: ${mTime.value}",
