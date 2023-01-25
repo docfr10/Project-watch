@@ -78,10 +78,11 @@ fun NewNotification(
                 imeAction = ImeAction.Done // Keyboard action type
             )
         )
-        // Date creation function from datePicker
-        ShowDataPicker(context = context)
-        // Time creation function from timePicker
-        ShowTimePicker(context = context)
+        // Date and Time creation function from datePicker and timePicker
+        ShowDataAndTimePicker(
+            context = context,
+            newNotificationViewModel = newNotificationViewModel
+        )
         // Button, to send notification
         Button(onClick = {
             // Check the notification text for emptiness
@@ -103,19 +104,30 @@ fun NewNotification(
 }
 
 @Composable
-fun ShowDataPicker(context: Context) {
+fun ShowDataAndTimePicker(context: Context, newNotificationViewModel: NewNotificationViewModel) {
     // Initializing a Calendar
     val calendar = Calendar.getInstance()
     // Setting the current date
     calendar.time = Date()
     // Declaring a string value to store date in string format
     val mDate = remember { mutableStateOf("") }
+    // Value for storing time as a string
+    val mTime = remember { mutableStateOf("") }
     // Creating a datePicker dialog
     val datePickerDialog =
         DatePickerDialog(
             context,
             { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-                mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
+                // Creating a TimePicker dialog
+                TimePickerDialog(
+                    context, 0,
+                    { _, mHour: Int, mMinute: Int ->
+                        mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
+                        mTime.value = "$mHour:$mMinute"
+                        calendar.set(mYear, mMonth, mDayOfMonth, mHour, mMinute)
+                        newNotificationViewModel.setCalendar(calendar)
+                    }, calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE], true
+                ).show()
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
@@ -123,30 +135,8 @@ fun ShowDataPicker(context: Context) {
         )
     // Make a space between elements
     Spacer(modifier = Modifier.height(10.dp))
-    // Displaying the mDate value in the Text
+    // Displaying the mDate and mTime value in the Text
     Text(
-        text = "Selected Date: ${mDate.value}",
+        text = "Selected Date and Time: ${mDate.value} ${mTime.value}",
         modifier = Modifier.clickable { datePickerDialog.show() })
-}
-
-@Composable
-fun ShowTimePicker(context: Context) {
-    // Declaring and initializing a calendar
-    val calendar = Calendar.getInstance()
-    // Value for storing time as a string
-    val mTime = remember { mutableStateOf("") }
-    // Creating a TimePicker dialog
-    val timePickerDialog = TimePickerDialog(
-        context,
-        0,
-        { _, mHour: Int, mMinute: Int ->
-            mTime.value = "$mHour:$mMinute"
-        }, calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE], true
-    )
-    // Make a space between elements
-    Spacer(modifier = Modifier.height(10.dp))
-    // Displaying the mTime value in the Text
-    Text(
-        text = "Selected Time: ${mTime.value}",
-        modifier = Modifier.clickable { timePickerDialog.show() })
 }

@@ -10,9 +10,12 @@ import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import com.example.newsapplication.R
 import com.example.newsapplication.model.notifications.NotificationsModel
+import java.util.*
 
 // ViewModel class of Home screen
 class NewNotificationViewModel : ViewModel() {
+    private lateinit var notificationDateAndTime: Calendar
+
     fun createNotifications(
         activity: Activity,
         context: Context,
@@ -43,7 +46,7 @@ class NewNotificationViewModel : ViewModel() {
 
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            System.currentTimeMillis() + 5000,
+            notificationDateAndTime.timeInMillis,
             pendingIntent
         )
     }
@@ -68,5 +71,9 @@ class NewNotificationViewModel : ViewModel() {
         channel.enableVibration(true)
         channel.description = desc
         notificationManager.createNotificationChannel(channel)
+    }
+
+    fun setCalendar(calendar: Calendar) {
+        notificationDateAndTime = calendar
     }
 }
