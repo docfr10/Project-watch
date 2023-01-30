@@ -42,12 +42,17 @@ fun NewNotification(
     window: Window,
     sharedPreference: SharedPreferences,
 ) {
+    // Text of notification
+    val notificationText = remember { mutableStateOf("") }
+    // Title of notification
+    val notificationTitle = remember { mutableStateOf("") }
     // Raise the elements above the keyboard
     window.setDecorFitsSystemWindows(false)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(10.dp)
             .background(MaterialTheme.colorScheme.background)
             .imePadding(),
         // Parameters set to place the items in center
@@ -62,12 +67,10 @@ fun NewNotification(
         )
         // Text to Display the current Screen
         Text(text = "Create new notification")
-        // Text of notification
-        val notificationText = remember { mutableStateOf("") }
-        val notificationTitle = remember { mutableStateOf("") }
         // OutlinedTextField to type the new notification title
         OutlinedTextField(
             value = notificationTitle.value,
+            isError = notificationTitle.value.isEmpty(),
             textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
             onValueChange = { newText -> notificationTitle.value = newText },
             modifier = Modifier.fillMaxWidth(),
@@ -76,9 +79,18 @@ fun NewNotification(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text, // Keyboard type
                 capitalization = KeyboardCapitalization.Sentences, // Letters type
-                imeAction = ImeAction.Done // Keyboard action type
+                imeAction = ImeAction.Next // Keyboard action type
             )
         )
+        // Displaying information about required fields
+        if (notificationTitle.value.isEmpty()) {
+            Text(
+                text = "Required fields",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(end = 235.dp)
+            )
+        }
         // OutlinedTextField to type the new notification text
         OutlinedTextField(
             value = notificationText.value,
@@ -86,7 +98,7 @@ fun NewNotification(
             onValueChange = { newText -> notificationText.value = newText },
             modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Type a notification text") },
-            singleLine = true,
+            singleLine = false,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text, // Keyboard type
                 capitalization = KeyboardCapitalization.Sentences, // Letters type
@@ -113,9 +125,7 @@ fun NewNotification(
                 navController.navigate("home")
             } else
                 Toast.makeText(context, "Type a notification text", Toast.LENGTH_SHORT).show()
-        }, modifier = Modifier.padding(10.dp)) {
-            Text(text = "Create notification")
-        }
+        }) { Text(text = "Create notification") }
     }
 }
 
@@ -149,10 +159,11 @@ fun ShowDataAndTimePicker(context: Context, newNotificationViewModel: NewNotific
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
-    // Make a space between elements
-    Spacer(modifier = Modifier.height(10.dp))
     // Displaying the mDate and mTime value in the Text
     Text(
         text = "Selected Date and Time: ${mDate.value} ${mTime.value}",
-        modifier = Modifier.clickable { datePickerDialog.show() })
+        modifier = Modifier
+            .clickable { datePickerDialog.show() }
+            .padding(10.dp)
+    )
 }
