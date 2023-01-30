@@ -1,5 +1,6 @@
 package com.example.newsapplication.model.notifications
 
+import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -25,6 +26,8 @@ class NotificationsModel : BroadcastReceiver() {
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setContentTitle(intent.getStringExtra(R.string.titleExtra.toString()))
             .setContentText(intent.getStringExtra(R.string.messageExtra.toString()))
+            .setDefaults(Notification.DEFAULT_ALL)
+            .setStyle(NotificationCompat.BigTextStyle())
             .setContentIntent(pendingIntent)
             .setAutoCancel(intent.getBooleanExtra(R.bool.setAutoCancel.toString(), false))
             .build()

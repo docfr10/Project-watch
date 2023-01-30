@@ -20,15 +20,15 @@ class NewNotificationViewModel : ViewModel() {
         activity: Activity,
         context: Context,
         notificationText: MutableState<String>,
-        sharedPreference: SharedPreferences
+        sharedPreference: SharedPreferences,
+        notificationTitle: MutableState<String>
     ) {
-        val title = "New notification" // Title of notification
         val intent = Intent(context, NotificationsModel::class.java)
         // Remembering the date when it is necessary to send a notification
         val alarmManager =
             activity.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
         // Passing the name and text of the notification to Notifications
-        intent.putExtra(R.string.titleExtra.toString(), title)
+        intent.putExtra(R.string.titleExtra.toString(), notificationTitle.value)
         intent.putExtra(R.string.messageExtra.toString(), notificationText.value)
         intent.putExtra(
             R.bool.setAutoCancel.toString(),
@@ -39,7 +39,7 @@ class NewNotificationViewModel : ViewModel() {
         val pendingIntent =
             PendingIntent.getBroadcast(
                 context,
-                System.currentTimeMillis().toInt(),
+                0,
                 intent,
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )

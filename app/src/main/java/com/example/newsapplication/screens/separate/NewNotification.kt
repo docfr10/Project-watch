@@ -64,7 +64,22 @@ fun NewNotification(
         Text(text = "Create new notification")
         // Text of notification
         val notificationText = remember { mutableStateOf("") }
-        // OutlinedTextField to type the new notification
+        val notificationTitle = remember { mutableStateOf("") }
+        // OutlinedTextField to type the new notification title
+        OutlinedTextField(
+            value = notificationTitle.value,
+            textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
+            onValueChange = { newText -> notificationTitle.value = newText },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(text = "Type a notification title") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text, // Keyboard type
+                capitalization = KeyboardCapitalization.Sentences, // Letters type
+                imeAction = ImeAction.Done // Keyboard action type
+            )
+        )
+        // OutlinedTextField to type the new notification text
         OutlinedTextField(
             value = notificationText.value,
             textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
@@ -86,12 +101,13 @@ fun NewNotification(
         // Button, to send notification
         Button(onClick = {
             // Check the notification text for emptiness
-            if (notificationText.value.isNotEmpty()) {
+            if (notificationTitle.value.isNotEmpty()) {
                 newNotificationViewModel.createNotificationChannel(activity = activity)
                 newNotificationViewModel.createNotifications(
                     activity = activity,
                     context = context,
                     sharedPreference = sharedPreference,
+                    notificationTitle = notificationTitle,
                     notificationText = notificationText
                 )
                 navController.navigate("home")
