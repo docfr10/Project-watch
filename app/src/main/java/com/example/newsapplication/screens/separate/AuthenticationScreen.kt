@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -42,6 +43,7 @@ fun AuthenticationScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(10.dp)
             .background(MaterialTheme.colorScheme.background)
             .imePadding(),
         // parameters set to place the items in center
@@ -100,7 +102,7 @@ fun AuthenticationScreen(
                 email = email,
                 password = password
             )
-        }) { Text(text = "Registered") }
+        }, modifier = Modifier.padding(top = 5.dp)) { Text(text = "Registered") }
         // SignIn button
         Button(onClick = {
             // Authorized user login
