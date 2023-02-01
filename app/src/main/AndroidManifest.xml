@@ -3,7 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.newsapplication">
 
+    <!--Permission to setting exact notifications-->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <!--Permission to wake the device from sleep-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--Permission to show an app on top of another app-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NewsApplication"
         tools:targetApi="31">
-        <!--Notifications don't work without this-->
+        <!--Receiver of notifications-->
         <receiver
             android:name=".model.notifications.NotificationsModel"
             android:enabled="true" />

@@ -16,6 +16,10 @@ import java.util.*
 class NewNotificationViewModel : ViewModel() {
     private lateinit var notificationDateAndTime: Calendar
 
+    fun setCalendar(calendar: Calendar) {
+        notificationDateAndTime = calendar
+    }
+
     fun createNotifications(
         activity: Activity,
         context: Context,
@@ -71,9 +75,5 @@ class NewNotificationViewModel : ViewModel() {
         channel.enableVibration(true)
         channel.description = desc
         notificationManager.createNotificationChannel(channel)
-    }
-
-    fun setCalendar(calendar: Calendar) {
-        notificationDateAndTime = calendar
     }
 }
