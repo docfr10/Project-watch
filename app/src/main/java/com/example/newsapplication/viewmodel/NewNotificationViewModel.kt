@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
@@ -14,11 +15,7 @@ import java.util.*
 
 // ViewModel class of Home screen
 class NewNotificationViewModel : ViewModel() {
-    private lateinit var notificationDateAndTime: Calendar
-
-    fun setCalendar(calendar: Calendar) {
-        notificationDateAndTime = calendar
-    }
+    private var notificationDateAndTime: Calendar = Calendar.getInstance()
 
     fun createNotifications(
         activity: Activity,
@@ -53,6 +50,7 @@ class NewNotificationViewModel : ViewModel() {
             notificationDateAndTime.timeInMillis,
             pendingIntent
         )
+        Log.d("CALENDAR", notificationDateAndTime.timeInMillis.toString())
     }
 
     fun createNotificationChannel(activity: Activity) {
@@ -75,5 +73,16 @@ class NewNotificationViewModel : ViewModel() {
         channel.enableVibration(true)
         channel.description = desc
         notificationManager.createNotificationChannel(channel)
+    }
+
+    fun setDate(calendar: Calendar) {
+        notificationDateAndTime.set(Calendar.YEAR, calendar[Calendar.YEAR])
+        notificationDateAndTime.set(Calendar.MONTH, calendar[Calendar.MONTH])
+        notificationDateAndTime.set(Calendar.DAY_OF_MONTH, calendar[Calendar.DAY_OF_MONTH])
+    }
+
+    fun setTime(calendar: Calendar) {
+        notificationDateAndTime.set(Calendar.HOUR_OF_DAY, calendar[Calendar.HOUR_OF_DAY])
+        notificationDateAndTime.set(Calendar.MINUTE, calendar[Calendar.MINUTE])
     }
 }

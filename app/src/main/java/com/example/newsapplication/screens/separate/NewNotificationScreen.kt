@@ -112,12 +112,10 @@ fun NewNotificationScreen(
             )
         )
         // Date and Time creation function from datePicker and timePicker with dropdown menu
-        ShowDataAndTimeDropdownMenu(context = context)
-        // Date and Time creation function from datePicker and timePicker
-//        ShowDataAndTimePicker(
-//            context = context,
-//            newNotificationViewModel = newNotificationViewModel
-//        )
+        ShowDataAndTimeDropdownMenu(
+            context = context,
+            newNotificationViewModel = newNotificationViewModel
+        )
         // Button, to send notification
         Button(onClick = {
             // Check the notification text for emptiness
@@ -139,7 +137,10 @@ fun NewNotificationScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShowDataAndTimeDropdownMenu(context: Context) {
+fun ShowDataAndTimeDropdownMenu(
+    context: Context,
+    newNotificationViewModel: NewNotificationViewModel
+) {
     // Initializing a Calendar
     val calendar = Calendar.getInstance()
     // Setting the current date
@@ -209,17 +210,21 @@ fun ShowDataAndTimeDropdownMenu(context: Context) {
                 date.forEach { label ->
                     DropdownMenuItem(onClick = {
                         when (label) {
-                            "Today" -> selectedDate.value =
-                                dateFormat.format(calendar.time).toString()
+                            "Today" -> {
+                                selectedDate.value = dateFormat.format(calendar.time).toString()
+                                newNotificationViewModel.setDate(calendar = calendar)
+                            }
                             "Tomorrow" -> {
                                 calendar.add(Calendar.DAY_OF_MONTH, 1)
                                 selectedDate.value = dateFormat.format(calendar.time).toString()
+                                newNotificationViewModel.setDate(calendar = calendar)
                             }
                             "Another date" -> DatePickerDialog(
                                 context,
                                 { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
                                     calendar.set(mYear, mMonth, mDayOfMonth)
                                     selectedDate.value = dateFormat.format(calendar.time).toString()
+                                    newNotificationViewModel.setDate(calendar = calendar)
                                 },
                                 calendar[Calendar.YEAR],
                                 calendar[Calendar.MONTH],
@@ -279,16 +284,19 @@ fun ShowDataAndTimeDropdownMenu(context: Context) {
                                 calendar.set(Calendar.HOUR_OF_DAY, 7)
                                 calendar.set(Calendar.MINUTE, 0)
                                 selectedTime.value = timeFormat.format(calendar.time).toString()
+                                newNotificationViewModel.setTime(calendar = calendar)
                             }
                             "Afternoon" -> {
                                 calendar.set(Calendar.HOUR_OF_DAY, 13)
                                 calendar.set(Calendar.MINUTE, 0)
                                 selectedTime.value = timeFormat.format(calendar.time).toString()
+                                newNotificationViewModel.setTime(calendar = calendar)
                             }
                             "Evening" -> {
                                 calendar.set(Calendar.HOUR_OF_DAY, 19)
                                 calendar.set(Calendar.MINUTE, 0)
                                 selectedTime.value = timeFormat.format(calendar.time).toString()
+                                newNotificationViewModel.setTime(calendar = calendar)
                             }
                             "Another time" -> {
                                 TimePickerDialog(
@@ -299,6 +307,7 @@ fun ShowDataAndTimeDropdownMenu(context: Context) {
                                         calendar.set(Calendar.MINUTE, mMinute)
                                         selectedTime.value =
                                             timeFormat.format(calendar.time).toString()
+                                        newNotificationViewModel.setTime(calendar = calendar)
                                     },
                                     calendar[Calendar.HOUR_OF_DAY],
                                     calendar[Calendar.MINUTE],
@@ -321,43 +330,4 @@ fun ShowDataAndTimeDropdownMenu(context: Context) {
             }
         }
     }
-}
-
-@Composable
-fun ShowDataAndTimePicker(context: Context, newNotificationViewModel: NewNotificationViewModel) {
-    // Initializing a Calendar
-    val calendar = Calendar.getInstance()
-    // Setting the current date
-    calendar.time = Date()
-    // Declaring a string value to store date in string format
-    val mDate = remember { mutableStateOf("") }
-    // Value for storing time as a string
-    val mTime = remember { mutableStateOf("") }
-    // Creating a datePicker dialog
-    val datePickerDialog =
-        DatePickerDialog(
-            context,
-            { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-                // Creating a TimePicker dialog
-                TimePickerDialog(
-                    context, 0,
-                    { _, mHour: Int, mMinute: Int ->
-                        mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
-                        mTime.value = "$mHour:$mMinute"
-                        calendar.set(mYear, mMonth, mDayOfMonth, mHour, mMinute)
-                        newNotificationViewModel.setCalendar(calendar)
-                    }, calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE], true
-                ).show()
-            },
-            calendar[Calendar.YEAR],
-            calendar[Calendar.MONTH],
-            calendar[Calendar.DAY_OF_MONTH]
-        )
-    // Displaying the mDate and mTime value in the Text
-    Text(
-        text = "Selected Date and Time: ${mDate.value} ${mTime.value}",
-        modifier = Modifier
-            .clickable { datePickerDialog.show() }
-            .padding(10.dp)
-    )
 }
