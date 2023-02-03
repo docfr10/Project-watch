@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavHostController
 import com.example.newsapplication.viewmodel.NewNotificationViewModel
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.R)
@@ -110,12 +112,12 @@ fun NewNotificationScreen(
             )
         )
         // Date and Time creation function from datePicker and timePicker with dropdown menu
-        ShowDataAndTimeDropdownMenu()
+        ShowDataAndTimeDropdownMenu(context = context)
         // Date and Time creation function from datePicker and timePicker
-        ShowDataAndTimePicker(
-            context = context,
-            newNotificationViewModel = newNotificationViewModel
-        )
+//        ShowDataAndTimePicker(
+//            context = context,
+//            newNotificationViewModel = newNotificationViewModel
+//        )
         // Button, to send notification
         Button(onClick = {
             // Check the notification text for emptiness
@@ -137,7 +139,15 @@ fun NewNotificationScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShowDataAndTimeDropdownMenu() {
+fun ShowDataAndTimeDropdownMenu(context: Context) {
+    // Initializing a Calendar
+    val calendar = Calendar.getInstance()
+    // Setting the current date
+    calendar.time = Date()
+
+    val dateFormat: DateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    val timeFormat: DateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+
     val expandedTime = remember { mutableStateOf(false) }
     val expandedDate = remember { mutableStateOf(false) }
 
@@ -198,7 +208,24 @@ fun ShowDataAndTimeDropdownMenu() {
             ) {
                 date.forEach { label ->
                     DropdownMenuItem(onClick = {
-                        selectedDate.value = label
+                        when (label) {
+                            "Today" -> selectedDate.value =
+                                dateFormat.format(calendar.time).toString()
+                            "Tomorrow" -> {
+                                calendar.add(Calendar.DAY_OF_MONTH, 1)
+                                selectedDate.value = dateFormat.format(calendar.time).toString()
+                            }
+                            "Another date" -> DatePickerDialog(
+                                context,
+                                { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+                                    calendar.set(mYear, mMonth, mDayOfMonth)
+                                    selectedDate.value = dateFormat.format(calendar.time).toString()
+                                },
+                                calendar[Calendar.YEAR],
+                                calendar[Calendar.MONTH],
+                                calendar[Calendar.DAY_OF_MONTH]
+                            ).show()
+                        }
                         expandedDate.value = false
                     }, text = { Text(text = label) })
                 }
@@ -217,7 +244,7 @@ fun ShowDataAndTimeDropdownMenu() {
         Box(modifier = Modifier.size(width = 165.dp, height = 85.dp)) {
             OutlinedTextField(
                 value = selectedTime.value,
-                isError = selectedDate.value.isEmpty(),
+                isError = selectedTime.value.isEmpty(),
                 textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
                 singleLine = true,
                 onValueChange = { selectedTime.value = it },
@@ -247,7 +274,38 @@ fun ShowDataAndTimeDropdownMenu() {
             ) {
                 time.forEach { label ->
                     DropdownMenuItem(onClick = {
-                        selectedTime.value = label
+                        when (label) {
+                            "Morning" -> {
+                                calendar.set(Calendar.HOUR_OF_DAY, 7)
+                                calendar.set(Calendar.MINUTE, 0)
+                                selectedTime.value = timeFormat.format(calendar.time).toString()
+                            }
+                            "Afternoon" -> {
+                                calendar.set(Calendar.HOUR_OF_DAY, 13)
+                                calendar.set(Calendar.MINUTE, 0)
+                                selectedTime.value = timeFormat.format(calendar.time).toString()
+                            }
+                            "Evening" -> {
+                                calendar.set(Calendar.HOUR_OF_DAY, 19)
+                                calendar.set(Calendar.MINUTE, 0)
+                                selectedTime.value = timeFormat.format(calendar.time).toString()
+                            }
+                            "Another time" -> {
+                                TimePickerDialog(
+                                    context,
+                                    0,
+                                    { _, mHour: Int, mMinute: Int ->
+                                        calendar.set(Calendar.HOUR_OF_DAY, mHour)
+                                        calendar.set(Calendar.MINUTE, mMinute)
+                                        selectedTime.value =
+                                            timeFormat.format(calendar.time).toString()
+                                    },
+                                    calendar[Calendar.HOUR_OF_DAY],
+                                    calendar[Calendar.MINUTE],
+                                    true
+                                ).show()
+                            }
+                        }
                         expandedTime.value = false
                     }, text = { Text(text = label) })
                 }
