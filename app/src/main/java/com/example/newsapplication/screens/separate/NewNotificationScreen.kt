@@ -15,18 +15,22 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavHostController
 import com.example.newsapplication.viewmodel.NewNotificationViewModel
 import java.util.*
@@ -34,7 +38,7 @@ import java.util.*
 @RequiresApi(Build.VERSION_CODES.R)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewNotification(
+fun NewNotificationScreen(
     activity: Activity,
     context: Context,
     newNotificationViewModel: NewNotificationViewModel,
@@ -82,10 +86,10 @@ fun NewNotification(
                 imeAction = ImeAction.Next // Keyboard action type
             )
         )
-        // Displaying information about required fields
+        // Displaying information about required field
         if (notificationTitle.value.isEmpty()) {
             Text(
-                text = "Required fields",
+                text = "Required field",
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(end = 235.dp)
@@ -102,9 +106,11 @@ fun NewNotification(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text, // Keyboard type
                 capitalization = KeyboardCapitalization.Sentences, // Letters type
-                imeAction = ImeAction.Done // Keyboard action type
+                imeAction = ImeAction.Next // Keyboard action type
             )
         )
+        // Date and Time creation function from datePicker and timePicker with dropdown menu
+        ShowDataAndTimeDropdownMenu()
         // Date and Time creation function from datePicker and timePicker
         ShowDataAndTimePicker(
             context = context,
@@ -126,6 +132,136 @@ fun NewNotification(
             } else
                 Toast.makeText(context, "Type a notification text", Toast.LENGTH_SHORT).show()
         }) { Text(text = "Create notification") }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ShowDataAndTimeDropdownMenu() {
+    val expandedTime = remember { mutableStateOf(false) }
+    val expandedDate = remember { mutableStateOf(false) }
+
+    val time = listOf("Morning", "Afternoon", "Evening", "Another time")
+    val date = listOf("Today", "Tomorrow", "Another date")
+
+    val selectedTime = remember { mutableStateOf("") }
+    val selectedDate = remember { mutableStateOf("") }
+
+    val textTimeFieldSize = remember { mutableStateOf(Size.Zero) }
+    val textDateFieldSize = remember { mutableStateOf(Size.Zero) }
+
+    val iconForTimePicker = if (expandedTime.value)
+        Icons.Filled.KeyboardArrowUp
+    else
+        Icons.Filled.KeyboardArrowDown
+
+    val iconForDatePicker = if (expandedDate.value)
+        Icons.Filled.KeyboardArrowUp
+    else
+        Icons.Filled.KeyboardArrowDown
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        // DropdownMenu with date
+        Box(modifier = Modifier.size(width = 165.dp, height = 85.dp)) {
+            OutlinedTextField(
+                value = selectedDate.value,
+                isError = selectedDate.value.isEmpty(),
+                textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
+                singleLine = true,
+                onValueChange = { selectedDate.value = it },
+                modifier = Modifier
+                    .onGloballyPositioned { coordinates ->
+                        // This value is used to assign to the DropDown the same width
+                        textDateFieldSize.value = coordinates.size.toSize()
+                    },
+                label = { Text(text = "Type a date") },
+                trailingIcon = {
+                    Icon(
+                        iconForDatePicker,
+                        "contentDescription",
+                        Modifier.clickable { expandedDate.value = !expandedDate.value })
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number, // Keyboard type
+                    imeAction = ImeAction.Next // Keyboard action type
+                )
+            )
+            DropdownMenu(
+                expanded = expandedDate.value,
+                onDismissRequest = { expandedDate.value = false },
+                modifier = Modifier
+                    .width(with(LocalDensity.current) { textDateFieldSize.value.width.toDp() })
+                    .fillMaxWidth(0.5f)
+            ) {
+                date.forEach { label ->
+                    DropdownMenuItem(onClick = {
+                        selectedDate.value = label
+                        expandedDate.value = false
+                    }, text = { Text(text = label) })
+                }
+            }
+            // Displaying information about required field
+            if (selectedDate.value.isEmpty()) {
+                Text(
+                    text = "Required field",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(top = 67.dp, start = 15.dp)
+                )
+            }
+        }
+        // DropdownMenu with time
+        Box(modifier = Modifier.size(width = 165.dp, height = 85.dp)) {
+            OutlinedTextField(
+                value = selectedTime.value,
+                isError = selectedDate.value.isEmpty(),
+                textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
+                singleLine = true,
+                onValueChange = { selectedTime.value = it },
+                modifier = Modifier
+                    .onGloballyPositioned { coordinates ->
+                        // This value is used to assign to the DropDown the same width
+                        textTimeFieldSize.value = coordinates.size.toSize()
+                    },
+                label = { Text(text = "Type a time") },
+                trailingIcon = {
+                    Icon(
+                        iconForTimePicker,
+                        "contentDescription",
+                        Modifier.clickable { expandedTime.value = !expandedTime.value })
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number, // Keyboard type
+                    imeAction = ImeAction.Done // Keyboard action type
+                )
+            )
+            DropdownMenu(
+                expanded = expandedTime.value,
+                onDismissRequest = { expandedTime.value = false },
+                modifier = Modifier
+                    .width(with(LocalDensity.current) { textTimeFieldSize.value.width.toDp() })
+                    .fillMaxWidth(0.5f)
+            ) {
+                time.forEach { label ->
+                    DropdownMenuItem(onClick = {
+                        selectedTime.value = label
+                        expandedTime.value = false
+                    }, text = { Text(text = label) })
+                }
+            }
+            // Displaying information about required fields
+            if (selectedTime.value.isEmpty()) {
+                Text(
+                    text = "Required field",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(top = 67.dp, start = 15.dp)
+                )
+            }
+        }
     }
 }
 
@@ -155,9 +291,9 @@ fun ShowDataAndTimePicker(context: Context, newNotificationViewModel: NewNotific
                     }, calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE], true
                 ).show()
             },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
+            calendar[Calendar.YEAR],
+            calendar[Calendar.MONTH],
+            calendar[Calendar.DAY_OF_MONTH]
         )
     // Displaying the mDate and mTime value in the Text
     Text(

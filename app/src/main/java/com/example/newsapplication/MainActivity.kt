@@ -25,7 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.newsapplication.screens.navigationbar.*
 import com.example.newsapplication.screens.separate.AnimatedSplashScreen
 import com.example.newsapplication.screens.separate.AuthenticationScreen
-import com.example.newsapplication.screens.separate.NewNotification
+import com.example.newsapplication.screens.separate.NewNotificationScreen
 import com.example.newsapplication.ui.theme.NewsApplicationTheme
 import com.example.newsapplication.utils.Constants
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
@@ -201,7 +201,7 @@ private fun NavHostContainer(
                 enterTransition = { slideInVertically(animationSpec = tween(250)) },
                 exitTransition = { slideOutVertically(animationSpec = tween(250)) }
             ) {
-                NewNotification(
+                NewNotificationScreen(
                     activity = activity,
                     navController = navController,
                     sharedPreference = sharedPreference,
