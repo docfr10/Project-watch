@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
@@ -50,7 +49,6 @@ class NewNotificationViewModel : ViewModel() {
             notificationDateAndTime.timeInMillis,
             pendingIntent
         )
-        Log.d("CALENDAR", notificationDateAndTime.timeInMillis.toString())
     }
 
     fun createNotificationChannel(activity: Activity) {

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.newsapplication">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!--Permission to setting exact notifications-->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <!--Permission to wake the device from sleep-->
