@@ -14,6 +14,7 @@ import java.util.*
 
 // ViewModel class of Home screen
 class NewNotificationViewModel : ViewModel() {
+    // Calendar for saving notification date and time
     private var notificationDateAndTime: Calendar = Calendar.getInstance()
 
     fun createNotifications(

@@ -146,27 +146,39 @@ fun ShowDataAndTimeDropdownMenu(
     // Setting the current date
     calendar.time = Date()
 
+    // Date format to display in OutlinedTextField
     val dateFormat: DateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    // Time format to display in OutlinedTextField
     val timeFormat: DateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
-    val expandedTime = remember { mutableStateOf(false) }
+    // Checking whether the button is pressed in DropDownMenu for date
     val expandedDate = remember { mutableStateOf(false) }
+    // Checking whether the button is pressed in DropDownMenu for time
+    val expandedTime = remember { mutableStateOf(false) }
 
-    val time = listOf("Morning", "Afternoon", "Evening", "Another time")
+    // List with possible date
     val date = listOf("Today", "Tomorrow", "Another date")
+    // List with possible time
+    val time = listOf("Morning", "Afternoon", "Evening", "Another time")
 
-    val selectedTime = remember { mutableStateOf("") }
+    // String for writing selected date
     val selectedDate = remember { mutableStateOf("") }
+    // String for writing selected time
+    val selectedTime = remember { mutableStateOf("") }
 
-    val textTimeFieldSize = remember { mutableStateOf(Size.Zero) }
+    // Size of DropDownMenu for date
     val textDateFieldSize = remember { mutableStateOf(Size.Zero) }
+    // Size of DropDownMenu for time
+    val textTimeFieldSize = remember { mutableStateOf(Size.Zero) }
 
-    val iconForTimePicker = if (expandedTime.value)
+    // Icon in OutlinedTextField for date
+    val iconForDatePicker = if (expandedDate.value)
         Icons.Filled.KeyboardArrowUp
     else
         Icons.Filled.KeyboardArrowDown
 
-    val iconForDatePicker = if (expandedDate.value)
+    // Icon in OutlinedTextField for time
+    val iconForTimePicker = if (expandedTime.value)
         Icons.Filled.KeyboardArrowUp
     else
         Icons.Filled.KeyboardArrowDown

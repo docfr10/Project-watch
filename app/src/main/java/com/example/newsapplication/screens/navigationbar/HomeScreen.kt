@@ -21,7 +21,7 @@ fun HomeScreen(
     navController: NavHostController
 ) {
     Scaffold(content = { padding ->
-        // Column Composable,
+        // Column Composable
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -45,6 +45,7 @@ fun HomeScreen(
             }
         }
     }, floatingActionButton = {
+        // Button to go to creating notifications
         FloatingActionButton(shape = CircleShape, onClick = {
             navController.navigate("newNotification")
         }) {
