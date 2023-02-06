@@ -1,12 +1,17 @@
 package com.example.newsapplication.viewmodel
 
+import android.Manifest
 import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.example.newsapplication.R
 import com.example.newsapplication.model.notifications.NotificationsModel

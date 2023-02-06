@@ -1,14 +1,18 @@
 package com.example.newsapplication.screens.separate
 
+import android.Manifest
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Build
 import android.view.Window
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,6 +35,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.newsapplication.viewmodel.NewNotificationViewModel
 import java.text.DateFormat
@@ -48,6 +53,22 @@ fun NewNotificationScreen(
     window: Window,
     sharedPreference: SharedPreferences,
 ) {
+    // Checking for permission to send notifications for Android 13+
+    val hasNotificationPermission = remember {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            mutableStateOf(
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            )
+        } else mutableStateOf(true)
+    }
+    // Launcher for checking permission to send notifications
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted -> hasNotificationPermission.value = isGranted }
+    )
     // Text of notification
     val notificationText = remember { mutableStateOf("") }
     // Title of notification
@@ -120,15 +141,20 @@ fun NewNotificationScreen(
         Button(onClick = {
             // Check the notification text for emptiness
             if (notificationTitle.value.isNotEmpty()) {
-                newNotificationViewModel.createNotificationChannel(activity = activity)
-                newNotificationViewModel.createNotifications(
-                    activity = activity,
-                    context = context,
-                    sharedPreference = sharedPreference,
-                    notificationTitle = notificationTitle,
-                    notificationText = notificationText
-                )
-                navController.navigate("home")
+                // Check the permission to send notifications
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                    launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                if (hasNotificationPermission.value) {
+                    newNotificationViewModel.createNotificationChannel(activity = activity)
+                    newNotificationViewModel.createNotifications(
+                        activity = activity,
+                        context = context,
+                        sharedPreference = sharedPreference,
+                        notificationTitle = notificationTitle,
+                        notificationText = notificationText
+                    )
+                    navController.navigate("home")
+                }
             } else
                 Toast.makeText(context, "Type a notification text", Toast.LENGTH_SHORT).show()
         }) { Text(text = "Create notification") }
