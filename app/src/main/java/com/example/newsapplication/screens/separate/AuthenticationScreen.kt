@@ -116,6 +116,6 @@ fun AuthenticationScreen(
     }
     // TODO - Fix
     BackHandler(enabled = true) {
-        navController.navigate("splashScreen") // ТО КУДА
+        navController.navigate("splashScreen")
     }
 }

@@ -129,7 +129,7 @@ fun NewNotificationScreen(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text, // Keyboard type
                 capitalization = KeyboardCapitalization.Sentences, // Letters type
-                imeAction = ImeAction.Next // Keyboard action type
+                imeAction = ImeAction.Done // Keyboard action type
             )
         )
         // Date and Time creation function from datePicker and timePicker with dropdown menu

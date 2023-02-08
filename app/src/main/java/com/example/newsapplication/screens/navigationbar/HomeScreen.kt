@@ -41,7 +41,7 @@ fun HomeScreen(
             Text(text = "Home")
             // TODO - FIX
             BackHandler(enabled = true) {
-                navController.navigate("splashScreen") // ТО КУДА
+                navController.navigate("splashScreen")
             }
         }
     }, floatingActionButton = {
