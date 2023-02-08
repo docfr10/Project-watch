@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
@@ -17,7 +18,7 @@ class NewNotificationViewModel : ViewModel() {
     // Calendar for saving notification date and time
     private var notificationDateAndTime: Calendar = Calendar.getInstance()
 
-    fun createNotifications(
+    fun createNotification(
         activity: Activity,
         context: Context,
         notificationText: MutableState<String>,
@@ -35,7 +36,6 @@ class NewNotificationViewModel : ViewModel() {
             R.bool.setAutoCancel.toString(),
             sharedPreference.getBoolean("closeNotification", false)
         )
-
         // Creating a broadcast signal to send a notification
         val pendingIntent =
             PendingIntent.getBroadcast(
@@ -52,22 +52,15 @@ class NewNotificationViewModel : ViewModel() {
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun createNotificationChannel(activity: Activity) {
         val notificationManager =
             activity.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
 
         val name = "Notification Channel"
         val desc = "A Description of the Channel"
-        val importance = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            NotificationManager.IMPORTANCE_HIGH
-        } else {
-            TODO("VERSION.SDK_INT < N")
-        }
-        val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel(R.string.channelID.toString(), name, importance)
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel(R.string.channelID.toString(), name, importance)
         channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         channel.enableVibration(true)
         channel.description = desc

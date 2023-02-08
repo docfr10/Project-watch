@@ -156,14 +156,26 @@ fun NewNotificationScreen(
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
                     launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 if (hasNotificationPermission.value) {
-                    newNotificationViewModel.createNotificationChannel(activity = activity)
-                    newNotificationViewModel.createNotifications(
-                        activity = activity,
-                        context = context,
-                        sharedPreference = sharedPreference,
-                        notificationTitle = notificationTitle,
-                        notificationText = notificationText
-                    )
+                    // Check Android version, if version >= Android 8 then create a notification channel
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        newNotificationViewModel.createNotificationChannel(activity = activity)
+                        newNotificationViewModel.createNotification(
+                            activity = activity,
+                            context = context,
+                            sharedPreference = sharedPreference,
+                            notificationTitle = notificationTitle,
+                            notificationText = notificationText
+                        )
+                    }
+                    // Else don't create
+                    else
+                        newNotificationViewModel.createNotification(
+                            activity = activity,
+                            context = context,
+                            sharedPreference = sharedPreference,
+                            notificationTitle = notificationTitle,
+                            notificationText = notificationText
+                        )
                     navController.navigate("home")
                 }
             } else
