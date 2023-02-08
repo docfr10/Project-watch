@@ -3,6 +3,7 @@ package com.example.newsapplication.screens.separate
 import android.content.Context
 import android.os.Build
 import android.view.Window
+import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
@@ -35,7 +37,17 @@ fun AuthenticationScreen(
     navController: NavHostController
 ) {
     // Raise the elements above the keyboard
-    window.setDecorFitsSystemWindows(false)
+    var shouldResize = false // False will resize
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        window.setDecorFitsSystemWindows(shouldResize)
+        shouldResize = shouldResize.not()
+    } else {
+        if (shouldResize.not())
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        else
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
+    }
 
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -87,6 +99,7 @@ fun AuthenticationScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .imePadding(),
             label = { Text(text = "Password") },
+            visualTransformation = PasswordVisualTransformation(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,

@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.view.Window
+import android.view.WindowManager
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -74,7 +75,17 @@ fun NewNotificationScreen(
     // Title of notification
     val notificationTitle = remember { mutableStateOf("") }
     // Raise the elements above the keyboard
-    window.setDecorFitsSystemWindows(false)
+    var shouldResize = false // False will resize
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        window.setDecorFitsSystemWindows(shouldResize)
+        shouldResize = shouldResize.not()
+    } else {
+        if (shouldResize.not())
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        else
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
+    }
 
     Column(
         modifier = Modifier
