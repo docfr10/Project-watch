@@ -196,7 +196,7 @@ fun ShowDataAndTimeDropdownMenu(
     calendar.time = Date()
 
     // Date format to display in OutlinedTextField
-    val dateFormat: DateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    val dateFormat: DateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
     // Time format to display in OutlinedTextField
     val timeFormat: DateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
