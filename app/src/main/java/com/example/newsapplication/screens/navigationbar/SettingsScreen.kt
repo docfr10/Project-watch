@@ -39,44 +39,53 @@ fun SettingsScreen(
         // Text to Display the current Screen
         Text(text = "Settings")
         // Card with the function of changing the display of icon labels
-        Card(
-            modifier = Modifier.padding(5.dp),
-            shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Icon labels at the bottom")
-                Switch(
-                    checked = sharedPreference.getBoolean("showIconLabels", true),
-                    onCheckedChange = {
-                        sharedPreference.edit().putBoolean("showIconLabels", it).apply()
-                        context.startActivity(Intent(context, MainActivity::class.java))
-                    })
-            }
-        }
+        ShowIconLabels(context = context, sharedPreference = sharedPreference)
         // Card with the function of closing the notification when you click on it
-        Card(
-            modifier = Modifier.padding(5.dp),
-            shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+        CloseNotificationOnPress(context = context, sharedPreference = sharedPreference)
+    }
+}
+
+@Composable
+fun CloseNotificationOnPress(context: Context, sharedPreference: SharedPreferences) {
+    Card(
+        modifier = Modifier.padding(5.dp),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Close notification on press")
-                Switch(
-                    checked = sharedPreference.getBoolean("closeNotification", false),
-                    onCheckedChange = {
-                        sharedPreference.edit().putBoolean("closeNotification", it).apply()
-                        context.startActivity(Intent(context, MainActivity::class.java))
-                    })
-            }
+            Text(text = "Close notification on press")
+            Switch(
+                checked = sharedPreference.getBoolean("closeNotification", false),
+                onCheckedChange = {
+                    sharedPreference.edit().putBoolean("closeNotification", it).apply()
+                    context.startActivity(Intent(context, MainActivity::class.java))
+                })
+        }
+    }}
+
+@Composable
+fun ShowIconLabels(sharedPreference: SharedPreferences, context: Context) {
+    Card(
+        modifier = Modifier.padding(5.dp),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Icon labels at the bottom")
+            Switch(
+                checked = sharedPreference.getBoolean("showIconLabels", true),
+                onCheckedChange = {
+                    sharedPreference.edit().putBoolean("showIconLabels", it).apply()
+                    context.startActivity(Intent(context, MainActivity::class.java))
+                })
         }
     }
 }
