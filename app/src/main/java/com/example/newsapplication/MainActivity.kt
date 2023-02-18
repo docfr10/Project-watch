@@ -30,6 +30,7 @@ import com.example.newsapplication.ui.theme.NewsApplicationTheme
 import com.example.newsapplication.utils.Constants
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
 import com.example.newsapplication.viewmodel.NewNotificationViewModel
+import com.example.newsapplication.viewmodel.ProjectsViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -44,6 +45,7 @@ class MainActivity : ComponentActivity() {
     // ViewModel objects
     private lateinit var newNotificationViewModel: NewNotificationViewModel
     private lateinit var authenticationViewModel: AuthenticationViewModel
+    private lateinit var projectsViewModel: ProjectsViewModel
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +58,7 @@ class MainActivity : ComponentActivity() {
                 val provider = ViewModelProvider(this)
                 newNotificationViewModel = provider[NewNotificationViewModel::class.java]
                 authenticationViewModel = provider[AuthenticationViewModel::class.java]
+                projectsViewModel = provider[ProjectsViewModel::class.java]
 
                 // Remember navController so it does not
                 // Get recreated on recomposition
@@ -73,6 +76,7 @@ class MainActivity : ComponentActivity() {
                     auth = auth,
                     authenticationViewModel = authenticationViewModel,
                     newNotificationViewModel = newNotificationViewModel,
+                    projectsViewModel = projectsViewModel,
                     window = window
                 )
             }
@@ -92,7 +96,8 @@ fun AppScreen(
     authenticationViewModel: AuthenticationViewModel,
     window: Window,
     cUser: FirebaseUser?,
-    sharedPreference: SharedPreferences
+    sharedPreference: SharedPreferences,
+    projectsViewModel: ProjectsViewModel
 ) {
     // Hiding the bottom bar
     val isShowBottomBar = remember { mutableStateOf(false) }
@@ -118,6 +123,7 @@ fun AppScreen(
                     auth = auth,
                     authenticationViewModel = authenticationViewModel,
                     newNotificationViewModel = newNotificationViewModel,
+                    projectsViewModel = projectsViewModel,
                     isShowBottomBar = isShowBottomBar,
                     window = window
                 )
@@ -141,7 +147,8 @@ private fun NavHostContainer(
     window: Window,
     authenticationViewModel: AuthenticationViewModel,
     cUser: FirebaseUser?,
-    sharedPreference: SharedPreferences
+    sharedPreference: SharedPreferences,
+    projectsViewModel: ProjectsViewModel
 ) {
     AnimatedNavHost(
         navController = navController,
@@ -172,9 +179,9 @@ private fun NavHostContainer(
                 HomeScreen(navController = navController)
                 isShowBottomBar.value = true
             }
-            // route : Work
+            // route : Projects
             composable(route = "projects") {
-                ProjectsScreen()
+                ProjectsScreen(projectsViewModel = projectsViewModel)
                 isShowBottomBar.value = true
             }
             // route : Profile
