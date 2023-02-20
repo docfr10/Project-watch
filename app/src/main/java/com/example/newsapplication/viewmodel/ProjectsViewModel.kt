@@ -9,15 +9,21 @@ import java.util.*
 
 class ProjectsViewModel : ViewModel() {
     private var formattedTime = mutableStateOf("00:00:00")
+    private var isActive = mutableStateOf(false)
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
 
     private var timeMillis = 0L
     private var lastTimestamp = 0L
-    private var isActive = false
 
     private fun formatTime(timeMillis: Long): String {
-        val timeFormat: DateFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-        return timeFormat.format(timeMillis).toString()
+        val seconds = timeMillis / 1000 % 60
+        val minutes = timeMillis / 60000 % 60
+        val hours = timeMillis / 3600000
+        return "%02d".format(hours) + ":" + "%02d".format(minutes) + ":" + "%02d".format(seconds)
+    }
+
+    fun getIsActive(): Boolean {
+        return isActive.value
     }
 
     fun getFormattedTime(): String {
@@ -25,12 +31,12 @@ class ProjectsViewModel : ViewModel() {
     }
 
     fun start() {
-        if (isActive) return
+        if (isActive.value) return
 
         coroutineScope.launch {
             lastTimestamp = System.currentTimeMillis()
-            this@ProjectsViewModel.isActive = true
-            while (this@ProjectsViewModel.isActive) {
+            this@ProjectsViewModel.isActive.value = true
+            while (this@ProjectsViewModel.isActive.value) {
                 delay(10L)
                 timeMillis += System.currentTimeMillis() - lastTimestamp
                 lastTimestamp = System.currentTimeMillis()
@@ -40,15 +46,6 @@ class ProjectsViewModel : ViewModel() {
     }
 
     fun pause() {
-        isActive = false
-    }
-
-    fun reset() {
-        coroutineScope.cancel()
-        coroutineScope = CoroutineScope(Dispatchers.Main)
-        timeMillis = 0L
-        lastTimestamp = 0L
-        formattedTime.value = "00:00:00"
-        isActive = false
+        isActive.value = false
     }
 }
