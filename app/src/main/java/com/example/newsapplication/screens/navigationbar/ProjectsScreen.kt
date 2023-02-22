@@ -16,12 +16,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.newsapplication.R
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProjectsScreen(projectsViewModel: ProjectsViewModel) {
+fun ProjectsScreen(
+    projectsViewModel: ProjectsViewModel,
+    navController: NavHostController,
+) {
     Scaffold(content = { padding ->
         // Column Composable,
         Column(
@@ -47,7 +51,7 @@ fun ProjectsScreen(projectsViewModel: ProjectsViewModel) {
     }, floatingActionButton = {
         // Button to go to creating notifications
         FloatingActionButton(shape = CircleShape, onClick = {
-            
+            navController.navigate("newProject")
         }) {
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add a new notification")
         }

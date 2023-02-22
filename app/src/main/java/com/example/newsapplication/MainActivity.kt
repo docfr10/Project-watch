@@ -26,6 +26,7 @@ import com.example.newsapplication.screens.navigationbar.*
 import com.example.newsapplication.screens.separate.AnimatedSplashScreen
 import com.example.newsapplication.screens.separate.AuthenticationScreen
 import com.example.newsapplication.screens.separate.NewNotificationScreen
+import com.example.newsapplication.screens.separate.NewProjectScreen
 import com.example.newsapplication.ui.theme.NewsApplicationTheme
 import com.example.newsapplication.utils.Constants
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
@@ -181,7 +182,7 @@ private fun NavHostContainer(
             }
             // route : Projects
             composable(route = "projects") {
-                ProjectsScreen(projectsViewModel = projectsViewModel)
+                ProjectsScreen(projectsViewModel = projectsViewModel, navController = navController)
                 isShowBottomBar.value = true
             }
             // route : Profile
@@ -216,6 +217,15 @@ private fun NavHostContainer(
                     newNotificationViewModel = newNotificationViewModel,
                     window = window
                 )
+                isShowBottomBar.value = false
+            }
+            // route : New project
+            composable(
+                route = "newProject",
+                enterTransition = { slideInVertically(animationSpec = tween(250)) },
+                exitTransition = { slideOutVertically(animationSpec = tween(250)) }
+            ) {
+                NewProjectScreen(navController = navController, context = context, window = window)
                 isShowBottomBar.value = false
             }
         })
