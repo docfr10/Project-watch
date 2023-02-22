@@ -52,8 +52,6 @@ fun HomeScreen(
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add a new notification")
         }
     })
-
-
 }
 
 

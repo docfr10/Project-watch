@@ -3,9 +3,6 @@ package com.example.newsapplication.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 
 class ProjectsViewModel : ViewModel() {
     private var formattedTime = mutableStateOf("00:00:00")
