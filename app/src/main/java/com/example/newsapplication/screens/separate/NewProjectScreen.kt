@@ -22,10 +22,17 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.newsapplication.model.project.ProjectModel
+import com.example.newsapplication.viewmodel.ProjectsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewProjectScreen(navController: NavHostController, context: Context, window: Window) {
+fun NewProjectScreen(
+    navController: NavHostController,
+    context: Context,
+    window: Window,
+    projectsViewModel: ProjectsViewModel
+) {
     // Project name
     val projectName = remember { mutableStateOf("") }
     // Raise the elements above the keyboard
@@ -86,7 +93,12 @@ fun NewProjectScreen(navController: NavHostController, context: Context, window:
         Button(onClick = {
             // Check the notification text for emptiness
             if (projectName.value.isNotEmpty()) {
-                // TODO - Insert new project name in DB
+                projectsViewModel.addProject(
+                    projectModel = ProjectModel(
+                        0,
+                        projectName = projectName.value
+                    )
+                )
                 navController.navigate("projects")
             } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT).show()
         }) { Text(text = "Create") }

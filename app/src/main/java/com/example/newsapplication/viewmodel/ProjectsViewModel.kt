@@ -1,16 +1,37 @@
 package com.example.newsapplication.viewmodel
 
+import android.app.Application
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
+import com.example.newsapplication.model.AppDatabaseModel
+import com.example.newsapplication.model.project.ProjectModel
+import com.example.newsapplication.model.project.ProjectRepositoryModel
 import kotlinx.coroutines.*
 
-class ProjectsViewModel : ViewModel() {
+class ProjectsViewModel(application: Application) : AndroidViewModel(application) {
+    private val projectDAOModel = AppDatabaseModel.getDatabase(context = application).projectDAO()
+    private val repositoryModel = ProjectRepositoryModel(projectDAOModel = projectDAOModel)
+    private val readAllProjects: LiveData<List<ProjectModel>> = repositoryModel.readAllProjects()
+
+    private var coroutineScope = CoroutineScope(Dispatchers.Main)
+
     private var formattedTime = mutableStateOf("00:00:00")
     private var isActive = mutableStateOf(false)
-    private var coroutineScope = CoroutineScope(Dispatchers.Main)
 
     private var timeMillis = 0L
     private var lastTimestamp = 0L
+
+    fun getReadAllProjects(): LiveData<List<ProjectModel>> {
+        return readAllProjects
+    }
+
+    fun addProject(projectModel: ProjectModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repositoryModel.addProject(projectModel = projectModel)
+        }
+    }
 
     private fun formatTime(timeMillis: Long): String {
         val seconds = timeMillis / 1000 % 60

@@ -98,7 +98,7 @@ fun AppScreen(
     window: Window,
     cUser: FirebaseUser?,
     sharedPreference: SharedPreferences,
-    projectsViewModel: ProjectsViewModel
+    projectsViewModel: ProjectsViewModel,
 ) {
     // Hiding the bottom bar
     val isShowBottomBar = remember { mutableStateOf(false) }
@@ -149,7 +149,7 @@ private fun NavHostContainer(
     authenticationViewModel: AuthenticationViewModel,
     cUser: FirebaseUser?,
     sharedPreference: SharedPreferences,
-    projectsViewModel: ProjectsViewModel
+    projectsViewModel: ProjectsViewModel,
 ) {
     AnimatedNavHost(
         navController = navController,
@@ -225,7 +225,12 @@ private fun NavHostContainer(
                 enterTransition = { slideInVertically(animationSpec = tween(250)) },
                 exitTransition = { slideOutVertically(animationSpec = tween(250)) }
             ) {
-                NewProjectScreen(navController = navController, context = context, window = window)
+                NewProjectScreen(
+                    navController = navController,
+                    projectsViewModel = projectsViewModel,
+                    context = context,
+                    window = window
+                )
                 isShowBottomBar.value = false
             }
         })
