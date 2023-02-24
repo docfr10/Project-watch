@@ -16,12 +16,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.material3.BottomAppBarDefaults.containerColor
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.screens.navigationbar.*
 import com.example.newsapplication.screens.separate.AnimatedSplashScreen
 import com.example.newsapplication.screens.separate.AuthenticationScreen
@@ -61,6 +63,10 @@ class MainActivity : ComponentActivity() {
                 authenticationViewModel = provider[AuthenticationViewModel::class.java]
                 projectsViewModel = provider[ProjectsViewModel::class.java]
 
+                // Saving a list with project data
+                val projectList =
+                    projectsViewModel.getReadAllProjects().observeAsState(initial = listOf())
+
                 // Remember navController so it does not
                 // Get recreated on recomposition
                 val navController = rememberAnimatedNavController()
@@ -74,6 +80,7 @@ class MainActivity : ComponentActivity() {
                     cUser = cUser,
                     navController = navController,
                     sharedPreference = sharedPreference,
+                    projectList = projectList,
                     auth = auth,
                     authenticationViewModel = authenticationViewModel,
                     newNotificationViewModel = newNotificationViewModel,
@@ -99,6 +106,7 @@ fun AppScreen(
     cUser: FirebaseUser?,
     sharedPreference: SharedPreferences,
     projectsViewModel: ProjectsViewModel,
+    projectList: State<List<ProjectModel>>,
 ) {
     // Hiding the bottom bar
     val isShowBottomBar = remember { mutableStateOf(false) }
@@ -121,6 +129,7 @@ fun AppScreen(
                     navController = navController,
                     sharedPreference = sharedPreference,
                     padding = padding,
+                    projectList = projectList,
                     auth = auth,
                     authenticationViewModel = authenticationViewModel,
                     newNotificationViewModel = newNotificationViewModel,
@@ -150,6 +159,7 @@ private fun NavHostContainer(
     cUser: FirebaseUser?,
     sharedPreference: SharedPreferences,
     projectsViewModel: ProjectsViewModel,
+    projectList: State<List<ProjectModel>>,
 ) {
     AnimatedNavHost(
         navController = navController,
@@ -182,7 +192,11 @@ private fun NavHostContainer(
             }
             // route : Projects
             composable(route = "projects") {
-                ProjectsScreen(projectsViewModel = projectsViewModel, navController = navController)
+                ProjectsScreen(
+                    projectsViewModel = projectsViewModel,
+                    projectList = projectList,
+                    navController = navController
+                )
                 isShowBottomBar.value = true
             }
             // route : Profile

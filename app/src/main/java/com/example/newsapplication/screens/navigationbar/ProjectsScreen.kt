@@ -1,6 +1,7 @@
 package com.example.newsapplication.screens.navigationbar
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,15 +11,25 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.newsapplication.R
+import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProjectsScreen(projectsViewModel: ProjectsViewModel, navController: NavHostController) {
+fun ProjectsScreen(
+    projectsViewModel: ProjectsViewModel,
+    navController: NavHostController,
+    projectList: State<List<ProjectModel>>
+) {
     Scaffold(content = { padding ->
         // Column Composable,
         Column(
@@ -39,7 +50,7 @@ fun ProjectsScreen(projectsViewModel: ProjectsViewModel, navController: NavHostC
             // Text to Display the current Screen
             Text(text = "Projects")
             // Stopwatch markup
-            Stopwatch(projectsViewModel = projectsViewModel)
+            Stopwatch(projectsViewModel = projectsViewModel, projectList = projectList)
         }
     }, floatingActionButton = {
         // Button to go to creating notifications
@@ -52,22 +63,9 @@ fun ProjectsScreen(projectsViewModel: ProjectsViewModel, navController: NavHostC
 }
 
 @Composable
-fun Stopwatch(projectsViewModel: ProjectsViewModel) {
-
-    val projectList = projectsViewModel.getReadAllProjects().observeAsState(initial = listOf())
-
+fun Stopwatch(projectsViewModel: ProjectsViewModel, projectList: State<List<ProjectModel>>) {
     LazyColumn {
         items(projectList.value) {
-            Text(text = it.projectName)
-        }
-    }
-
-    /*
-    LazyColumn(content = {
-        items(
-            1
-            //projectsViewModel.getReadAllProjects().value!!.size
-        ) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = Color.Transparent)
@@ -77,11 +75,7 @@ fun Stopwatch(projectsViewModel: ProjectsViewModel) {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-
-                    //Text(text = projectsViewModel.getReadAllProjects().value!![0].projectName)
-
-                    /*
-                    Text(text = projectsViewModel.getReadAllProjects().value.toString())
+                    Text(text = it.projectName)
                     Text(
                         text = projectsViewModel.getFormattedTime(),
                         fontWeight = FontWeight.Bold,
@@ -100,11 +94,8 @@ fun Stopwatch(projectsViewModel: ProjectsViewModel) {
                             contentDescription = "Pause",
                             modifier = Modifier.clickable { projectsViewModel.pause() }
                         )
-
-                     */
                 }
             }
         }
-    })
-     */
+    }
 }
