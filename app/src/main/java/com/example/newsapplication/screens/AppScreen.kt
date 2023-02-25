@@ -1,0 +1,227 @@
+package com.example.newsapplication.screens
+
+import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.Build
+import android.view.Window
+import androidx.annotation.RequiresApi
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.newsapplication.model.project.ProjectModel
+import com.example.newsapplication.screens.navigationbar.*
+import com.example.newsapplication.screens.separate.AnimatedSplashScreen
+import com.example.newsapplication.screens.separate.AuthenticationScreen
+import com.example.newsapplication.screens.separate.NewNotificationScreen
+import com.example.newsapplication.screens.separate.NewProjectScreen
+import com.example.newsapplication.utils.Constants
+import com.example.newsapplication.viewmodel.AuthenticationViewModel
+import com.example.newsapplication.viewmodel.NewNotificationViewModel
+import com.example.newsapplication.viewmodel.ProjectsViewModel
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+
+@RequiresApi(Build.VERSION_CODES.R)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppScreen(
+    navController: NavHostController,
+    auth: FirebaseAuth,
+    newNotificationViewModel: NewNotificationViewModel,
+    activity: Activity,
+    context: Context,
+    authenticationViewModel: AuthenticationViewModel,
+    window: Window,
+    cUser: FirebaseUser?,
+    sharedPreference: SharedPreferences,
+    projectsViewModel: ProjectsViewModel,
+    projectList: State<List<ProjectModel>>,
+) {
+    // Hiding the bottom bar
+    val isShowBottomBar = remember { mutableStateOf(false) }
+
+    Surface(color = MaterialTheme.colorScheme.surface) {
+        // Scaffold Component
+        Scaffold(
+            // Bottom navigation
+            bottomBar = {
+                if (isShowBottomBar.value) BottomNavigationBar(
+                    navController = navController,
+                    sharedPreference = sharedPreference
+                )
+            },
+            content = { padding ->
+                NavHostContainer(
+                    activity = activity,
+                    context = context,
+                    cUser = cUser,
+                    navController = navController,
+                    sharedPreference = sharedPreference,
+                    padding = padding,
+                    projectList = projectList,
+                    auth = auth,
+                    authenticationViewModel = authenticationViewModel,
+                    newNotificationViewModel = newNotificationViewModel,
+                    projectsViewModel = projectsViewModel,
+                    isShowBottomBar = isShowBottomBar,
+                    window = window
+                )
+            }
+        )
+    }
+}
+
+// Screen Navigation
+@OptIn(ExperimentalAnimationApi::class)
+@RequiresApi(Build.VERSION_CODES.R)
+@Composable
+private fun NavHostContainer(
+    navController: NavHostController,
+    padding: PaddingValues,
+    auth: FirebaseAuth,
+    isShowBottomBar: MutableState<Boolean>,
+    newNotificationViewModel: NewNotificationViewModel,
+    activity: Activity,
+    context: Context,
+    window: Window,
+    authenticationViewModel: AuthenticationViewModel,
+    cUser: FirebaseUser?,
+    sharedPreference: SharedPreferences,
+    projectsViewModel: ProjectsViewModel,
+    projectList: State<List<ProjectModel>>,
+) {
+    AnimatedNavHost(
+        navController = navController,
+        // Set the start destination as splash screen
+        startDestination = "splashScreen",
+        // Set the padding provided by scaffold
+        modifier = Modifier.padding(paddingValues = padding),
+        builder = {
+            // route : Splash screen
+            composable(
+                route = "splashScreen",
+                exitTransition = { scaleOut(animationSpec = tween(500)) }) {
+                AnimatedSplashScreen(navController = navController, cUser = cUser)
+                isShowBottomBar.value = false
+            }
+            // route : Authentication
+            composable(route = "authentication") {
+                AuthenticationScreen(
+                    context = context,
+                    navController = navController,
+                    window = window,
+                    authenticationViewModel = authenticationViewModel,
+                    auth = auth
+                )
+            }
+            // route : Home
+            composable(route = "home") {
+                HomeScreen(navController = navController)
+                isShowBottomBar.value = true
+            }
+            // route : Projects
+            composable(route = "projects") {
+                ProjectsScreen(
+                    projectsViewModel = projectsViewModel,
+                    projectList = projectList,
+                    navController = navController
+                )
+                isShowBottomBar.value = true
+            }
+            // route : Profile
+            composable(route = "profile") {
+                ProfileScreen(auth = auth)
+                isShowBottomBar.value = true
+            }
+            // route : About
+            composable(route = "about") {
+                AboutScreen()
+                isShowBottomBar.value = true
+            }
+            // route : Settings
+            composable(route = "settings") {
+                SettingsScreen(
+                    context = context,
+                    sharedPreference = sharedPreference
+                )
+                isShowBottomBar.value = true
+            }
+            // route : New notification
+            composable(
+                route = "newNotification",
+                enterTransition = { slideInVertically(animationSpec = tween(250)) },
+                exitTransition = { slideOutVertically(animationSpec = tween(250)) }
+            ) {
+                NewNotificationScreen(
+                    activity = activity,
+                    navController = navController,
+                    sharedPreference = sharedPreference,
+                    context = context,
+                    newNotificationViewModel = newNotificationViewModel,
+                    window = window
+                )
+                isShowBottomBar.value = false
+            }
+            // route : New project
+            composable(
+                route = "newProject",
+                enterTransition = { slideInVertically(animationSpec = tween(250)) },
+                exitTransition = { slideOutVertically(animationSpec = tween(250)) }
+            ) {
+                NewProjectScreen(
+                    navController = navController,
+                    projectsViewModel = projectsViewModel,
+                    context = context,
+                    window = window
+                )
+                isShowBottomBar.value = false
+            }
+        })
+}
+
+// Output of all screen icons
+@Composable
+private fun BottomNavigationBar(
+    navController: NavHostController,
+    sharedPreference: SharedPreferences
+) {
+    NavigationBar(
+        // Set background color
+        containerColor = NavigationBarDefaults.containerColor,
+        contentColor = MaterialTheme.colorScheme.contentColorFor(BottomAppBarDefaults.containerColor),
+        tonalElevation = NavigationBarDefaults.Elevation,
+    ) {
+        // Observe the backstack
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        // Observe current route to change the icon
+        // Color,label color when navigated
+        val currentRoute = navBackStackEntry?.destination?.route
+        // Bottom nav items we declared
+        Constants.BottomNavItems.forEach { navItem ->
+            // Place the bottom nav items
+            NavigationBarItem(
+                // It currentRoute is equal then its selected route
+                selected = currentRoute == navItem.route,
+                // Navigate on click
+                onClick = { navController.navigate(navItem.route) },
+                // Icon of navItem
+                icon = { Icon(imageVector = navItem.icon, contentDescription = navItem.label) },
+                // Label
+                label = { Text(text = navItem.label) },
+                alwaysShowLabel = sharedPreference.getBoolean("showIconLabels", true)
+            )
+        }
+    }
+}
