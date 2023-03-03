@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.newsapplication.utils.Routes.SPLASH_SCREEN
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -129,6 +130,6 @@ fun AuthenticationScreen(
     }
     // TODO - Fix
     BackHandler(enabled = true) {
-        navController.navigate("splashScreen")
+        navController.navigate(SPLASH_SCREEN)
     }
 }

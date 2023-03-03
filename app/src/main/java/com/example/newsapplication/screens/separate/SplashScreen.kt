@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.newsapplication.utils.Routes.AUTHENTICATION_SCREEN
+import com.example.newsapplication.utils.Routes.HOME_SCREEN
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.delay
 
@@ -33,9 +35,9 @@ fun AnimatedSplashScreen(navController: NavHostController, cUser: FirebaseUser?)
         delay(4000)
         navController.popBackStack()
         if (cUser != null)
-            navController.navigate("home")
+            navController.navigate(HOME_SCREEN)
         else
-            navController.navigate("authentication")
+            navController.navigate(AUTHENTICATION_SCREEN)
     }
     SplashScreen(alphaAnim = alphaAnim.value)
 }

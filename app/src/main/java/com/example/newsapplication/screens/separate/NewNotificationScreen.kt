@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
+import com.example.newsapplication.utils.Routes.HOME_SCREEN
 import com.example.newsapplication.viewmodel.NewNotificationViewModel
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -175,7 +176,7 @@ fun NewNotificationScreen(
                             notificationTitle = notificationTitle,
                             notificationText = notificationText
                         )
-                    navController.navigate("home")
+                    navController.navigate(HOME_SCREEN)
                 }
             } else
                 Toast.makeText(context, "Type a notification text", Toast.LENGTH_SHORT).show()

@@ -25,6 +25,15 @@ import com.example.newsapplication.screens.separate.AuthenticationScreen
 import com.example.newsapplication.screens.separate.NewNotificationScreen
 import com.example.newsapplication.screens.separate.NewProjectScreen
 import com.example.newsapplication.utils.Constants
+import com.example.newsapplication.utils.Routes.ABOUT_SCREEN
+import com.example.newsapplication.utils.Routes.AUTHENTICATION_SCREEN
+import com.example.newsapplication.utils.Routes.HOME_SCREEN
+import com.example.newsapplication.utils.Routes.NEW_NOTIFICATION_SCREEN
+import com.example.newsapplication.utils.Routes.NEW_PROJECT_SCREEN
+import com.example.newsapplication.utils.Routes.PROFILE_SCREEN
+import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
+import com.example.newsapplication.utils.Routes.SETTINGS_SCREEN
+import com.example.newsapplication.utils.Routes.SPLASH_SCREEN
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
 import com.example.newsapplication.viewmodel.NewNotificationViewModel
 import com.example.newsapplication.viewmodel.ProjectsViewModel
@@ -105,19 +114,19 @@ private fun NavHostContainer(
     AnimatedNavHost(
         navController = navController,
         // Set the start destination as splash screen
-        startDestination = "splashScreen",
+        startDestination = SPLASH_SCREEN,
         // Set the padding provided by scaffold
         modifier = Modifier.padding(paddingValues = padding),
         builder = {
             // route : Splash screen
             composable(
-                route = "splashScreen",
+                route = SPLASH_SCREEN,
                 exitTransition = { scaleOut(animationSpec = tween(500)) }) {
                 AnimatedSplashScreen(navController = navController, cUser = cUser)
                 isShowBottomBar.value = false
             }
             // route : Authentication
-            composable(route = "authentication") {
+            composable(route = AUTHENTICATION_SCREEN) {
                 AuthenticationScreen(
                     context = context,
                     navController = navController,
@@ -127,12 +136,12 @@ private fun NavHostContainer(
                 )
             }
             // route : Home
-            composable(route = "home") {
+            composable(route = HOME_SCREEN) {
                 HomeScreen(navController = navController)
                 isShowBottomBar.value = true
             }
             // route : Projects
-            composable(route = "projects") {
+            composable(route = PROJECTS_SCREEN) {
                 ProjectsScreen(
                     projectsViewModel = projectsViewModel,
                     projectList = projectList,
@@ -141,17 +150,17 @@ private fun NavHostContainer(
                 isShowBottomBar.value = true
             }
             // route : Profile
-            composable(route = "profile") {
+            composable(route = PROFILE_SCREEN) {
                 ProfileScreen(auth = auth)
                 isShowBottomBar.value = true
             }
             // route : About
-            composable(route = "about") {
+            composable(route = ABOUT_SCREEN) {
                 AboutScreen()
                 isShowBottomBar.value = true
             }
             // route : Settings
-            composable(route = "settings") {
+            composable(route = SETTINGS_SCREEN) {
                 SettingsScreen(
                     context = context,
                     sharedPreference = sharedPreference
@@ -160,7 +169,7 @@ private fun NavHostContainer(
             }
             // route : New notification
             composable(
-                route = "newNotification",
+                route = NEW_NOTIFICATION_SCREEN,
                 enterTransition = { slideInVertically(animationSpec = tween(250)) },
                 exitTransition = { slideOutVertically(animationSpec = tween(250)) }
             ) {
@@ -176,7 +185,7 @@ private fun NavHostContainer(
             }
             // route : New project
             composable(
-                route = "newProject",
+                route = NEW_PROJECT_SCREEN,
                 enterTransition = { slideInVertically(animationSpec = tween(250)) },
                 exitTransition = { slideOutVertically(animationSpec = tween(250)) }
             ) {

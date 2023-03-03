@@ -72,12 +72,17 @@ dependencies {
 
     implementation("androidx.appcompat:appcompat:1.5.1")
 
+    // Firebase
     implementation platform('com.google.firebase:firebase-bom:31.0.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'androidx.compose.material3:material3:1.1.0-alpha03'
 
+    // Room database
     implementation "androidx.room:room-runtime:2.5.0"
     kapt "androidx.room:room-compiler:2.5.0"
     implementation "androidx.room:room-ktx:2.5.0"
     androidTestImplementation "androidx.room:room-testing:2.5.0"
+
+    // Swipe elements
+    implementation "me.saket.swipe:swipe:1.1.1"
 }

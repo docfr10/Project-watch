@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.model.project.ProjectModel
+import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,7 +33,7 @@ fun NewProjectScreen(
     navController: NavHostController,
     context: Context,
     window: Window,
-    projectsViewModel: ProjectsViewModel
+    projectsViewModel: ProjectsViewModel,
 ) {
     // Project name
     val projectName = remember { mutableStateOf("") }
@@ -99,7 +101,7 @@ fun NewProjectScreen(
                         projectName = projectName.value
                     )
                 )
-                navController.navigate("projects")
+                navController.navigate(PROJECTS_SCREEN)
             } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT).show()
         }) { Text(text = "Create") }
     }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -21,7 +22,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.R
 import com.example.newsapplication.model.project.ProjectModel
+import com.example.newsapplication.utils.Routes.NEW_PROJECT_SCREEN
 import com.example.newsapplication.viewmodel.ProjectsViewModel
+import me.saket.swipe.SwipeAction
+import me.saket.swipe.SwipeableActionsBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,12 +54,16 @@ fun ProjectsScreen(
             // Text to Display the current Screen
             Text(text = "Projects")
             // Stopwatch markup
-            Stopwatch(projectsViewModel = projectsViewModel, projectList = projectList)
+            Stopwatch(
+                projectsViewModel = projectsViewModel,
+                projectList = projectList,
+                navController = navController
+            )
         }
     }, floatingActionButton = {
         // Button to go to creating notifications
         FloatingActionButton(shape = CircleShape, onClick = {
-            navController.navigate("newProject")
+            navController.navigate(NEW_PROJECT_SCREEN)
         }) {
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add a new notification")
         }
@@ -63,37 +71,75 @@ fun ProjectsScreen(
 }
 
 @Composable
-fun Stopwatch(projectsViewModel: ProjectsViewModel, projectList: State<List<ProjectModel>>) {
+fun Stopwatch(
+    projectsViewModel: ProjectsViewModel,
+    projectList: State<List<ProjectModel>>,
+    navController: NavHostController
+) {
     LazyColumn {
         items(projectList.value) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Color.Transparent)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = it.projectName)
-                    Text(
-                        text = projectsViewModel.getFormattedTime(),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 25.sp,
-                        color = MaterialTheme.colorScheme.onBackground,
+            val setNewProjectName = SwipeAction(
+                onSwipe = {
+                    projectsViewModel.setNewProjectName(
+                        projectModel = ProjectModel(
+                            id = it.id,
+                            projectName = "New name" // TODO - FIX
+                        )
                     )
-                    if (!projectsViewModel.getIsActive())
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_play_arrow_24),
-                            contentDescription = "Play",
-                            modifier = Modifier.clickable { projectsViewModel.start() }
+                },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Create,
+                        contentDescription = "Set new project name"
+                    )
+                },
+                background = MaterialTheme.colorScheme.onSurface
+            )
+
+            val deleteProject = SwipeAction(
+                onSwipe = { projectsViewModel.deleteProject(it) },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete project"
+                    )
+                },
+                background = MaterialTheme.colorScheme.onSurface
+            )
+
+            SwipeableActionsBox(
+                startActions = listOf(setNewProjectName),
+                endActions = listOf(deleteProject)
+            ) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = it.projectName)
+                        Text(
+                            text = projectsViewModel.getFormattedTime(),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 25.sp,
+                            color = MaterialTheme.colorScheme.onBackground,
                         )
-                    else
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_pause_24),
-                            contentDescription = "Pause",
-                            modifier = Modifier.clickable { projectsViewModel.pause() }
-                        )
+                        if (!projectsViewModel.getIsActive())
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_play_arrow_24),
+                                contentDescription = "Play",
+                                modifier = Modifier.clickable { projectsViewModel.start() }
+                            )
+                        else
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_pause_24),
+                                contentDescription = "Pause",
+                                modifier = Modifier.clickable { projectsViewModel.pause() }
+                            )
+                    }
                 }
             }
         }

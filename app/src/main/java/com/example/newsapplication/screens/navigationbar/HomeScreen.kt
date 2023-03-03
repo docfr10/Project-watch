@@ -12,6 +12,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import com.example.newsapplication.utils.Routes.NEW_NOTIFICATION_SCREEN
+import com.example.newsapplication.utils.Routes.SPLASH_SCREEN
 
 
 // Markup of the "Home" screen
@@ -41,13 +43,13 @@ fun HomeScreen(
             Text(text = "Home")
             // TODO - FIX
             BackHandler(enabled = true) {
-                navController.navigate("splashScreen")
+                navController.navigate(SPLASH_SCREEN)
             }
         }
     }, floatingActionButton = {
         // Button to go to creating notifications
         FloatingActionButton(shape = CircleShape, onClick = {
-            navController.navigate("newNotification")
+            navController.navigate(NEW_NOTIFICATION_SCREEN)
         }) {
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add a new notification")
         }
