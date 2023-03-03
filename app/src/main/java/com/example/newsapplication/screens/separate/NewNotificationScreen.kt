@@ -181,6 +181,13 @@ fun NewNotificationScreen(
             } else
                 Toast.makeText(context, "Type a notification text", Toast.LENGTH_SHORT).show()
         }) { Text(text = "Create notification") }
+        // Cancel button
+        Button(onClick = {
+            navController.popBackStack()
+            navController.navigate(HOME_SCREEN)
+        }) {
+            Text(text = "Cancel")
+        }
     }
 }
 

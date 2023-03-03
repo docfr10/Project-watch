@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -104,5 +103,12 @@ fun NewProjectScreen(
                 navController.navigate(PROJECTS_SCREEN)
             } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT).show()
         }) { Text(text = "Create") }
+        // Cancel button
+        Button(onClick = {
+            navController.popBackStack()
+            navController.navigate(PROJECTS_SCREEN)
+        }) {
+            Text(text = "Cancel")
+        }
     }
 }
