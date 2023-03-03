@@ -13,6 +13,8 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -111,6 +113,8 @@ fun Stopwatch(
                 startActions = listOf(setNewProjectName),
                 endActions = listOf(deleteProject)
             ) {
+                val isActive = remember { mutableStateOf(false) }
+                
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = Color.Transparent)
@@ -127,17 +131,23 @@ fun Stopwatch(
                             fontSize = 25.sp,
                             color = MaterialTheme.colorScheme.onBackground,
                         )
-                        if (!projectsViewModel.getIsActive())
+                        if (!isActive.value)
                             Icon(
                                 painter = painterResource(id = R.drawable.baseline_play_arrow_24),
                                 contentDescription = "Play",
-                                modifier = Modifier.clickable { projectsViewModel.start() }
+                                modifier = Modifier.clickable {
+                                    isActive.value = true
+                                    projectsViewModel.start()
+                                }
                             )
                         else
                             Icon(
                                 painter = painterResource(id = R.drawable.baseline_pause_24),
                                 contentDescription = "Pause",
-                                modifier = Modifier.clickable { projectsViewModel.pause() }
+                                modifier = Modifier.clickable {
+                                    isActive.value = false
+                                    projectsViewModel.pause()
+                                }
                             )
                     }
                 }

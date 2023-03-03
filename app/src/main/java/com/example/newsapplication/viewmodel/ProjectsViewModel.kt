@@ -52,10 +52,6 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         return "%02d".format(hours) + ":" + "%02d".format(minutes) + ":" + "%02d".format(seconds)
     }
 
-    fun getIsActive(): Boolean {
-        return isActive.value
-    }
-
     fun getFormattedTime(): String {
         return formattedTime.value
     }
