@@ -10,4 +10,5 @@ object Routes {
     const val SETTINGS_SCREEN = "settings"
     const val NEW_NOTIFICATION_SCREEN = "newNotification"
     const val NEW_PROJECT_SCREEN = "newProject"
+    const val STOPWATCH_SCREEN = "stopwatch"
 }

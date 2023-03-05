@@ -20,10 +20,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.screens.navigationbar.*
-import com.example.newsapplication.screens.separate.AnimatedSplashScreen
-import com.example.newsapplication.screens.separate.AuthenticationScreen
-import com.example.newsapplication.screens.separate.NewNotificationScreen
-import com.example.newsapplication.screens.separate.NewProjectScreen
+import com.example.newsapplication.screens.separate.*
 import com.example.newsapplication.utils.Constants
 import com.example.newsapplication.utils.Routes.ABOUT_SCREEN
 import com.example.newsapplication.utils.Routes.AUTHENTICATION_SCREEN
@@ -34,6 +31,7 @@ import com.example.newsapplication.utils.Routes.PROFILE_SCREEN
 import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
 import com.example.newsapplication.utils.Routes.SETTINGS_SCREEN
 import com.example.newsapplication.utils.Routes.SPLASH_SCREEN
+import com.example.newsapplication.utils.Routes.STOPWATCH_SCREEN
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
 import com.example.newsapplication.viewmodel.NewNotificationViewModel
 import com.example.newsapplication.viewmodel.ProjectsViewModel
@@ -195,6 +193,14 @@ private fun NavHostContainer(
                     context = context,
                     window = window
                 )
+                isShowBottomBar.value = false
+            }
+            // route : Stopwatch
+            composable(route = STOPWATCH_SCREEN,
+                enterTransition = { slideInVertically(animationSpec = tween(250)) },
+                exitTransition = { slideOutVertically(animationSpec = tween(250)) }
+            ) {
+                StopwatchScreen(projectsViewModel = projectsViewModel)
                 isShowBottomBar.value = false
             }
         })

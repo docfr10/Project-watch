@@ -1,7 +1,7 @@
 package com.example.newsapplication.viewmodel
 
 import android.app.Application
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -15,13 +15,8 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
     private val repositoryModel = ProjectRepositoryModel(projectDAOModel = projectDAOModel)
     private val readAllProjects: LiveData<List<ProjectModel>> = repositoryModel.readAllProjects()
 
-    private var coroutineScope = CoroutineScope(Dispatchers.Main)
-
-    private var formattedTime = mutableStateOf("00:00:00")
-    private var isActive = mutableStateOf(false)
-
-    private var timeMillis = 0L
-    private var lastTimestamp = 0L
+    var timeMillis = 0L
+    var lastTimestamp = 0L
 
     fun getReadAllProjects(): LiveData<List<ProjectModel>> {
         return readAllProjects
@@ -39,6 +34,12 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun setProjectTime(projectModel: ProjectModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repositoryModel.setProjectTime(projectModel = projectModel)
+        }
+    }
+
     fun deleteProject(projectModel: ProjectModel) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryModel.deleteProject(projectModel = projectModel)
@@ -52,17 +53,16 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         return "%02d".format(hours) + ":" + "%02d".format(minutes) + ":" + "%02d".format(seconds)
     }
 
-    fun getFormattedTime(): String {
-        return formattedTime.value
-    }
-
-    fun start() {
+    fun start(
+        isActive: MutableState<Boolean>,
+        formattedTime: MutableState<String>
+    ) {
         if (isActive.value) return
 
-        coroutineScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             lastTimestamp = System.currentTimeMillis()
-            this@ProjectsViewModel.isActive.value = true
-            while (this@ProjectsViewModel.isActive.value) {
+            isActive.value = true
+            while (isActive.value) {
                 delay(10L)
                 timeMillis += System.currentTimeMillis() - lastTimestamp
                 lastTimestamp = System.currentTimeMillis()
@@ -71,7 +71,7 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun pause() {
+    fun pause(isActive: MutableState<Boolean>) {
         isActive.value = false
     }
 }
