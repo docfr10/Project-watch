@@ -200,7 +200,11 @@ private fun NavHostContainer(
                 enterTransition = { slideInVertically(animationSpec = tween(250)) },
                 exitTransition = { slideOutVertically(animationSpec = tween(250)) }
             ) {
-                StopwatchScreen(projectsViewModel = projectsViewModel)
+                StopwatchScreen(
+                    navController = navController,
+                    projectsViewModel = projectsViewModel,
+                    projectList = projectList
+                )
                 isShowBottomBar.value = false
             }
         })

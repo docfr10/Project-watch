@@ -15,9 +15,6 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
     private val repositoryModel = ProjectRepositoryModel(projectDAOModel = projectDAOModel)
     private val readAllProjects: LiveData<List<ProjectModel>> = repositoryModel.readAllProjects()
 
-    var timeMillis = 0L
-    var lastTimestamp = 0L
-
     fun getReadAllProjects(): LiveData<List<ProjectModel>> {
         return readAllProjects
     }
@@ -58,6 +55,9 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         formattedTime: MutableState<String>
     ) {
         if (isActive.value) return
+
+        var timeMillis = 0L
+        var lastTimestamp = 0L
 
         viewModelScope.launch(Dispatchers.IO) {
             lastTimestamp = System.currentTimeMillis()
