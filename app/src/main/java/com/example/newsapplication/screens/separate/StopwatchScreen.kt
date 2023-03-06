@@ -69,11 +69,8 @@ fun StopwatchScreen(
     BackHandler(enabled = true) {
         for (p in projectList.value) {
             projectsViewModel.setProjectTime(
-                ProjectModel(
-                    id = p.id,
-                    projectName = p.projectName,
-                    projectTime = formattedTime.value
-                )
+                id = p.id,
+                newProjectTime = projectsViewModel.getTime()
             )
         }
         navController.popBackStack()

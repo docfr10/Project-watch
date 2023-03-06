@@ -15,8 +15,8 @@ interface ProjectDAOModel {
     @Update
     fun setNewProjectName(projectModel: ProjectModel)
 
-    @Update
-    fun setProjectTime(projectModel: ProjectModel)
+    @Query("UPDATE project_table SET projectTime = :newProjectTime + projectTime WHERE id = :id")
+    fun setProjectTime(id: Int, newProjectTime: Long)
 
     @Delete
     fun deleteProject(projectModel: ProjectModel)

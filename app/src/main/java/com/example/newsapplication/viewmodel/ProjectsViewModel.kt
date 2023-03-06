@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.newsapplication.model.AppDatabaseModel
 import com.example.newsapplication.model.project.ProjectModel
@@ -14,6 +15,12 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
     private val projectDAOModel = AppDatabaseModel.getDatabase(context = application).projectDAO()
     private val repositoryModel = ProjectRepositoryModel(projectDAOModel = projectDAOModel)
     private val readAllProjects: LiveData<List<ProjectModel>> = repositoryModel.readAllProjects()
+
+    private var time: Long = 0L
+
+    fun getTime(): Long {
+        return time
+    }
 
     fun getReadAllProjects(): LiveData<List<ProjectModel>> {
         return readAllProjects
@@ -31,9 +38,9 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun setProjectTime(projectModel: ProjectModel) {
+    fun setProjectTime(id: Int, newProjectTime: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryModel.setProjectTime(projectModel = projectModel)
+            repositoryModel.setProjectTime(id = id, newProjectTime = newProjectTime)
         }
     }
 
@@ -43,7 +50,8 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    private fun formatTime(timeMillis: Long): String {
+    fun formatTime(timeMillis: Long): String {
+        time = timeMillis
         val seconds = timeMillis / 1000 % 60
         val minutes = timeMillis / 60000 % 60
         val hours = timeMillis / 3600000

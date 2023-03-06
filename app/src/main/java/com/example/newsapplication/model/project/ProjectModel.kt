@@ -9,5 +9,5 @@ data class ProjectModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val projectName: String,
-    val projectTime: String = "00:00:00"
+    val projectTime: Long = 0L
 )

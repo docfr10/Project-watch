@@ -16,8 +16,8 @@ class ProjectRepositoryModel(private val projectDAOModel: ProjectDAOModel) {
         projectDAOModel.setNewProjectName(projectModel = projectModel)
     }
 
-    fun setProjectTime(projectModel: ProjectModel) {
-        projectDAOModel.setProjectTime(projectModel = projectModel)
+    fun setProjectTime(id: Int, newProjectTime: Long) {
+        projectDAOModel.setProjectTime(id = id, newProjectTime = newProjectTime)
     }
 
     fun deleteProject(projectModel: ProjectModel) {

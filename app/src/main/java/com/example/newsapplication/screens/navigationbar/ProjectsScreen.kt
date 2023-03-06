@@ -118,7 +118,7 @@ fun ProjectsList(
                     ) {
                         Text(text = it.projectName)
                         Text(
-                            text = it.projectTime,
+                            text = projectsViewModel.formatTime(it.projectTime),
                             fontWeight = FontWeight.Bold,
                             fontSize = 25.sp,
                             color = MaterialTheme.colorScheme.onBackground,
