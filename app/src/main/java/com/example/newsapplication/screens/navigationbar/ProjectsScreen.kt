@@ -123,7 +123,10 @@ fun ProjectsList(
                             fontSize = 25.sp,
                             color = MaterialTheme.colorScheme.onBackground,
                         )
-                        Button(onClick = { navController.navigate(STOPWATCH_SCREEN) }) {
+                        Button(onClick = {
+                            navController.navigate(STOPWATCH_SCREEN)
+                            projectsViewModel.setProjectId(it.id)
+                        }) {
                             Text(text = "Start")
                         }
                     }

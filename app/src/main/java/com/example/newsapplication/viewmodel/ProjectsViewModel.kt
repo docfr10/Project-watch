@@ -16,7 +16,16 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
     private val repositoryModel = ProjectRepositoryModel(projectDAOModel = projectDAOModel)
     private val readAllProjects: LiveData<List<ProjectModel>> = repositoryModel.readAllProjects()
 
+    private var projectID :Int = 0
     private var time: Long = 0L
+
+    fun setProjectId(id: Int) {
+        projectID = id
+    }
+
+    fun getProjectId(): Int {
+        return projectID
+    }
 
     fun getTime(): Long {
         return time
