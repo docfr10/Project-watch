@@ -13,7 +13,7 @@ import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -26,7 +26,6 @@ import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewProjectScreen(
     navController: NavHostController,
@@ -35,7 +34,7 @@ fun NewProjectScreen(
     projectsViewModel: ProjectsViewModel,
 ) {
     // Project name
-    val projectName = remember { mutableStateOf("") }
+    val projectName = rememberSaveable { mutableStateOf("") }
     // Raise the elements above the keyboard
     var shouldResize = false // False will resize
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

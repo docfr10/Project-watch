@@ -8,9 +8,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -19,18 +19,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.R
-import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 
 @Composable
 fun StopwatchScreen(
     projectsViewModel: ProjectsViewModel,
-    projectList: State<List<ProjectModel>>,
     navController: NavHostController
 ) {
-    val isActive = remember { mutableStateOf(false) }
-    val formattedTime = remember { mutableStateOf("00:00:00") }
+    val isActive = rememberSaveable { mutableStateOf(false) }
+    val formattedTime = rememberSaveable { mutableStateOf("00:00:00") }
 
     Column(
         modifier = Modifier
@@ -42,8 +40,8 @@ fun StopwatchScreen(
         Text(
             text = formattedTime.value,
             fontWeight = FontWeight.Bold,
-            fontSize = 50.sp,
-            color = MaterialTheme.colorScheme.onBackground,
+            fontSize = 90.sp,
+            color = MaterialTheme.colorScheme.surfaceTint,
         )
         if (!isActive.value)
             Icon(
@@ -53,7 +51,7 @@ fun StopwatchScreen(
                     .clickable {
                         projectsViewModel.start(isActive, formattedTime)
                     }
-                    .size(30.dp)
+                    .size(60.dp)
             )
         else
             Icon(
@@ -63,7 +61,7 @@ fun StopwatchScreen(
                     .clickable {
                         projectsViewModel.pause(isActive = isActive)
                     }
-                    .size(30.dp)
+                    .size(60.dp)
             )
     }
     BackHandler(enabled = true) {

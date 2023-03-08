@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
@@ -45,7 +46,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.R)
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewNotificationScreen(
     activity: Activity,
@@ -72,9 +72,9 @@ fun NewNotificationScreen(
         onResult = { isGranted -> hasNotificationPermission.value = isGranted }
     )
     // Text of notification
-    val notificationText = remember { mutableStateOf("") }
+    val notificationText = rememberSaveable { mutableStateOf("") }
     // Title of notification
-    val notificationTitle = remember { mutableStateOf("") }
+    val notificationTitle = rememberSaveable { mutableStateOf("") }
     // Raise the elements above the keyboard
     var shouldResize = false // False will resize
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -191,7 +191,6 @@ fun NewNotificationScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowDataAndTimeDropdownMenu(
     context: Context,
@@ -208,9 +207,9 @@ fun ShowDataAndTimeDropdownMenu(
     val timeFormat: DateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     // Checking whether the button is pressed in DropDownMenu for date
-    val expandedDate = remember { mutableStateOf(false) }
+    val expandedDate = rememberSaveable { mutableStateOf(false) }
     // Checking whether the button is pressed in DropDownMenu for time
-    val expandedTime = remember { mutableStateOf(false) }
+    val expandedTime = rememberSaveable { mutableStateOf(false) }
 
     // List with possible date
     val date = listOf("Today", "Tomorrow", "Another date")
@@ -218,14 +217,14 @@ fun ShowDataAndTimeDropdownMenu(
     val time = listOf("Morning", "Afternoon", "Evening", "Another time")
 
     // String for writing selected date
-    val selectedDate = remember { mutableStateOf("") }
+    val selectedDate = rememberSaveable { mutableStateOf("") }
     // String for writing selected time
-    val selectedTime = remember { mutableStateOf("") }
+    val selectedTime = rememberSaveable { mutableStateOf("") }
 
     // Size of DropDownMenu for date
-    val textDateFieldSize = remember { mutableStateOf(Size.Zero) }
+    val textDateFieldSize = rememberSaveable { mutableStateOf(Size.Zero) }
     // Size of DropDownMenu for time
-    val textTimeFieldSize = remember { mutableStateOf(Size.Zero) }
+    val textTimeFieldSize = rememberSaveable { mutableStateOf(Size.Zero) }
 
     // Icon in OutlinedTextField for date
     val iconForDatePicker = if (expandedDate.value)

@@ -41,7 +41,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 @RequiresApi(Build.VERSION_CODES.R)
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppScreen(
     navController: NavHostController,
@@ -202,8 +201,7 @@ private fun NavHostContainer(
             ) {
                 StopwatchScreen(
                     navController = navController,
-                    projectsViewModel = projectsViewModel,
-                    projectList = projectList
+                    projectsViewModel = projectsViewModel
                 )
                 isShowBottomBar.value = false
             }

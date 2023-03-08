@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.model.project.ProjectModel
@@ -90,7 +91,7 @@ fun ProjectsList(
                         contentDescription = "Set new project name"
                     )
                 },
-                background = MaterialTheme.colorScheme.onSurface
+                background = MaterialTheme.colorScheme.surface
             )
             val deleteProject = SwipeAction(
                 onSwipe = { projectsViewModel.deleteProject(it) },
@@ -100,10 +101,11 @@ fun ProjectsList(
                         contentDescription = "Delete project"
                     )
                 },
-                background = MaterialTheme.colorScheme.onSurface
+                background = MaterialTheme.colorScheme.error
             )
 
             SwipeableActionsBox(
+                swipeThreshold = 100.dp,
                 startActions = listOf(setNewProjectName),
                 endActions = listOf(deleteProject)
             ) {
