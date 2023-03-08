@@ -74,7 +74,7 @@ fun AuthenticationScreen(
         OutlinedTextField(
             value = email.value,
             textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
-            onValueChange = { newText -> email.value = newText },
+            onValueChange = { email.value = it },
             modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Email address") },
             placeholder = {
@@ -93,7 +93,7 @@ fun AuthenticationScreen(
         OutlinedTextField(
             value = password.value,
             textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
-            onValueChange = { newText -> password.value = newText },
+            onValueChange = { password.value = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.background)

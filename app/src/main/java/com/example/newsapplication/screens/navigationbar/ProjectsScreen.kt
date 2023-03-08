@@ -78,12 +78,9 @@ fun ProjectsList(
         items(projectList.value) {
             val setNewProjectName = SwipeAction(
                 onSwipe = {
-                    projectsViewModel.setNewProjectName(
-                        projectModel = ProjectModel(
-                            id = it.id,
-                            projectName = "New name" // TODO - FIX
-                        )
-                    )
+                    projectsViewModel.setProjectName(name = it.projectName)
+                    projectsViewModel.setProjectId(id = it.id)
+                    navController.navigate(NEW_PROJECT_SCREEN)
                 },
                 icon = {
                     Icon(
@@ -91,7 +88,7 @@ fun ProjectsList(
                         contentDescription = "Set new project name"
                     )
                 },
-                background = MaterialTheme.colorScheme.surface
+                background = MaterialTheme.colorScheme.surfaceTint
             )
             val deleteProject = SwipeAction(
                 onSwipe = { projectsViewModel.deleteProject(it) },
@@ -105,7 +102,7 @@ fun ProjectsList(
             )
 
             SwipeableActionsBox(
-                swipeThreshold = 100.dp,
+                swipeThreshold = 200.dp,
                 startActions = listOf(setNewProjectName),
                 endActions = listOf(deleteProject)
             ) {

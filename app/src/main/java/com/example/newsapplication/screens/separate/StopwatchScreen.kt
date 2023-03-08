@@ -1,5 +1,6 @@
 package com.example.newsapplication.screens.separate
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -9,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,35 +40,40 @@ fun StopwatchScreen(
         Text(
             text = formattedTime.value,
             fontWeight = FontWeight.Bold,
-            fontSize = 90.sp,
+            fontSize = 80.sp,
             color = MaterialTheme.colorScheme.surfaceTint,
         )
-        if (!isActive.value)
+        if (!isActive.value) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_play_arrow_24),
                 contentDescription = "Play",
                 modifier = Modifier
                     .clickable {
-                        projectsViewModel.start(isActive, formattedTime)
+                        projectsViewModel.start(
+                            isActive = isActive,
+                            formattedTime = formattedTime
+                        )
                     }
                     .size(60.dp)
             )
-        else
+        } else {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_pause_24),
                 contentDescription = "Pause",
                 modifier = Modifier
-                    .clickable {
-                        projectsViewModel.pause(isActive = isActive)
-                    }
+                    .clickable { projectsViewModel.pause(isActive = isActive) }
                     .size(60.dp)
             )
+        }
     }
     BackHandler(enabled = true) {
-        projectsViewModel.setProjectTime(
-            id = projectsViewModel.getProjectId(),
-            newProjectTime = projectsViewModel.getTime()
-        )
+        projectsViewModel.pause(isActive = isActive)
+        if (formattedTime.value != "00:00:00")
+            projectsViewModel.setProjectTime(
+                id = projectsViewModel.getProjectId(),
+                newProjectTime = projectsViewModel.getTime()
+            )
+        projectsViewModel.setTime(time = 0L)
         navController.popBackStack()
         navController.navigate(PROJECTS_SCREEN)
     }

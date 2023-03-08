@@ -110,7 +110,7 @@ fun NewNotificationScreen(
             value = notificationTitle.value,
             isError = notificationTitle.value.isEmpty(),
             textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
-            onValueChange = { newText -> notificationTitle.value = newText },
+            onValueChange = { notificationTitle.value = it },
             modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Type a notification title") },
             singleLine = true,
@@ -133,7 +133,7 @@ fun NewNotificationScreen(
         OutlinedTextField(
             value = notificationText.value,
             textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
-            onValueChange = { newText -> notificationText.value = newText },
+            onValueChange = { notificationText.value = it },
             modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Type a notification text") },
             singleLine = false,
@@ -222,9 +222,9 @@ fun ShowDataAndTimeDropdownMenu(
     val selectedTime = rememberSaveable { mutableStateOf("") }
 
     // Size of DropDownMenu for date
-    val textDateFieldSize = rememberSaveable { mutableStateOf(Size.Zero) }
+    val textDateFieldSize = remember { mutableStateOf(Size.Zero) }
     // Size of DropDownMenu for time
-    val textTimeFieldSize = rememberSaveable { mutableStateOf(Size.Zero) }
+    val textTimeFieldSize = remember { mutableStateOf(Size.Zero) }
 
     // Icon in OutlinedTextField for date
     val iconForDatePicker = if (expandedDate.value)
