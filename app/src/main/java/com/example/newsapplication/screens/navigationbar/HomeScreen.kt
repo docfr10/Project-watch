@@ -3,6 +3,8 @@ package com.example.newsapplication.screens.navigationbar
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -11,16 +13,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
+import com.example.newsapplication.model.notifications.NotificationModel
 import com.example.newsapplication.utils.Routes.NEW_NOTIFICATION_SCREEN
 import com.example.newsapplication.utils.Routes.SPLASH_SCREEN
 
-
 // Markup of the "Home" screen
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    notificationList: State<List<NotificationModel>>
 ) {
     Scaffold(content = { padding ->
         // Column Composable
@@ -41,6 +44,8 @@ fun HomeScreen(
             )
             // Text to Display the current Screen
             Text(text = "Home")
+            // Notification list markup
+            NotificationList(notificationList = notificationList)
             // TODO - FIX
             BackHandler(enabled = true) {
                 navController.navigate(SPLASH_SCREEN)
@@ -54,6 +59,27 @@ fun HomeScreen(
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add a new notification")
         }
     })
+}
+
+@Composable
+fun NotificationList(notificationList: State<List<NotificationModel>>) {
+    LazyColumn {
+        items(notificationList.value) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = it.notificationTitle)
+                    Text(text = it.notificationText)
+                }
+            }
+        }
+    }
 }
 
 

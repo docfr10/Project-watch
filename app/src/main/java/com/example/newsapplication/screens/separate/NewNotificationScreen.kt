@@ -14,7 +14,6 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -39,13 +38,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
+import com.example.newsapplication.model.notifications.NotificationModel
 import com.example.newsapplication.utils.Routes.HOME_SCREEN
+import com.example.newsapplication.viewmodel.HomeViewModel
 import com.example.newsapplication.viewmodel.NewNotificationViewModel
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-@RequiresApi(Build.VERSION_CODES.R)
 @Composable
 fun NewNotificationScreen(
     activity: Activity,
@@ -54,6 +54,7 @@ fun NewNotificationScreen(
     navController: NavHostController,
     window: Window,
     sharedPreference: SharedPreferences,
+    homeViewModel: HomeViewModel,
 ) {
     // Checking for permission to send notifications for Android 13+
     val hasNotificationPermission = remember {
@@ -75,6 +76,10 @@ fun NewNotificationScreen(
     val notificationText = rememberSaveable { mutableStateOf("") }
     // Title of notification
     val notificationTitle = rememberSaveable { mutableStateOf("") }
+    // String for writing selected date
+    val selectedDate = rememberSaveable { mutableStateOf("") }
+    // String for writing selected time
+    val selectedTime = rememberSaveable { mutableStateOf("") }
     // Raise the elements above the keyboard
     var shouldResize = false // False will resize
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -146,7 +151,9 @@ fun NewNotificationScreen(
         // Date and Time creation function from datePicker and timePicker with dropdown menu
         ShowDataAndTimeDropdownMenu(
             context = context,
-            newNotificationViewModel = newNotificationViewModel
+            newNotificationViewModel = newNotificationViewModel,
+            selectedDate = selectedDate,
+            selectedTime = selectedTime
         )
         // Button, to send notification
         Button(onClick = {
@@ -165,6 +172,14 @@ fun NewNotificationScreen(
                             sharedPreference = sharedPreference,
                             notificationTitle = notificationTitle,
                             notificationText = notificationText
+                        )
+                        homeViewModel.addNotification(
+                            notificationModel = NotificationModel(
+                                notificationTitle = notificationTitle.value,
+                                notificationText = notificationText.value,
+                                notificationDate = selectedDate.value,
+                                notificationTime = selectedTime.value
+                            )
                         )
                     }
                     // Else don't create
@@ -194,7 +209,9 @@ fun NewNotificationScreen(
 @Composable
 fun ShowDataAndTimeDropdownMenu(
     context: Context,
-    newNotificationViewModel: NewNotificationViewModel
+    newNotificationViewModel: NewNotificationViewModel,
+    selectedDate: MutableState<String>,
+    selectedTime: MutableState<String>
 ) {
     // Initializing a Calendar
     val calendar = Calendar.getInstance()
@@ -215,11 +232,6 @@ fun ShowDataAndTimeDropdownMenu(
     val date = listOf("Today", "Tomorrow", "Another date")
     // List with possible time
     val time = listOf("Morning", "Afternoon", "Evening", "Another time")
-
-    // String for writing selected date
-    val selectedDate = rememberSaveable { mutableStateOf("") }
-    // String for writing selected time
-    val selectedTime = rememberSaveable { mutableStateOf("") }
 
     // Size of DropDownMenu for date
     val textDateFieldSize = remember { mutableStateOf(Size.Zero) }

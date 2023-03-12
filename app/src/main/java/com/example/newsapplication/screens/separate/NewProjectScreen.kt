@@ -96,10 +96,7 @@ fun NewProjectScreen(
                 // Check the notification text for emptiness
                 if (projectName.value.isNotEmpty()) {
                     projectsViewModel.addProject(
-                        projectModel = ProjectModel(
-                            0,
-                            projectName = projectName.value
-                        )
+                        projectModel = ProjectModel(projectName = projectName.value)
                     )
                     projectsViewModel.setProjectId(id = 0)
                     projectsViewModel.setProjectName(name = "")

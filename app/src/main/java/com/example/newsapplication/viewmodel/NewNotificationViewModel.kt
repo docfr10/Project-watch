@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import com.example.newsapplication.R
-import com.example.newsapplication.model.notifications.NotificationsModel
+import com.example.newsapplication.model.notifications.NotificationsBuilderModel
 import java.util.*
 
 // ViewModel class of Home screen
@@ -25,7 +25,7 @@ class NewNotificationViewModel : ViewModel() {
         sharedPreference: SharedPreferences,
         notificationTitle: MutableState<String>
     ) {
-        val intent = Intent(context, NotificationsModel::class.java)
+        val intent = Intent(context, NotificationsBuilderModel::class.java)
         // Remembering the date when it is necessary to send a notification
         val alarmManager =
             activity.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager

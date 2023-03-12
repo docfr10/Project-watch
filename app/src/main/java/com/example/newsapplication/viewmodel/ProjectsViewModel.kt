@@ -21,7 +21,6 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
     private var projectName: String = ""
     private var projectTime: Long = 0L
 
-
     fun setProjectName(name: String) {
         projectName = name
     }
@@ -38,7 +37,7 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         return projectID
     }
 
-    fun setTime(time:Long) {
+    fun setTime(time: Long) {
         projectTime = time
         timeMillis = time
     }

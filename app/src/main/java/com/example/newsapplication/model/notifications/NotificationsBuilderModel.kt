@@ -10,7 +10,7 @@ import androidx.core.app.NotificationCompat
 import com.example.newsapplication.*
 
 // Class responsible for creating notifications
-class NotificationsModel : BroadcastReceiver() {
+class NotificationsBuilderModel : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         // Defining the notification ID like a current time
         val notificationID = System.currentTimeMillis().toInt()

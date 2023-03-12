@@ -17,6 +17,7 @@ import com.example.newsapplication.screens.AppScreen
 import com.example.newsapplication.screens.navigationbar.*
 import com.example.newsapplication.ui.theme.NewsApplicationTheme
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
+import com.example.newsapplication.viewmodel.HomeViewModel
 import com.example.newsapplication.viewmodel.NewNotificationViewModel
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -32,6 +33,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var newNotificationViewModel: NewNotificationViewModel
     private lateinit var authenticationViewModel: AuthenticationViewModel
     private lateinit var projectsViewModel: ProjectsViewModel
+    private lateinit var homeViewModel: HomeViewModel
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,10 +47,14 @@ class MainActivity : ComponentActivity() {
                 newNotificationViewModel = provider[NewNotificationViewModel::class.java]
                 authenticationViewModel = provider[AuthenticationViewModel::class.java]
                 projectsViewModel = provider[ProjectsViewModel::class.java]
+                homeViewModel = provider[HomeViewModel::class.java]
 
                 // Saving a list with project data
                 val projectList =
                     projectsViewModel.getReadAllProjects().observeAsState(initial = listOf())
+                // Saving a list with notification data
+                val notificationList =
+                    homeViewModel.getReadAllNotifications().observeAsState(initial = listOf())
 
                 // Remember navController so it does not
                 // Get recreated on recomposition
@@ -64,6 +70,8 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     sharedPreference = sharedPreference,
                     projectList = projectList,
+                    notificationList = notificationList,
+                    homeViewModel = homeViewModel,
                     auth = auth,
                     authenticationViewModel = authenticationViewModel,
                     newNotificationViewModel = newNotificationViewModel,

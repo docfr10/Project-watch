@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.newsapplication.model.notifications.NotificationModel
 import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.screens.navigationbar.*
 import com.example.newsapplication.screens.separate.*
@@ -33,6 +34,7 @@ import com.example.newsapplication.utils.Routes.SETTINGS_SCREEN
 import com.example.newsapplication.utils.Routes.SPLASH_SCREEN
 import com.example.newsapplication.utils.Routes.STOPWATCH_SCREEN
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
+import com.example.newsapplication.viewmodel.HomeViewModel
 import com.example.newsapplication.viewmodel.NewNotificationViewModel
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -54,6 +56,8 @@ fun AppScreen(
     sharedPreference: SharedPreferences,
     projectsViewModel: ProjectsViewModel,
     projectList: State<List<ProjectModel>>,
+    notificationList: State<List<NotificationModel>>,
+    homeViewModel: HomeViewModel,
 ) {
     // Hiding the bottom bar
     val isShowBottomBar = remember { mutableStateOf(false) }
@@ -77,6 +81,8 @@ fun AppScreen(
                     sharedPreference = sharedPreference,
                     padding = padding,
                     projectList = projectList,
+                    notificationList = notificationList,
+                    homeViewModel = homeViewModel,
                     auth = auth,
                     authenticationViewModel = authenticationViewModel,
                     newNotificationViewModel = newNotificationViewModel,
@@ -107,6 +113,8 @@ private fun NavHostContainer(
     sharedPreference: SharedPreferences,
     projectsViewModel: ProjectsViewModel,
     projectList: State<List<ProjectModel>>,
+    notificationList: State<List<NotificationModel>>,
+    homeViewModel: HomeViewModel,
 ) {
     AnimatedNavHost(
         navController = navController,
@@ -134,7 +142,7 @@ private fun NavHostContainer(
             }
             // route : Home
             composable(route = HOME_SCREEN) {
-                HomeScreen(navController = navController)
+                HomeScreen(navController = navController, notificationList = notificationList)
                 isShowBottomBar.value = true
             }
             // route : Projects
@@ -173,6 +181,7 @@ private fun NavHostContainer(
                 NewNotificationScreen(
                     activity = activity,
                     navController = navController,
+                    homeViewModel = homeViewModel,
                     sharedPreference = sharedPreference,
                     context = context,
                     newNotificationViewModel = newNotificationViewModel,
