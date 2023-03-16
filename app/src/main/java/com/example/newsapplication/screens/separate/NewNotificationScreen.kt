@@ -231,7 +231,7 @@ fun ShowDataAndTimeDropdownMenu(
     // List with possible date
     val date = listOf("Today", "Tomorrow", "Another date")
     // List with possible time
-    val time = listOf("Morning", "Afternoon", "Evening", "Another time")
+    val time = listOf("Now", "Morning", "Afternoon", "Evening", "Another time")
 
     // Size of DropDownMenu for date
     val textDateFieldSize = remember { mutableStateOf(Size.Zero) }
@@ -359,6 +359,10 @@ fun ShowDataAndTimeDropdownMenu(
                 time.forEach { label ->
                     DropdownMenuItem(onClick = {
                         when (label) {
+                            "Now" -> {
+                                selectedTime.value = timeFormat.format(calendar.time.time).toString()
+                                newNotificationViewModel.setTime(calendar = calendar)
+                            }
                             "Morning" -> {
                                 calendar.set(Calendar.HOUR_OF_DAY, 7)
                                 calendar.set(Calendar.MINUTE, 0)
