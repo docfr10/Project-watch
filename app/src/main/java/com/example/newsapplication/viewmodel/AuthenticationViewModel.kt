@@ -5,7 +5,9 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
 import com.example.newsapplication.MainActivity
+import com.example.newsapplication.utils.Routes
 import com.google.firebase.auth.FirebaseAuth
 
 // ViewModel class of Authentication screen
@@ -38,14 +40,17 @@ class AuthenticationViewModel : ViewModel() {
         context: Context,
         auth: FirebaseAuth,
         email: MutableState<String>,
-        password: MutableState<String>
+        password: MutableState<String>,
+        navController: NavHostController
     ) {
         if (email.value.isNotEmpty() && password.value.isNotEmpty()) {
             auth.signInWithEmailAndPassword(email.value, password.value)
                 .addOnCompleteListener { task ->
-                    if (task.isSuccessful)
-                        context.startActivity(Intent(context, MainActivity::class.java))
-                    else
+                    if (task.isSuccessful) {
+                        navController.navigate(Routes.HOME_SCREEN) {
+                            popUpTo(navController.graph.id) { inclusive = true }
+                        }
+                    } else
                         Toast.makeText(
                             context,
                             "Please check that your email address and password are correct",

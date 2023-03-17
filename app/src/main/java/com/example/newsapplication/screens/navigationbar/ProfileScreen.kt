@@ -14,13 +14,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.newsapplication.MainActivity
+import com.example.newsapplication.utils.Routes.AUTHENTICATION_SCREEN
 import com.google.firebase.auth.FirebaseAuth
 
 // Markup of the "Profile" screen
 @Composable
 fun ProfileScreen(
-    auth: FirebaseAuth
+    auth: FirebaseAuth,
+    navController: NavHostController
 ) {
     val cUser = auth.currentUser
     val context = LocalContext.current
@@ -55,7 +58,9 @@ fun ProfileScreen(
                 }
                 1 -> {
                     auth.signOut()
-                    context.startActivity(Intent(context, MainActivity::class.java))
+                    navController.navigate(AUTHENTICATION_SCREEN) {
+                        popUpTo(navController.graph.id) { inclusive = true }
+                    }
                 }
             }
         }, modifier = Modifier.padding(5.dp)) { Text(text = "Log out") }

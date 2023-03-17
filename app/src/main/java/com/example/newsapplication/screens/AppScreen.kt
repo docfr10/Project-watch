@@ -139,6 +139,7 @@ private fun NavHostContainer(
                     authenticationViewModel = authenticationViewModel,
                     auth = auth
                 )
+                isShowBottomBar.value = false
             }
             // route : Home
             composable(route = HOME_SCREEN) {
@@ -156,7 +157,7 @@ private fun NavHostContainer(
             }
             // route : Profile
             composable(route = PROFILE_SCREEN) {
-                ProfileScreen(auth = auth)
+                ProfileScreen(auth = auth, navController = navController)
                 isShowBottomBar.value = true
             }
             // route : About

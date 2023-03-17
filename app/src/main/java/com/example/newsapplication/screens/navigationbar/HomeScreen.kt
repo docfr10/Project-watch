@@ -46,10 +46,6 @@ fun HomeScreen(
             Text(text = "Home")
             // Notification list markup
             NotificationList(notificationList = notificationList)
-            // TODO - FIX
-            BackHandler(enabled = true) {
-                navController.navigate(SPLASH_SCREEN)
-            }
         }
     }, floatingActionButton = {
         // Button to go to creating notifications

@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.view.Window
 import android.view.WindowManager
-import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.newsapplication.utils.Routes.SPLASH_SCREEN
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -123,12 +121,9 @@ fun AuthenticationScreen(
                 context = context,
                 auth = auth,
                 email = email,
-                password = password
+                password = password,
+                navController = navController
             )
         }) { Text(text = "Sign in") }
-    }
-    // TODO - Fix
-    BackHandler(enabled = true) {
-        navController.navigate(SPLASH_SCREEN)
     }
 }
