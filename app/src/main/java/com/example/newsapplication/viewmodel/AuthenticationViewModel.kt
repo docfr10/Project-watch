@@ -1,13 +1,11 @@
 package com.example.newsapplication.viewmodel
 
 import android.content.Context
-import android.content.Intent
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
-import com.example.newsapplication.MainActivity
-import com.example.newsapplication.utils.Routes
+import com.example.newsapplication.utils.Routes.HOME_SCREEN
 import com.google.firebase.auth.FirebaseAuth
 
 // ViewModel class of Authentication screen
@@ -47,7 +45,7 @@ class AuthenticationViewModel : ViewModel() {
             auth.signInWithEmailAndPassword(email.value, password.value)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        navController.navigate(Routes.HOME_SCREEN) {
+                        navController.navigate(HOME_SCREEN) {
                             popUpTo(navController.graph.id) { inclusive = true }
                         }
                     } else

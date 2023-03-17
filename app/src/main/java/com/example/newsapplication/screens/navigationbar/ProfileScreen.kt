@@ -1,6 +1,5 @@
 package com.example.newsapplication.screens.navigationbar
 
-import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.newsapplication.MainActivity
 import com.example.newsapplication.utils.Routes.AUTHENTICATION_SCREEN
 import com.google.firebase.auth.FirebaseAuth
 

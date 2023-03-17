@@ -131,7 +131,11 @@ private fun NavHostContainer(
                 isShowBottomBar.value = false
             }
             // route : Authentication
-            composable(route = AUTHENTICATION_SCREEN) {
+            composable(
+                route = AUTHENTICATION_SCREEN,
+                enterTransition = { slideInVertically(animationSpec = tween(250)) },
+                exitTransition = { slideOutVertically(animationSpec = tween(250)) }
+            ) {
                 AuthenticationScreen(
                     context = context,
                     navController = navController,
