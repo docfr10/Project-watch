@@ -16,12 +16,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.newsapplication.R
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -73,7 +75,10 @@ fun AuthenticationScreen(
             value = email.value,
             textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
             onValueChange = { email.value = it },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 5.dp, end = 5.dp)
+                .background(MaterialTheme.colorScheme.background),
             label = { Text(text = "Email address") },
             placeholder = {
                 Text(
@@ -94,8 +99,8 @@ fun AuthenticationScreen(
             onValueChange = { password.value = it },
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background)
-                .imePadding(),
+                .padding(start = 5.dp, end = 5.dp)
+                .background(MaterialTheme.colorScheme.background),
             label = { Text(text = "Password") },
             visualTransformation = PasswordVisualTransformation(),
             singleLine = true,
@@ -105,25 +110,53 @@ fun AuthenticationScreen(
             )
         )
         // Registration button
-        Button(onClick = {
-            // Check the registration
-            authenticationViewModel.checkRegistration(
-                context = context,
-                auth = auth,
-                email = email,
-                password = password
-            )
-        }, modifier = Modifier.padding(top = 5.dp)) { Text(text = "Registered") }
+        Button(
+            onClick = {
+                // Check the registration
+                authenticationViewModel.checkRegistration(
+                    context = context,
+                    auth = auth,
+                    email = email,
+                    password = password
+                )
+            },
+            modifier = Modifier
+                .padding(top = 10.dp, start = 5.dp, end = 5.dp)
+                .fillMaxWidth(),
+            shape = MaterialTheme.shapes.extraLarge
+        ) { Text(text = "Registered") }
         // SignIn button
-        Button(onClick = {
-            // Authorized user login
-            authenticationViewModel.checkAuthorized(
-                context = context,
-                auth = auth,
-                email = email,
-                password = password,
-                navController = navController
+        Button(
+            onClick = { // Authorized user login
+                authenticationViewModel.checkAuthorized(
+                    context = context,
+                    auth = auth,
+                    email = email,
+                    password = password,
+                    navController = navController
+                )
+            },
+            modifier = Modifier
+                .padding(start = 5.dp, end = 5.dp)
+                .fillMaxWidth(),
+            shape = MaterialTheme.shapes.extraLarge
+        ) { Text(text = "Sign in") }
+        // SignIn with Google button
+        Button(
+            onClick = { // Authorized user with Google login
+                // TODO - Added authorized with Google
+            },
+            modifier = Modifier
+                .padding(start = 5.dp, end = 5.dp)
+                .fillMaxWidth(),
+            shape = MaterialTheme.shapes.extraLarge
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.icons8_google),
+                contentDescription = "Google logo"
             )
-        }) { Text(text = "Sign in") }
+            Spacer(modifier = Modifier.size(10.dp))
+            Text(text = "Sign in with Google")
+        }
     }
 }
