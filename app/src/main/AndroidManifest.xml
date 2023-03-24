@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!--Permission to show an app on top of another app-->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
+    <!--Permission to foreground service-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application

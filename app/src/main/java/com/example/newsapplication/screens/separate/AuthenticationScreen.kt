@@ -1,9 +1,12 @@
 package com.example.newsapplication.screens.separate
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.view.Window
 import android.view.WindowManager
+import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -34,7 +37,8 @@ fun AuthenticationScreen(
     authenticationViewModel: AuthenticationViewModel,
     window: Window,
     context: Context,
-    navController: NavHostController
+    navController: NavHostController,
+    signInWithGoogleLauncher: ActivityResultLauncher<Intent>
 ) {
     // Raise the elements above the keyboard
     var shouldResize = false // False will resize
@@ -144,7 +148,10 @@ fun AuthenticationScreen(
         // SignIn with Google button
         Button(
             onClick = { // Authorized user with Google login
-                // TODO - Added authorized with Google
+                authenticationViewModel.getClient(
+                    context = context,
+                    signInWithGoogleLauncher = signInWithGoogleLauncher
+                )
             },
             modifier = Modifier
                 .padding(start = 5.dp, end = 5.dp)

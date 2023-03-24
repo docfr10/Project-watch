@@ -2,9 +2,11 @@ package com.example.newsapplication.screens
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.view.Window
+import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -58,6 +60,7 @@ fun AppScreen(
     projectList: State<List<ProjectModel>>,
     notificationList: State<List<NotificationModel>>,
     homeViewModel: HomeViewModel,
+    signInWithGoogleLauncher: ActivityResultLauncher<Intent>,
 ) {
     // Hiding the bottom bar
     val isShowBottomBar = remember { mutableStateOf(false) }
@@ -78,6 +81,7 @@ fun AppScreen(
                     context = context,
                     cUser = cUser,
                     navController = navController,
+                    signInWithGoogleLauncher = signInWithGoogleLauncher,
                     sharedPreference = sharedPreference,
                     padding = padding,
                     projectList = projectList,
@@ -115,6 +119,7 @@ private fun NavHostContainer(
     projectList: State<List<ProjectModel>>,
     notificationList: State<List<NotificationModel>>,
     homeViewModel: HomeViewModel,
+    signInWithGoogleLauncher: ActivityResultLauncher<Intent>,
 ) {
     AnimatedNavHost(
         navController = navController,
@@ -139,6 +144,7 @@ private fun NavHostContainer(
                 AuthenticationScreen(
                     context = context,
                     navController = navController,
+                    signInWithGoogleLauncher = signInWithGoogleLauncher,
                     window = window,
                     authenticationViewModel = authenticationViewModel,
                     auth = auth

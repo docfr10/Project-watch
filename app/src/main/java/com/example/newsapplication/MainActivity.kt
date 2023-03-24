@@ -2,10 +2,13 @@ package com.example.newsapplication
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.*
 import androidx.compose.material3.*
@@ -21,13 +24,28 @@ import com.example.newsapplication.viewmodel.HomeViewModel
 import com.example.newsapplication.viewmodel.NewNotificationViewModel
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 
 @OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
     // Objects for working with Firebase
     private val auth = FirebaseAuth.getInstance()
-    private val cUser = auth.currentUser
+    private var cUser = auth.currentUser
+    private val signInWithGoogleLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                if (account != null) {
+                    firebaseAuthWithGoogle(account.idToken!!)
+                }
+            } catch (e: ApiException) {
+                Log.d("LogApiException", e.toString())
+            }
+        }
 
     // ViewModel objects
     private lateinit var newNotificationViewModel: NewNotificationViewModel
@@ -38,6 +56,7 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             NewsApplicationTheme {
                 val activity = LocalContext.current as Activity
@@ -68,6 +87,7 @@ class MainActivity : ComponentActivity() {
                     context = context,
                     cUser = cUser,
                     navController = navController,
+                    signInWithGoogleLauncher = signInWithGoogleLauncher,
                     sharedPreference = sharedPreference,
                     projectList = projectList,
                     notificationList = notificationList,
@@ -78,6 +98,16 @@ class MainActivity : ComponentActivity() {
                     projectsViewModel = projectsViewModel,
                     window = window
                 )
+            }
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential).addOnCompleteListener {
+            if (it.isSuccessful) {
+                cUser = auth.currentUser
+                startActivity(Intent(this, MainActivity::class.java))
             }
         }
     }

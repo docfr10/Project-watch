@@ -1,11 +1,19 @@
 package com.example.newsapplication.viewmodel
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
+import com.example.newsapplication.R
 import com.example.newsapplication.utils.Routes.HOME_SCREEN
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 
 // ViewModel class of Authentication screen
@@ -60,5 +68,19 @@ class AuthenticationViewModel : ViewModel() {
                 context, "Please enter an email address and a password", Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    fun getClient(context: Context, signInWithGoogleLauncher: ActivityResultLauncher<Intent>) {
+        val singInClient = getClient(context = context)
+        signInWithGoogleLauncher.launch(singInClient.signInIntent)
+    }
+
+    private fun getClient(context: Context): GoogleSignInClient {
+        val gso = GoogleSignInOptions
+            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        return GoogleSignIn.getClient(context, gso)
     }
 }
