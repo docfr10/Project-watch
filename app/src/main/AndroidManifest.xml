@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!--Permission to foreground service-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!--Permission to internet-->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
