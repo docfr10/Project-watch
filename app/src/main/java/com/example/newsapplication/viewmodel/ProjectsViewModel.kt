@@ -42,13 +42,17 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         return projectID
     }
 
+    fun setProjectTime(time: Long) {
+        projectTime = time
+    }
+
+    fun getProjectTime(): Long {
+        return projectTime
+    }
+
     fun setTime(time: Long) {
         projectTime = time
         timeMillis = time
-    }
-
-    fun getTime(): Long {
-        return projectTime
     }
 
     fun getReadAllProjects(): LiveData<List<ProjectModel>> {

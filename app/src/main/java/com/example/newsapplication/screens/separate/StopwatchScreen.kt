@@ -70,7 +70,7 @@ fun StopwatchScreen(
         if (formattedTime.value != "00:00:00")
             projectsViewModel.setProjectTime(
                 id = projectsViewModel.getProjectId(),
-                newProjectTime = projectsViewModel.getTime()
+                newProjectTime = projectsViewModel.getProjectTime()
             )
         projectsViewModel.setTime(time = 0L)
         navController.popBackStack()

@@ -138,7 +138,8 @@ fun NewProjectScreen(
                     projectsViewModel.setNewProjectName(
                         projectModel = ProjectModel(
                             id = projectsViewModel.getProjectId(),
-                            projectName = projectName.value
+                            projectName = projectName.value,
+                            projectTime = projectsViewModel.getProjectTime()
                         )
                     )
                     projectsViewModel.setProjectId(id = 0)

@@ -83,6 +83,7 @@ fun ProjectsList(
                 onSwipe = {
                     projectsViewModel.setProjectName(name = it.projectName)
                     projectsViewModel.setProjectId(id = it.id)
+                    projectsViewModel.setProjectTime(time = it.projectTime)
                     navController.navigate(NEW_PROJECT_SCREEN)
                 },
                 icon = {
