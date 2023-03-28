@@ -84,6 +84,7 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
     fun deleteProject(projectModel: ProjectModel) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryModel.deleteProject(projectModel = projectModel)
+            databaseReference.child(projectModel.id.toString()).removeValue()
         }
     }
 
