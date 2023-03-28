@@ -8,9 +8,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.newsapplication.model.AppDatabaseModel
 import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.model.project.ProjectRepositoryModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.*
 
 class ProjectsViewModel(application: Application) : AndroidViewModel(application) {
+    private val databaseReference =
+        FirebaseDatabase.getInstance().getReference("USERS/${FirebaseAuth.getInstance().uid}")
+
     private val projectDAOModel = AppDatabaseModel.getDatabase(context = application).projectDAO()
     private val repositoryModel = ProjectRepositoryModel(projectDAOModel = projectDAOModel)
     private val readAllProjects: LiveData<List<ProjectModel>> = repositoryModel.readAllProjects()
@@ -53,6 +58,14 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
     fun addProject(projectModel: ProjectModel) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryModel.addProject(projectModel = projectModel)
+        }
+    }
+
+    fun addProjectsToFirebase() {
+        viewModelScope.launch(Dispatchers.IO) {
+            readAllProjects.value!!.forEach {
+                databaseReference.child(it.id.toString()).setValue(it)
+            }
         }
     }
 

@@ -75,6 +75,9 @@ fun ProjectsList(
     navController: NavHostController,
 ) {
     LazyColumn {
+        if (projectList.value.isNotEmpty())
+            projectsViewModel.addProjectsToFirebase()
+
         items(projectList.value) {
             val setNewProjectName = SwipeAction(
                 onSwipe = {
