@@ -8,6 +8,6 @@ import androidx.room.PrimaryKey
 data class ProjectModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val projectName: String,
+    val projectName: String = "",
     val projectTime: Long = 0L
 )

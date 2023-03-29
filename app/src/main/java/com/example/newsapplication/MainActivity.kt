@@ -75,6 +75,9 @@ class MainActivity : ComponentActivity() {
                 val notificationList =
                     homeViewModel.getReadAllNotifications().observeAsState(initial = listOf())
 
+                // Loading projects from Firebase
+                projectsViewModel.setProjectsToFirebase()
+
                 // Remember navController so it does not
                 // Get recreated on recomposition
                 val navController = rememberAnimatedNavController()

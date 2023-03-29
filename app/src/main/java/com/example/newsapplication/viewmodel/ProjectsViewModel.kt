@@ -9,7 +9,10 @@ import com.example.newsapplication.model.AppDatabaseModel
 import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.model.project.ProjectRepositoryModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.*
 
 class ProjectsViewModel(application: Application) : AndroidViewModel(application) {
@@ -55,6 +58,40 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         timeMillis = time
     }
 
+    fun addProjectsToFirebase() {
+        viewModelScope.launch(Dispatchers.IO) {
+            readAllProjects.value!!.forEach {
+                databaseReference.child(it.id.toString()).setValue(it)
+            }
+        }
+    }
+
+    fun setProjectsToFirebase() {
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (projectSnapshot in snapshot.children) {
+                    val project = projectSnapshot.getValue(ProjectModel::class.java)
+                    viewModelScope.launch(Dispatchers.IO) {
+                        if (project != null) {
+                            projectDAOModel.addProject(
+                                ProjectModel(
+                                    project.id,
+                                    project.projectName,
+                                    project.projectTime
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+    }
+
+
     fun getReadAllProjects(): LiveData<List<ProjectModel>> {
         return readAllProjects
     }
@@ -62,14 +99,6 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
     fun addProject(projectModel: ProjectModel) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryModel.addProject(projectModel = projectModel)
-        }
-    }
-
-    fun addProjectsToFirebase() {
-        viewModelScope.launch(Dispatchers.IO) {
-            readAllProjects.value!!.forEach {
-                databaseReference.child(it.id.toString()).setValue(it)
-            }
         }
     }
 

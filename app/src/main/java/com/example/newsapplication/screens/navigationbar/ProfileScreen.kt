@@ -44,7 +44,8 @@ fun ProfileScreen(
             tint = MaterialTheme.colorScheme.surfaceTint,
         )
         // Text to Display the current Screen
-        Text(text = "You are logged in as: ${cUser?.email}")
+        Text(text = "You are logged in as:")
+        Text(text = "${cUser?.email}")
         // Button to logout
         Button(onClick = {
             when (touchCounter.value) {
