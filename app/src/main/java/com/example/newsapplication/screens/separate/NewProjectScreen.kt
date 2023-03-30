@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
+import com.example.newsapplication.viewmodel.NewProjectViewModel
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 
 @Composable
@@ -33,6 +34,7 @@ fun NewProjectScreen(
     context: Context,
     window: Window,
     projectsViewModel: ProjectsViewModel,
+    newProjectViewModel: NewProjectViewModel,
 ) {
     // Project name
     val projectName = rememberSaveable { mutableStateOf("") }
@@ -64,7 +66,7 @@ fun NewProjectScreen(
             contentDescription = "newNotification",
             tint = MaterialTheme.colorScheme.surfaceTint
         )
-        if (projectsViewModel.getProjectName().isEmpty()) {
+        if (newProjectViewModel.getProjectName().isEmpty()) {
             // Text to Display the current Screen
             Text(text = "Create new project")
             // OutlinedTextField to type the new project name
@@ -98,8 +100,6 @@ fun NewProjectScreen(
                     projectsViewModel.addProject(
                         projectModel = ProjectModel(projectName = projectName.value)
                     )
-                    projectsViewModel.setProjectId(id = 0)
-                    projectsViewModel.setProjectName(name = "")
                     navController.popBackStack()
                     navController.navigate(PROJECTS_SCREEN)
                 } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT).show()
@@ -137,13 +137,13 @@ fun NewProjectScreen(
                 if (projectName.value.isNotEmpty()) {
                     projectsViewModel.setNewProjectName(
                         projectModel = ProjectModel(
-                            id = projectsViewModel.getProjectId(),
+                            id = newProjectViewModel.getProjectId(),
                             projectName = projectName.value,
-                            projectTime = projectsViewModel.getProjectTime()
+                            projectTime = newProjectViewModel.getProjectTime()
                         )
                     )
-                    projectsViewModel.setProjectId(id = 0)
-                    projectsViewModel.setProjectName(name = "")
+                    newProjectViewModel.setProjectId(id = 0)
+                    newProjectViewModel.setProjectName(name = "")
                     navController.popBackStack()
                     navController.navigate(PROJECTS_SCREEN)
                 } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT).show()
@@ -151,14 +151,14 @@ fun NewProjectScreen(
         }
         // Cancel button
         Button(onClick = {
-            projectsViewModel.setProjectId(id = 0)
-            projectsViewModel.setProjectName(name = "")
+            newProjectViewModel.setProjectId(id = 0)
+            newProjectViewModel.setProjectName(name = "")
             navController.popBackStack()
             navController.navigate(PROJECTS_SCREEN)
         }) { Text(text = "Cancel") }
         BackHandler(enabled = true) {
-            projectsViewModel.setProjectId(id = 0)
-            projectsViewModel.setProjectName(name = "")
+            newProjectViewModel.setProjectId(id = 0)
+            newProjectViewModel.setProjectName(name = "")
             navController.popBackStack()
             navController.navigate(PROJECTS_SCREEN)
         }

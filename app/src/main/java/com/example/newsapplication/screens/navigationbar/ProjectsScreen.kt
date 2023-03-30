@@ -22,6 +22,7 @@ import androidx.navigation.NavHostController
 import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.utils.Routes.NEW_PROJECT_SCREEN
 import com.example.newsapplication.utils.Routes.STOPWATCH_SCREEN
+import com.example.newsapplication.viewmodel.NewProjectViewModel
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -30,7 +31,8 @@ import me.saket.swipe.SwipeableActionsBox
 fun ProjectsScreen(
     projectsViewModel: ProjectsViewModel,
     navController: NavHostController,
-    projectList: State<List<ProjectModel>>
+    projectList: State<List<ProjectModel>>,
+    newProjectViewModel: NewProjectViewModel
 ) {
     Scaffold(content = { padding ->
         // Column Composable,
@@ -53,6 +55,7 @@ fun ProjectsScreen(
             Text(text = "Projects")
             // Projects list markup
             ProjectsList(
+                newProjectViewModel = newProjectViewModel,
                 projectsViewModel = projectsViewModel,
                 projectList = projectList,
                 navController = navController
@@ -73,6 +76,7 @@ fun ProjectsList(
     projectsViewModel: ProjectsViewModel,
     projectList: State<List<ProjectModel>>,
     navController: NavHostController,
+    newProjectViewModel: NewProjectViewModel,
 ) {
     LazyColumn {
         if (projectList.value.isNotEmpty())
@@ -81,9 +85,9 @@ fun ProjectsList(
         items(projectList.value) {
             val setNewProjectName = SwipeAction(
                 onSwipe = {
-                    projectsViewModel.setProjectName(name = it.projectName)
-                    projectsViewModel.setProjectId(id = it.id)
-                    projectsViewModel.setProjectTime(time = it.projectTime)
+                    newProjectViewModel.setProjectName(name = it.projectName)
+                    newProjectViewModel.setProjectId(id = it.id)
+                    newProjectViewModel.setProjectTime(time = it.projectTime)
                     navController.navigate(NEW_PROJECT_SCREEN)
                 },
                 icon = {

@@ -45,10 +45,6 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         return projectID
     }
 
-    fun setProjectTime(time: Long) {
-        projectTime = time
-    }
-
     fun getProjectTime(): Long {
         return projectTime
     }

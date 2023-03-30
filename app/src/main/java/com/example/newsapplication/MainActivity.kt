@@ -19,10 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.newsapplication.screens.AppScreen
 import com.example.newsapplication.screens.navigationbar.*
 import com.example.newsapplication.ui.theme.NewsApplicationTheme
-import com.example.newsapplication.viewmodel.AuthenticationViewModel
-import com.example.newsapplication.viewmodel.HomeViewModel
-import com.example.newsapplication.viewmodel.NewNotificationViewModel
-import com.example.newsapplication.viewmodel.ProjectsViewModel
+import com.example.newsapplication.viewmodel.*
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -52,6 +49,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var authenticationViewModel: AuthenticationViewModel
     private lateinit var projectsViewModel: ProjectsViewModel
     private lateinit var homeViewModel: HomeViewModel
+    private lateinit var newProjectViewModel: NewProjectViewModel
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +65,7 @@ class MainActivity : ComponentActivity() {
                 authenticationViewModel = provider[AuthenticationViewModel::class.java]
                 projectsViewModel = provider[ProjectsViewModel::class.java]
                 homeViewModel = provider[HomeViewModel::class.java]
+                newProjectViewModel = provider[NewProjectViewModel::class.java]
 
                 // Saving a list with project data
                 val projectList =
@@ -97,6 +96,7 @@ class MainActivity : ComponentActivity() {
                     homeViewModel = homeViewModel,
                     auth = auth,
                     authenticationViewModel = authenticationViewModel,
+                    newProjectViewModel = newProjectViewModel,
                     newNotificationViewModel = newNotificationViewModel,
                     projectsViewModel = projectsViewModel,
                     window = window

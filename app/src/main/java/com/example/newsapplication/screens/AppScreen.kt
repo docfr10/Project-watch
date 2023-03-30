@@ -35,10 +35,7 @@ import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
 import com.example.newsapplication.utils.Routes.SETTINGS_SCREEN
 import com.example.newsapplication.utils.Routes.SPLASH_SCREEN
 import com.example.newsapplication.utils.Routes.STOPWATCH_SCREEN
-import com.example.newsapplication.viewmodel.AuthenticationViewModel
-import com.example.newsapplication.viewmodel.HomeViewModel
-import com.example.newsapplication.viewmodel.NewNotificationViewModel
-import com.example.newsapplication.viewmodel.ProjectsViewModel
+import com.example.newsapplication.viewmodel.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.firebase.auth.FirebaseAuth
@@ -61,6 +58,7 @@ fun AppScreen(
     notificationList: State<List<NotificationModel>>,
     homeViewModel: HomeViewModel,
     signInWithGoogleLauncher: ActivityResultLauncher<Intent>,
+    newProjectViewModel: NewProjectViewModel,
 ) {
     // Hiding the bottom bar
     val isShowBottomBar = remember { mutableStateOf(false) }
@@ -89,6 +87,7 @@ fun AppScreen(
                     homeViewModel = homeViewModel,
                     auth = auth,
                     authenticationViewModel = authenticationViewModel,
+                    newProjectViewModel = newProjectViewModel,
                     newNotificationViewModel = newNotificationViewModel,
                     projectsViewModel = projectsViewModel,
                     isShowBottomBar = isShowBottomBar,
@@ -120,6 +119,7 @@ private fun NavHostContainer(
     notificationList: State<List<NotificationModel>>,
     homeViewModel: HomeViewModel,
     signInWithGoogleLauncher: ActivityResultLauncher<Intent>,
+    newProjectViewModel: NewProjectViewModel,
 ) {
     AnimatedNavHost(
         navController = navController,
@@ -159,6 +159,7 @@ private fun NavHostContainer(
             // route : Projects
             composable(route = PROJECTS_SCREEN) {
                 ProjectsScreen(
+                    newProjectViewModel = newProjectViewModel,
                     projectsViewModel = projectsViewModel,
                     projectList = projectList,
                     navController = navController
@@ -207,6 +208,7 @@ private fun NavHostContainer(
                 exitTransition = { slideOutVertically(animationSpec = tween(250)) }
             ) {
                 NewProjectScreen(
+                    newProjectViewModel = newProjectViewModel,
                     navController = navController,
                     projectsViewModel = projectsViewModel,
                     context = context,
