@@ -5,8 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.newsapplication.model.AppDatabaseModel
-import com.example.newsapplication.model.notifications.NotificationModel
-import com.example.newsapplication.model.notifications.NotificationRepositoryModel
+import com.example.newsapplication.model.notification.NotificationModel
+import com.example.newsapplication.model.notification.NotificationRepositoryModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

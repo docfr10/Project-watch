@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import com.example.newsapplication.R
-import com.example.newsapplication.model.notifications.NotificationsBuilderModel
+import com.example.newsapplication.notifications.NotificationsBuilderModel
 import java.util.*
 
 // ViewModel class of Home screen

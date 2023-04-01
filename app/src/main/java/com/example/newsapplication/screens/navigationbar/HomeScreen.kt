@@ -1,6 +1,5 @@
 package com.example.newsapplication.screens.navigationbar
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,9 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
-import com.example.newsapplication.model.notifications.NotificationModel
+import com.example.newsapplication.model.notification.NotificationModel
 import com.example.newsapplication.utils.Routes.NEW_NOTIFICATION_SCREEN
-import com.example.newsapplication.utils.Routes.SPLASH_SCREEN
 
 // Markup of the "Home" screen
 @Composable

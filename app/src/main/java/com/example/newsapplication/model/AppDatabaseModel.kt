@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.newsapplication.model.notifications.NotificationDAOModel
-import com.example.newsapplication.model.notifications.NotificationModel
+import com.example.newsapplication.model.notification.NotificationDAOModel
+import com.example.newsapplication.model.notification.NotificationModel
 import com.example.newsapplication.model.project.ProjectDAOModel
 import com.example.newsapplication.model.project.ProjectModel
 

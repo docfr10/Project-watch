@@ -1,4 +1,4 @@
-package com.example.newsapplication.model.notifications
+package com.example.newsapplication.notifications
 
 import android.app.Notification
 import android.app.NotificationManager

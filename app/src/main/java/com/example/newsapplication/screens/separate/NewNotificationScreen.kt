@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
-import com.example.newsapplication.model.notifications.NotificationModel
+import com.example.newsapplication.model.notification.NotificationModel
 import com.example.newsapplication.utils.Routes.HOME_SCREEN
 import com.example.newsapplication.viewmodel.HomeViewModel
 import com.example.newsapplication.viewmodel.NewNotificationViewModel

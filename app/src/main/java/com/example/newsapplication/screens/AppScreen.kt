@@ -20,7 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.newsapplication.model.notifications.NotificationModel
+import com.example.newsapplication.model.notification.NotificationModel
 import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.screens.navigationbar.*
 import com.example.newsapplication.screens.separate.*

@@ -1,4 +1,4 @@
-package com.example.newsapplication.model.notifications
+package com.example.newsapplication.model.notification
 
 import androidx.lifecycle.LiveData
 
