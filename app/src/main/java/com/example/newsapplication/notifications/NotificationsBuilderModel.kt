@@ -22,11 +22,12 @@ class NotificationsBuilderModel : BroadcastReceiver() {
         val pendingIntent =
             PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_IMMUTABLE)
         // Creating a Notification
-        val notification = NotificationCompat.Builder(context, R.string.channelID.toString())
+        val notification = NotificationCompat.Builder(context, R.string.channelIDNotify.toString())
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setContentTitle(intent.getStringExtra(R.string.titleExtra.toString()))
             .setContentText(intent.getStringExtra(R.string.messageExtra.toString()))
             .setDefaults(Notification.DEFAULT_ALL)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setStyle(NotificationCompat.BigTextStyle())
             .setContentIntent(pendingIntent)
             .setAutoCancel(intent.getBooleanExtra(R.bool.setAutoCancel.toString(), false))

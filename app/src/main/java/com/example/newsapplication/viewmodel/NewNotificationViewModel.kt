@@ -60,7 +60,7 @@ class NewNotificationViewModel : ViewModel() {
         val name = "Notification Channel"
         val desc = "A Description of the Channel"
         val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel = NotificationChannel(R.string.channelID.toString(), name, importance)
+        val channel = NotificationChannel(R.string.channelIDNotify.toString(), name, importance)
         channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         channel.enableVibration(true)
         channel.description = desc
