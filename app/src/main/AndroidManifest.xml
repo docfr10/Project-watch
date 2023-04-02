@@ -29,6 +29,8 @@
         <receiver
             android:name=".notifications.NotificationsBuilderModel"
             android:enabled="true" />
+        <!--Stopwatch service-->
+        <service android:name=".service.StopwatchService" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -222,6 +222,7 @@ private fun NavHostContainer(
                 exitTransition = { slideOutVertically(animationSpec = tween(250)) }
             ) {
                 StopwatchScreen(
+                    context = context,
                     navController = navController,
                     projectsViewModel = projectsViewModel
                 )

@@ -1,5 +1,7 @@
 package com.example.newsapplication.screens.separate
 
+import android.content.Context
+import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,13 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.R
+import com.example.newsapplication.service.StopwatchService
 import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 
 @Composable
 fun StopwatchScreen(
     projectsViewModel: ProjectsViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    context: Context
 ) {
     val isActive = rememberSaveable { mutableStateOf(false) }
     val formattedTime = rememberSaveable { mutableStateOf("00:00:00") }
@@ -43,6 +47,7 @@ fun StopwatchScreen(
             color = MaterialTheme.colorScheme.surfaceTint,
         )
         if (!isActive.value) {
+            context.startService(Intent(context, StopwatchService::class.java))
             Icon(
                 painter = painterResource(id = R.drawable.baseline_play_arrow_24),
                 contentDescription = "Play",
@@ -73,6 +78,7 @@ fun StopwatchScreen(
                 newProjectTime = projectsViewModel.getProjectTime()
             )
         projectsViewModel.setTime(time = 0L)
+        context.stopService(Intent(context, StopwatchService::class.java))
         navController.popBackStack()
         navController.navigate(PROJECTS_SCREEN)
     }
