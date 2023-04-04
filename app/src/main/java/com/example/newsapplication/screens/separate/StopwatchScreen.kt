@@ -5,7 +5,10 @@ import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -47,7 +50,12 @@ fun StopwatchScreen(
             color = MaterialTheme.colorScheme.surfaceTint,
         )
         if (!isActive.value) {
-            context.startService(Intent(context, StopwatchService::class.java))
+            context.startService(
+                Intent(context, StopwatchService::class.java).putExtra(
+                    "projectTime",
+                    formattedTime.value
+                ).putExtra("projectName", projectsViewModel.getProjectName())
+            )
             Icon(
                 painter = painterResource(id = R.drawable.baseline_play_arrow_24),
                 contentDescription = "Play",

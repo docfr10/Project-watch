@@ -133,6 +133,7 @@ fun ProjectsList(
                         Button(onClick = {
                             navController.navigate(STOPWATCH_SCREEN)
                             projectsViewModel.setProjectId(it.id)
+                            projectsViewModel.setProjectName(it.projectName)
                         }) {
                             Text(text = "Start")
                         }

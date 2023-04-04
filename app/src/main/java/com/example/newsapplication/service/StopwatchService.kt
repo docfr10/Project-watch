@@ -34,8 +34,8 @@ class StopwatchService : Service() {
         // Creating a Notification
         val notification = NotificationCompat.Builder(this, R.string.channelIDService.toString())
             .setSmallIcon(R.mipmap.ic_launcher_round)
-            .setContentTitle("Title Example")
-            .setContentText("Text Example")
+            .setContentTitle(intent?.getStringExtra("projectName"))
+            .setContentText(intent?.getStringExtra("projectTime"))
             .setDefaults(Notification.DEFAULT_ALL)
             .setStyle(NotificationCompat.BigTextStyle())
             .setContentIntent(pendingIntent)
@@ -49,7 +49,8 @@ class StopwatchService : Service() {
     }
 
     override fun stopService(name: Intent?): Boolean {
-        val notificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancel(1000)
         return super.stopService(name)
     }
