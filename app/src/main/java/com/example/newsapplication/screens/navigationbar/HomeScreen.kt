@@ -9,7 +9,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -68,6 +69,8 @@ fun NotificationList(notificationList: State<List<NotificationModel>>) {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
+                    Text(text = it.notificationDate)
+                    Text(text = it.notificationTime)
                     Text(text = it.notificationTitle)
                     Text(text = it.notificationText)
                 }

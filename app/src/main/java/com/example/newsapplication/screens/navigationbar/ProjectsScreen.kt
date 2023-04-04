@@ -132,11 +132,11 @@ fun ProjectsList(
                         )
                         Button(onClick = {
                             navController.navigate(STOPWATCH_SCREEN)
+                            projectsViewModel.setProjectName(it.projectName)
                             projectsViewModel.setProjectId(it.id)
-                        }) {
-                            Text(text = "Start")
-                        }
+                        }) { Text(text = "Start") }
                     }
+                    Divider(color = MaterialTheme.colorScheme.onBackground, thickness = 1.dp)
                 }
             }
         }
