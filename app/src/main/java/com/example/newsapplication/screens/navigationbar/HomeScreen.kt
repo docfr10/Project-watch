@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -14,15 +15,21 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.model.notification.NotificationModel
 import com.example.newsapplication.utils.Routes.NEW_NOTIFICATION_SCREEN
+import com.example.newsapplication.viewmodel.HomeViewModel
+import me.saket.swipe.SwipeAction
+import me.saket.swipe.SwipeableActionsBox
 
 // Markup of the "Home" screen
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    notificationList: State<List<NotificationModel>>
+    notificationList: State<List<NotificationModel>>,
+    homeViewModel: HomeViewModel
 ) {
     Scaffold(content = { padding ->
         // Column Composable
@@ -44,7 +51,10 @@ fun HomeScreen(
             // Text to Display the current Screen
             Text(text = "Home")
             // Notification list markup
-            NotificationList(notificationList = notificationList)
+            NotificationList(
+                homeViewModel = homeViewModel,
+                notificationList = notificationList
+            )
         }
     }, floatingActionButton = {
         // Button to go to creating notifications
@@ -57,24 +67,43 @@ fun HomeScreen(
 }
 
 @Composable
-fun NotificationList(notificationList: State<List<NotificationModel>>) {
+fun NotificationList(
+    notificationList: State<List<NotificationModel>>,
+    homeViewModel: HomeViewModel
+) {
     LazyColumn {
         items(notificationList.value) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+            val deleteNotification = SwipeAction(
+                onSwipe = { homeViewModel.deleteNotification(it) },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete project"
+                    )
+                },
+                background = MaterialTheme.colorScheme.error
+            )
+
+            SwipeableActionsBox(
+                swipeThreshold = 200.dp,
+                endActions = listOf(deleteNotification)
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = Color.Transparent)
                 ) {
-                    Text(text = it.notificationDate)
-                    Text(text = it.notificationTime)
-                    Text(text = it.notificationTitle)
-                    Text(text = it.notificationText)
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = it.notificationDate, fontSize = 25.sp)
+                        Text(text = it.notificationTime, fontSize = 25.sp)
+                        Text(text = it.notificationTitle, fontSize = 25.sp)
+                    }
                 }
             }
+            Divider(color = MaterialTheme.colorScheme.onBackground, thickness = 1.dp)
         }
     }
 }

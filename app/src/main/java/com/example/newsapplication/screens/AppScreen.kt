@@ -153,7 +153,11 @@ private fun NavHostContainer(
             }
             // route : Home
             composable(route = HOME_SCREEN) {
-                HomeScreen(navController = navController, notificationList = notificationList)
+                HomeScreen(
+                    navController = navController,
+                    homeViewModel = homeViewModel,
+                    notificationList = notificationList
+                )
                 isShowBottomBar.value = true
             }
             // route : Projects

@@ -136,9 +136,9 @@ fun ProjectsList(
                             projectsViewModel.setProjectId(it.id)
                         }) { Text(text = "Start") }
                     }
-                    Divider(color = MaterialTheme.colorScheme.onBackground, thickness = 1.dp)
                 }
             }
+            Divider(color = MaterialTheme.colorScheme.onBackground, thickness = 1.dp)
         }
     }
 }
