@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import com.example.newsapplication.screens.AppScreen
 import com.example.newsapplication.screens.navigationbar.*
+import com.example.newsapplication.service.StopwatchService
 import com.example.newsapplication.ui.theme.NewsApplicationTheme
 import com.example.newsapplication.viewmodel.*
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -103,6 +104,11 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(Intent(this, StopwatchService::class.java))
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {

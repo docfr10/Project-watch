@@ -1,6 +1,7 @@
 package com.example.newsapplication.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -13,7 +14,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ProjectsViewModel(application: Application) : AndroidViewModel(application) {
     private val databaseReference =
@@ -82,7 +85,7 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Handle error
+                Log.e("Error: ", error.toString())
             }
         })
     }
