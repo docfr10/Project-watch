@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
@@ -82,6 +83,19 @@ fun NewProjectScreen(
                     keyboardType = KeyboardType.Text, // Keyboard type
                     capitalization = KeyboardCapitalization.Sentences, // Letters type
                     imeAction = ImeAction.Done // Keyboard action type
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        // Check the project text for emptiness
+                        if (projectName.value.isNotEmpty()) {
+                            projectsViewModel.addProject(
+                                projectModel = ProjectModel(projectName = projectName.value)
+                            )
+                            navController.popBackStack()
+                            navController.navigate(PROJECTS_SCREEN)
+                        } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 )
             )
             // Displaying information about required field
@@ -95,7 +109,7 @@ fun NewProjectScreen(
             }
             // Button, to create project
             Button(onClick = {
-                // Check the notification text for emptiness
+                // Check the project text for emptiness
                 if (projectName.value.isNotEmpty()) {
                     projectsViewModel.addProject(
                         projectModel = ProjectModel(projectName = projectName.value)
@@ -120,6 +134,25 @@ fun NewProjectScreen(
                     keyboardType = KeyboardType.Text, // Keyboard type
                     capitalization = KeyboardCapitalization.Sentences, // Letters type
                     imeAction = ImeAction.Done // Keyboard action type
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        // Check the project text for emptiness
+                        if (projectName.value.isNotEmpty()) {
+                            projectsViewModel.setNewProjectName(
+                                projectModel = ProjectModel(
+                                    id = newProjectViewModel.getProjectId(),
+                                    projectName = projectName.value,
+                                    projectTime = newProjectViewModel.getProjectTime()
+                                )
+                            )
+                            newProjectViewModel.setProjectId(id = 0)
+                            newProjectViewModel.setProjectName(name = "")
+                            navController.popBackStack()
+                            navController.navigate(PROJECTS_SCREEN)
+                        } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 )
             )
             // Displaying information about required field
@@ -133,7 +166,7 @@ fun NewProjectScreen(
             }
             // Button, to change the project name
             Button(onClick = {
-                // Check the notification text for emptiness
+                // Check the project text for emptiness
                 if (projectName.value.isNotEmpty()) {
                     projectsViewModel.setNewProjectName(
                         projectModel = ProjectModel(

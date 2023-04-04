@@ -39,6 +39,7 @@ fun ProjectsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(top = 15.dp)
                 .background(MaterialTheme.colorScheme.background)
                 .padding(padding),
             // Parameters set to place the items in center
