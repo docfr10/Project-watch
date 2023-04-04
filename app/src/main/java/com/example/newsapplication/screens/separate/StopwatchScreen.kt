@@ -43,6 +43,18 @@ fun StopwatchScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        // Icon Composable
+        Icon(
+            painter = painterResource(R.drawable.stopwatch),
+            contentDescription = "projects",
+            tint = MaterialTheme.colorScheme.surfaceTint
+        )
+        Text(
+            text = projectsViewModel.getProjectName(),
+            fontWeight = FontWeight.Bold,
+            fontSize = 35.sp,
+            color = MaterialTheme.colorScheme.surfaceTint,
+        )
         Text(
             text = formattedTime.value,
             fontWeight = FontWeight.Bold,
