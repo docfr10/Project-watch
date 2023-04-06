@@ -49,9 +49,9 @@ class StopwatchService : Service() {
     }
 
     override fun stopService(name: Intent?): Boolean {
-        val notificationManager =
+        val manager =
             this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.cancel(1000)
+        manager.cancelAll()
         return super.stopService(name)
     }
 
@@ -66,10 +66,11 @@ class StopwatchService : Service() {
 
         val name = "Notification Channel for stopwatch"
         val desc = "A Description of the Channel"
-        val importance = NotificationManager.IMPORTANCE_HIGH
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(R.string.channelIDService.toString(), name, importance)
         channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-        channel.enableVibration(true)
+        channel.enableVibration(false)
+        channel.setSound(null, null)
         channel.description = desc
         notificationManager.createNotificationChannel(channel)
     }

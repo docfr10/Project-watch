@@ -1,5 +1,11 @@
 package com.example.newsapplication.screens.navigationbar
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,12 +18,15 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.utils.Routes.NEW_PROJECT_SCREEN
@@ -32,7 +41,8 @@ fun ProjectsScreen(
     projectsViewModel: ProjectsViewModel,
     navController: NavHostController,
     projectList: State<List<ProjectModel>>,
-    newProjectViewModel: NewProjectViewModel
+    newProjectViewModel: NewProjectViewModel,
+    context: Context
 ) {
     Scaffold(content = { padding ->
         // Column Composable,
@@ -56,6 +66,7 @@ fun ProjectsScreen(
             Text(text = "Projects")
             // Projects list markup
             ProjectsList(
+                context = context,
                 newProjectViewModel = newProjectViewModel,
                 projectsViewModel = projectsViewModel,
                 projectList = projectList,
@@ -78,7 +89,24 @@ fun ProjectsList(
     projectList: State<List<ProjectModel>>,
     navController: NavHostController,
     newProjectViewModel: NewProjectViewModel,
+    context: Context,
 ) {
+    // Checking for permission to send notifications for Android 13+
+    val hasNotificationPermission = remember {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            mutableStateOf(
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            )
+        } else mutableStateOf(true)
+    }
+    // Launcher for checking permission to send notifications
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted -> hasNotificationPermission.value = isGranted }
+    )
     LazyColumn {
         if (projectList.value.isNotEmpty())
             projectsViewModel.addProjectsToFirebase()
@@ -132,9 +160,14 @@ fun ProjectsList(
                             color = MaterialTheme.colorScheme.onBackground,
                         )
                         Button(onClick = {
-                            navController.navigate(STOPWATCH_SCREEN)
-                            projectsViewModel.setProjectName(it.projectName)
-                            projectsViewModel.setProjectId(it.id)
+                            // Check the permission to send notifications
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                                launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            if (hasNotificationPermission.value) {
+                                navController.navigate(STOPWATCH_SCREEN)
+                                projectsViewModel.setProjectName(it.projectName)
+                                projectsViewModel.setProjectId(it.id)
+                            }
                         }) { Text(text = "Start") }
                     }
                 }

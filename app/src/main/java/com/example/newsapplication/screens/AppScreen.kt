@@ -163,6 +163,7 @@ private fun NavHostContainer(
             // route : Projects
             composable(route = PROJECTS_SCREEN) {
                 ProjectsScreen(
+                    context = context,
                     newProjectViewModel = newProjectViewModel,
                     projectsViewModel = projectsViewModel,
                     projectList = projectList,
