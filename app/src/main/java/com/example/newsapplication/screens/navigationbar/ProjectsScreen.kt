@@ -2,6 +2,7 @@ package com.example.newsapplication.screens.navigationbar
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.newsapplication.model.project.ProjectModel
+import com.example.newsapplication.service.StopwatchService
 import com.example.newsapplication.utils.Routes.NEW_PROJECT_SCREEN
 import com.example.newsapplication.utils.Routes.STOPWATCH_SCREEN
 import com.example.newsapplication.viewmodel.NewProjectViewModel
@@ -91,6 +93,7 @@ fun ProjectsList(
     newProjectViewModel: NewProjectViewModel,
     context: Context,
 ) {
+    context.stopService(Intent(context, StopwatchService::class.java))
     // Checking for permission to send notifications for Android 13+
     val hasNotificationPermission = remember {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
