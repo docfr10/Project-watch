@@ -10,6 +10,7 @@ import com.example.newsapplication.model.notification.NotificationRepositoryMode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+// ViewModel class of Home screen
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val notificationDAOModel =
         AppDatabaseModel.getDatabase(context = application).notificationDAO()

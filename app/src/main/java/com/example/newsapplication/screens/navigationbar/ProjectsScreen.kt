@@ -38,6 +38,7 @@ import com.example.newsapplication.viewmodel.ProjectsViewModel
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
+// Markup of the "Projects" screen
 @Composable
 fun ProjectsScreen(
     projectsViewModel: ProjectsViewModel,

@@ -2,7 +2,8 @@ package com.example.newsapplication.viewmodel
 
 import androidx.lifecycle.ViewModel
 
-class NewProjectViewModel:ViewModel() {
+// ViewModel class of New project screen
+class NewProjectViewModel : ViewModel() {
     private var projectID: Int = 0
     private var projectName: String = ""
     private var projectTime: Long = 0L

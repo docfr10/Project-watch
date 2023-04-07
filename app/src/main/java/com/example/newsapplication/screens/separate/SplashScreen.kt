@@ -24,7 +24,7 @@ import com.example.newsapplication.utils.Routes.HOME_SCREEN
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.delay
 
-// Splash Screen
+// Markup of the "Splash" screen
 @Composable
 fun AnimatedSplashScreen(navController: NavHostController, cUser: FirebaseUser?) {
     val startAnimation = remember { mutableStateOf(false) }

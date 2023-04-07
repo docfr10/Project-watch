@@ -13,7 +13,7 @@ import com.example.newsapplication.R
 import com.example.newsapplication.notifications.NotificationsBuilderModel
 import java.util.*
 
-// ViewModel class of Home screen
+// ViewModel class of New notification screen
 class NewNotificationViewModel : ViewModel() {
     // Calendar for saving notification date and time
     private var notificationDateAndTime: Calendar = Calendar.getInstance()

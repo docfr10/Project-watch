@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+// ViewModel class of Projects screen
 class ProjectsViewModel(application: Application) : AndroidViewModel(application) {
     private val databaseReference =
         FirebaseDatabase.getInstance().getReference("USERS/${FirebaseAuth.getInstance().uid}")

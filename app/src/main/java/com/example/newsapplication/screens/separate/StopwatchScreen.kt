@@ -27,6 +27,7 @@ import com.example.newsapplication.service.StopwatchService
 import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 
+// Markup of the "Stopwatch" screen
 @Composable
 fun StopwatchScreen(
     projectsViewModel: ProjectsViewModel,

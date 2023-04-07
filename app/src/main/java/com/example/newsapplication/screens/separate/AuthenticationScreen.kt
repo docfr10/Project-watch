@@ -29,6 +29,7 @@ import com.example.newsapplication.R
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
 import com.google.firebase.auth.FirebaseAuth
 
+// Markup of the "Authentication" screen
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 fun AuthenticationScreen(

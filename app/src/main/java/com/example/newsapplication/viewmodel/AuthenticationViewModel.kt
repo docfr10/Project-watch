@@ -1,9 +1,7 @@
 package com.example.newsapplication.viewmodel
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.MutableState

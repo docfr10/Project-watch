@@ -17,7 +17,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
-// Markup of the "About the app" screen
+// Markup of the "About" screen
 @Composable
 fun AboutScreen() {
     Column(

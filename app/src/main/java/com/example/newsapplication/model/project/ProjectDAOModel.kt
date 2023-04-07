@@ -3,7 +3,7 @@ package com.example.newsapplication.model.project
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
-// Interface provides the methods that the rest of the app uses to interact with data in the project table
+// Interface provides the methods that the rest of the app uses to interact with data in the "Project" table
 @Dao
 interface ProjectDAOModel {
     @Query("SELECT * FROM project_table")

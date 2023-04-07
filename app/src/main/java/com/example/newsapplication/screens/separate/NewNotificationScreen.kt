@@ -46,6 +46,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+// Markup of the "New notification" screen
 @Composable
 fun NewNotificationScreen(
     activity: Activity,

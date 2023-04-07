@@ -29,6 +29,7 @@ import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
 import com.example.newsapplication.viewmodel.NewProjectViewModel
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 
+// Markup of the "New project" screen
 @Composable
 fun NewProjectScreen(
     navController: NavHostController,

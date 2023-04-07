@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.newsapplication.MainActivity
 
-// Layout of the settings screen
+// Markup of the "Settings" screen
 @Composable
 fun SettingsScreen(
     sharedPreference: SharedPreferences,
