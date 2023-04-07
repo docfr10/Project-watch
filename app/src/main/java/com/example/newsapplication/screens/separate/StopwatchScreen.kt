@@ -35,6 +35,13 @@ fun StopwatchScreen(
 ) {
     val isActive = rememberSaveable { mutableStateOf(false) }
     val formattedTime = rememberSaveable { mutableStateOf("00:00:00") }
+    
+    context.startService(
+        Intent(context, StopwatchService::class.java).putExtra(
+            "projectTime",
+            formattedTime.value
+        ).putExtra("projectName", projectsViewModel.getProjectName())
+    )
 
     Column(
         modifier = Modifier
@@ -62,12 +69,6 @@ fun StopwatchScreen(
             color = MaterialTheme.colorScheme.surfaceTint,
         )
         if (!isActive.value) {
-            context.startService(
-                Intent(context, StopwatchService::class.java).putExtra(
-                    "projectTime",
-                    formattedTime.value
-                ).putExtra("projectName", projectsViewModel.getProjectName())
-            )
             Icon(
                 painter = painterResource(id = R.drawable.baseline_play_arrow_24),
                 contentDescription = "Play",

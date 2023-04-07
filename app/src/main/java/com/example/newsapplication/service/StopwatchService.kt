@@ -21,6 +21,9 @@ class StopwatchService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        val manager =
+            this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        manager.cancelAll()
     }
 
     override fun onStartCommand(intent: Intent?, _flags: Int, startId: Int): Int {
@@ -49,9 +52,6 @@ class StopwatchService : Service() {
     }
 
     override fun stopService(name: Intent?): Boolean {
-        val manager =
-            this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        manager.cancelAll()
         return super.stopService(name)
     }
 
