@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:773022068268:android:0b121b1058c03102a06b89",
+        "mobilesdk_app_id": "1:773022068268:android:867de1f7da561592a06b89",
         "android_client_info": {
           "package_name": "com.example.newsapplication"
         }
       },
       "oauth_client": [
         {
-          "client_id": "773022068268-89kd7vu3vccp3ijgodnsm55hvn53vnh0.apps.googleusercontent.com",
+          "client_id": "773022068268-890g0ndr9brg2r15ghm8jerngjqm5job.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.newsapplication",
-            "certificate_hash": "d6e6d9c7ad8a1379a54f04bd5fb3ec4ed633ec1d"
+            "certificate_hash": "7383e4a6b5aa086f25eb85e28c0130d18bb5d634"
           }
         },
         {
