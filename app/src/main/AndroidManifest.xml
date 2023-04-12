@@ -30,7 +30,9 @@
             android:name=".notifications.NotificationsBuilderModel"
             android:enabled="true" />
         <!--Stopwatch service-->
-        <service android:name=".service.StopwatchService" />
+        <service
+            android:name=".service.StopwatchService"
+            android:enabled="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
