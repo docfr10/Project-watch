@@ -1,6 +1,7 @@
 package com.example.newsapplication
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -108,7 +109,20 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        stopService(Intent(this, StopwatchService::class.java))
+        if (isStopWatchServiceRunning(StopwatchService::class.java))
+            stopService(Intent(this, StopwatchService::class.java))
+    }
+
+    private fun isStopWatchServiceRunning(myService: Class<StopwatchService>): Boolean {
+        val manager: ActivityManager = getSystemService(
+            Context.ACTIVITY_SERVICE
+        ) as ActivityManager
+
+        for (service: ActivityManager.RunningServiceInfo in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (myService.name.equals(service.service.className))
+                return true
+        }
+        return false
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
