@@ -19,6 +19,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Notifications
@@ -55,7 +56,7 @@ fun NewNotificationScreen(
     navController: NavHostController,
     window: Window,
     sharedPreference: SharedPreferences,
-    homeViewModel: HomeViewModel,
+    homeViewModel: HomeViewModel
 ) {
     // Checking for permission to send notifications for Android 13+
     val hasNotificationPermission = remember {
@@ -93,118 +94,127 @@ fun NewNotificationScreen(
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp)
-            .background(MaterialTheme.colorScheme.background)
-            .imePadding(),
-        // Parameters set to place the items in center
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        // Icon Composable
-        Icon(
-            imageVector = Icons.Default.Notifications,
-            contentDescription = "newNotification",
-            tint = MaterialTheme.colorScheme.surfaceTint
-        )
-        // Text to Display the current Screen
-        Text(text = "Create new notification")
-        // OutlinedTextField to type the new notification title
-        OutlinedTextField(
-            value = notificationTitle.value,
-            isError = notificationTitle.value.isEmpty(),
-            textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
-            onValueChange = { notificationTitle.value = it },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(text = "Type a notification title") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text, // Keyboard type
-                capitalization = KeyboardCapitalization.Sentences, // Letters type
-                imeAction = ImeAction.Next // Keyboard action type
-            )
-        )
-        // Displaying information about required field
-        if (notificationTitle.value.isEmpty()) {
-            Text(
-                text = "Required field",
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(end = 235.dp)
-            )
-        }
-        // OutlinedTextField to type the new notification text
-        OutlinedTextField(
-            value = notificationText.value,
-            textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
-            onValueChange = { notificationText.value = it },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(text = "Type a notification text") },
-            singleLine = false,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text, // Keyboard type
-                capitalization = KeyboardCapitalization.Sentences, // Letters type
-                imeAction = ImeAction.Done // Keyboard action type
-            )
-        )
-        // Date and Time creation function from datePicker and timePicker with dropdown menu
-        ShowDataAndTimeDropdownMenu(
-            context = context,
-            newNotificationViewModel = newNotificationViewModel,
-            selectedDate = selectedDate,
-            selectedTime = selectedTime
-        )
-        // Button, to send notification
-        Button(onClick = {
-            // Check the notification text for emptiness
-            if (notificationTitle.value.isNotEmpty()) {
-                // Check the permission to send notifications
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                    launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                if (hasNotificationPermission.value) {
-                    // Check Android version, if version >= Android 8 then create a notification channel
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        newNotificationViewModel.createNotificationChannel(activity = activity)
-                        newNotificationViewModel.createNotification(
-                            activity = activity,
-                            context = context,
-                            sharedPreference = sharedPreference,
-                            notificationTitle = notificationTitle,
-                            notificationText = notificationText
-                        )
-                        homeViewModel.addNotification(
-                            notificationModel = NotificationModel(
-                                notificationTitle = notificationTitle.value,
-                                notificationText = notificationText.value,
-                                notificationDate = selectedDate.value,
-                                notificationTime = selectedTime.value
-                            )
-                        )
-                    }
-                    // Else don't create
-                    else
-                        newNotificationViewModel.createNotification(
-                            activity = activity,
-                            context = context,
-                            sharedPreference = sharedPreference,
-                            notificationTitle = notificationTitle,
-                            notificationText = notificationText
-                        )
-                    navController.navigate(HOME_SCREEN)
-                }
-            } else
-                Toast.makeText(context, "Type a notification text", Toast.LENGTH_SHORT).show()
-        }) { Text(text = "Create notification") }
-        // Cancel button
-        Button(onClick = {
+    Scaffold(topBar = {
+        IconButton(onClick = {
             navController.popBackStack()
             navController.navigate(HOME_SCREEN)
         }) {
-            Text(text = "Cancel")
+            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back button")
         }
-    }
+    }, content = { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+                .background(MaterialTheme.colorScheme.background)
+                .imePadding(),
+            // Parameters set to place the items in center
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            // Icon Composable
+            Icon(
+                imageVector = Icons.Default.Notifications,
+                contentDescription = "newNotification",
+                tint = MaterialTheme.colorScheme.surfaceTint
+            )
+            // Text to Display the current Screen
+            Text(text = "Create new notification")
+            // OutlinedTextField to type the new notification title
+            OutlinedTextField(
+                value = notificationTitle.value,
+                isError = notificationTitle.value.isEmpty(),
+                textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
+                onValueChange = { notificationTitle.value = it },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = "Type a notification title") },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text, // Keyboard type
+                    capitalization = KeyboardCapitalization.Sentences, // Letters type
+                    imeAction = ImeAction.Next // Keyboard action type
+                )
+            )
+            // Displaying information about required field
+            if (notificationTitle.value.isEmpty()) {
+                Text(
+                    text = "Required field",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(end = 235.dp)
+                )
+            }
+            // OutlinedTextField to type the new notification text
+            OutlinedTextField(
+                value = notificationText.value,
+                textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
+                onValueChange = { notificationText.value = it },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = "Type a notification text") },
+                singleLine = false,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text, // Keyboard type
+                    capitalization = KeyboardCapitalization.Sentences, // Letters type
+                    imeAction = ImeAction.Done // Keyboard action type
+                )
+            )
+            // Date and Time creation function from datePicker and timePicker with dropdown menu
+            ShowDataAndTimeDropdownMenu(
+                context = context,
+                newNotificationViewModel = newNotificationViewModel,
+                selectedDate = selectedDate,
+                selectedTime = selectedTime
+            )
+            // Button, to send notification
+            Button(onClick = {
+                // Check the notification text for emptiness
+                if (notificationTitle.value.isNotEmpty()) {
+                    // Check the permission to send notifications
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                        launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    if (hasNotificationPermission.value) {
+                        // Check Android version, if version >= Android 8 then create a notification channel
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            newNotificationViewModel.createNotificationChannel(activity = activity)
+                            newNotificationViewModel.createNotification(
+                                activity = activity,
+                                context = context,
+                                sharedPreference = sharedPreference,
+                                notificationTitle = notificationTitle,
+                                notificationText = notificationText
+                            )
+                            homeViewModel.addNotification(
+                                notificationModel = NotificationModel(
+                                    notificationTitle = notificationTitle.value,
+                                    notificationText = notificationText.value,
+                                    notificationDate = selectedDate.value,
+                                    notificationTime = selectedTime.value
+                                )
+                            )
+                        }
+                        // Else don't create
+                        else
+                            newNotificationViewModel.createNotification(
+                                activity = activity,
+                                context = context,
+                                sharedPreference = sharedPreference,
+                                notificationTitle = notificationTitle,
+                                notificationText = notificationText
+                            )
+                        navController.navigate(HOME_SCREEN)
+                    }
+                } else
+                    Toast.makeText(context, "Type a notification text", Toast.LENGTH_SHORT).show()
+            }) { Text(text = "Create notification") }
+            // Cancel button
+            Button(onClick = {
+                navController.popBackStack()
+                navController.navigate(HOME_SCREEN)
+            }) {
+                Text(text = "Cancel")
+            }
+        }
+    })
 }
 
 @Composable
@@ -361,7 +371,8 @@ fun ShowDataAndTimeDropdownMenu(
                     DropdownMenuItem(onClick = {
                         when (label) {
                             "Now" -> {
-                                selectedTime.value = timeFormat.format(calendar.time.time).toString()
+                                selectedTime.value =
+                                    timeFormat.format(calendar.time.time).toString()
                                 newNotificationViewModel.setTime(calendar = calendar)
                             }
                             "Morning" -> {

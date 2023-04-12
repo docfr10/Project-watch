@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.model.project.ProjectModel
+import com.example.newsapplication.utils.Routes
 import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
 import com.example.newsapplication.viewmodel.NewProjectViewModel
 import com.example.newsapplication.viewmodel.ProjectsViewModel
@@ -52,149 +54,166 @@ fun NewProjectScreen(
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp)
-            .background(MaterialTheme.colorScheme.background)
-            .imePadding(),
-        // Parameters set to place the items in center
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        // Icon Composable
-        Icon(
-            imageVector = Icons.Default.Create,
-            contentDescription = "newNotification",
-            tint = MaterialTheme.colorScheme.surfaceTint
-        )
-        if (newProjectViewModel.getProjectName().isEmpty()) {
-            // Text to Display the current Screen
-            Text(text = "Create new project")
-            // OutlinedTextField to type the new project name
-            OutlinedTextField(
-                value = projectName.value,
-                isError = projectName.value.isEmpty(),
-                textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
-                onValueChange = { projectName.value = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Type a project name") },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text, // Keyboard type
-                    capitalization = KeyboardCapitalization.Sentences, // Letters type
-                    imeAction = ImeAction.Done // Keyboard action type
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        // Check the project text for emptiness
-                        if (projectName.value.isNotEmpty()) {
-                            projectsViewModel.addProject(
-                                projectModel = ProjectModel(projectName = projectName.value)
-                            )
-                            navController.popBackStack()
-                            navController.navigate(PROJECTS_SCREEN)
-                        } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                )
+    Scaffold(topBar = {
+        IconButton(onClick = {
+            navController.popBackStack()
+            navController.navigate(Routes.HOME_SCREEN)
+        }) {
+            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back button")
+        }
+    }, content = { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+                .background(MaterialTheme.colorScheme.background)
+                .imePadding(),
+            // Parameters set to place the items in center
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            // Icon Composable
+            Icon(
+                imageVector = Icons.Default.Create,
+                contentDescription = "newNotification",
+                tint = MaterialTheme.colorScheme.surfaceTint
             )
-            // Displaying information about required field
-            if (projectName.value.isEmpty()) {
-                Text(
-                    text = "Required field",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(end = 235.dp)
-                )
-            }
-            // Button, to create project
-            Button(onClick = {
-                // Check the project text for emptiness
-                if (projectName.value.isNotEmpty()) {
-                    projectsViewModel.addProject(
-                        projectModel = ProjectModel(projectName = projectName.value)
-                    )
-                    navController.popBackStack()
-                    navController.navigate(PROJECTS_SCREEN)
-                } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT).show()
-            }) { Text(text = "Create") }
-        } else {
-            // Text to Display the current Screen
-            Text(text = "Change the project name")
-            // OutlinedTextField to type the new project name
-            OutlinedTextField(
-                value = projectName.value,
-                isError = projectName.value.isEmpty(),
-                textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
-                onValueChange = { projectName.value = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Type a new project name") },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text, // Keyboard type
-                    capitalization = KeyboardCapitalization.Sentences, // Letters type
-                    imeAction = ImeAction.Done // Keyboard action type
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        // Check the project text for emptiness
-                        if (projectName.value.isNotEmpty()) {
-                            projectsViewModel.setNewProjectName(
-                                projectModel = ProjectModel(
-                                    id = newProjectViewModel.getProjectId(),
-                                    projectName = projectName.value,
-                                    projectTime = newProjectViewModel.getProjectTime()
+            if (newProjectViewModel.getProjectName().isEmpty()) {
+                // Text to Display the current Screen
+                Text(text = "Create new project")
+                // OutlinedTextField to type the new project name
+                OutlinedTextField(
+                    value = projectName.value,
+                    isError = projectName.value.isEmpty(),
+                    textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
+                    onValueChange = { projectName.value = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(text = "Type a project name") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text, // Keyboard type
+                        capitalization = KeyboardCapitalization.Sentences, // Letters type
+                        imeAction = ImeAction.Done // Keyboard action type
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            // Check the project text for emptiness
+                            if (projectName.value.isNotEmpty()) {
+                                projectsViewModel.addProject(
+                                    projectModel = ProjectModel(projectName = projectName.value)
                                 )
+                                navController.popBackStack()
+                                navController.navigate(PROJECTS_SCREEN)
+                            } else Toast.makeText(
+                                context,
+                                "Type a project name",
+                                Toast.LENGTH_SHORT
                             )
-                            newProjectViewModel.setProjectId(id = 0)
-                            newProjectViewModel.setProjectName(name = "")
-                            navController.popBackStack()
-                            navController.navigate(PROJECTS_SCREEN)
-                        } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                )
-            )
-            // Displaying information about required field
-            if (projectName.value.isEmpty()) {
-                Text(
-                    text = "Required field",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(end = 235.dp)
-                )
-            }
-            // Button, to change the project name
-            Button(onClick = {
-                // Check the project text for emptiness
-                if (projectName.value.isNotEmpty()) {
-                    projectsViewModel.setNewProjectName(
-                        projectModel = ProjectModel(
-                            id = newProjectViewModel.getProjectId(),
-                            projectName = projectName.value,
-                            projectTime = newProjectViewModel.getProjectTime()
-                        )
+                                .show()
+                        }
                     )
-                    newProjectViewModel.setProjectId(id = 0)
-                    newProjectViewModel.setProjectName(name = "")
-                    navController.popBackStack()
-                    navController.navigate(PROJECTS_SCREEN)
-                } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT).show()
-            }) { Text(text = "Change") }
+                )
+                // Displaying information about required field
+                if (projectName.value.isEmpty()) {
+                    Text(
+                        text = "Required field",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(end = 235.dp)
+                    )
+                }
+                // Button, to create project
+                Button(onClick = {
+                    // Check the project text for emptiness
+                    if (projectName.value.isNotEmpty()) {
+                        projectsViewModel.addProject(
+                            projectModel = ProjectModel(projectName = projectName.value)
+                        )
+                        navController.popBackStack()
+                        navController.navigate(PROJECTS_SCREEN)
+                    } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT).show()
+                }) { Text(text = "Create") }
+            } else {
+                // Text to Display the current Screen
+                Text(text = "Change the project name")
+                // OutlinedTextField to type the new project name
+                OutlinedTextField(
+                    value = projectName.value,
+                    isError = projectName.value.isEmpty(),
+                    textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
+                    onValueChange = { projectName.value = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(text = "Type a new project name") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text, // Keyboard type
+                        capitalization = KeyboardCapitalization.Sentences, // Letters type
+                        imeAction = ImeAction.Done // Keyboard action type
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            // Check the project text for emptiness
+                            if (projectName.value.isNotEmpty()) {
+                                projectsViewModel.setNewProjectName(
+                                    projectModel = ProjectModel(
+                                        id = newProjectViewModel.getProjectId(),
+                                        projectName = projectName.value,
+                                        projectTime = newProjectViewModel.getProjectTime()
+                                    )
+                                )
+                                newProjectViewModel.setProjectId(id = 0)
+                                newProjectViewModel.setProjectName(name = "")
+                                navController.popBackStack()
+                                navController.navigate(PROJECTS_SCREEN)
+                            } else Toast.makeText(
+                                context,
+                                "Type a project name",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                    )
+                )
+                // Displaying information about required field
+                if (projectName.value.isEmpty()) {
+                    Text(
+                        text = "Required field",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(end = 235.dp)
+                    )
+                }
+                // Button, to change the project name
+                Button(onClick = {
+                    // Check the project text for emptiness
+                    if (projectName.value.isNotEmpty()) {
+                        projectsViewModel.setNewProjectName(
+                            projectModel = ProjectModel(
+                                id = newProjectViewModel.getProjectId(),
+                                projectName = projectName.value,
+                                projectTime = newProjectViewModel.getProjectTime()
+                            )
+                        )
+                        newProjectViewModel.setProjectId(id = 0)
+                        newProjectViewModel.setProjectName(name = "")
+                        navController.popBackStack()
+                        navController.navigate(PROJECTS_SCREEN)
+                    } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT).show()
+                }) { Text(text = "Change") }
+            }
+            // Cancel button
+            Button(onClick = {
+                newProjectViewModel.setProjectId(id = 0)
+                newProjectViewModel.setProjectName(name = "")
+                navController.popBackStack()
+                navController.navigate(PROJECTS_SCREEN)
+            }) { Text(text = "Cancel") }
+            BackHandler(enabled = true) {
+                newProjectViewModel.setProjectId(id = 0)
+                newProjectViewModel.setProjectName(name = "")
+                navController.popBackStack()
+                navController.navigate(PROJECTS_SCREEN)
+            }
         }
-        // Cancel button
-        Button(onClick = {
-            newProjectViewModel.setProjectId(id = 0)
-            newProjectViewModel.setProjectName(name = "")
-            navController.popBackStack()
-            navController.navigate(PROJECTS_SCREEN)
-        }) { Text(text = "Cancel") }
-        BackHandler(enabled = true) {
-            newProjectViewModel.setProjectId(id = 0)
-            newProjectViewModel.setProjectName(name = "")
-            navController.popBackStack()
-            navController.navigate(PROJECTS_SCREEN)
-        }
-    }
+    })
 }
