@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.floor
 
 // ViewModel class of Projects screen
 class ProjectsViewModel(application: Application) : AndroidViewModel(application) {
@@ -126,9 +127,9 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
 
     fun formatTime(timeMillis: Long): String {
         projectTime = timeMillis
-        val seconds = timeMillis / 1000 % 60
-        val minutes = timeMillis / 60000 % 60
-        val hours = timeMillis / 3600000
+        val seconds = floor((timeMillis / 1000 % 60).toDouble()).toLong()
+        val minutes = floor((timeMillis / 60000 % 60).toDouble()).toLong()
+        val hours = floor((timeMillis / 3600000).toDouble()).toLong()
         return "%02d".format(hours) + ":" + "%02d".format(minutes) + ":" + "%02d".format(seconds)
     }
 
