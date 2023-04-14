@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.newsapplication.R
 import com.example.newsapplication.service.StopwatchService
-import com.example.newsapplication.utils.Routes
 import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
 import com.example.newsapplication.viewmodel.ProjectsViewModel
 
@@ -34,13 +33,6 @@ fun StopwatchScreen(
 ) {
     val isActive = rememberSaveable { mutableStateOf(false) }
     val formattedTime = rememberSaveable { mutableStateOf("00:00:00") }
-
-    context.startService(
-        Intent(context, StopwatchService::class.java).putExtra(
-            "projectTime",
-            formattedTime.value
-        ).putExtra("projectName", projectsViewModel.getProjectName())
-    )
 
     Scaffold(topBar = {
         IconButton(onClick = {
@@ -91,6 +83,7 @@ fun StopwatchScreen(
                     modifier = Modifier
                         .clickable {
                             projectsViewModel.start(
+                                context  = context,
                                 isActive = isActive,
                                 formattedTime = formattedTime
                             )

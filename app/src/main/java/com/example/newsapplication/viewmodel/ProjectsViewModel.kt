@@ -1,6 +1,8 @@
 package com.example.newsapplication.viewmodel
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.AndroidViewModel
@@ -9,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.newsapplication.model.AppDatabaseModel
 import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.model.project.ProjectRepositoryModel
+import com.example.newsapplication.service.StopwatchService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -131,7 +134,8 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
 
     fun start(
         isActive: MutableState<Boolean>,
-        formattedTime: MutableState<String>
+        formattedTime: MutableState<String>,
+        context: Context
     ) {
         if (isActive.value) return
 
@@ -143,6 +147,12 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
                 timeMillis += System.currentTimeMillis() - lastTimestamp
                 lastTimestamp = System.currentTimeMillis()
                 formattedTime.value = formatTime(timeMillis)
+                context.startService(
+                    Intent(context, StopwatchService::class.java).putExtra(
+                        "projectTime",
+                        formattedTime.value
+                    ).putExtra("projectName", getProjectName())
+                )
             }
         }
     }
