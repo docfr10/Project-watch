@@ -8,7 +8,6 @@ import android.os.IBinder
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
-import com.example.newsapplication.MainActivity
 import com.example.newsapplication.R
 
 class StopwatchService : Service() {
@@ -27,13 +26,6 @@ class StopwatchService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, _flags: Int, startId: Int): Int {
-        // Creating a login Intent in the app
-        val intent1 = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        // Creating a PendingIntent to login to the app
-        val pendingIntent =
-            PendingIntent.getActivity(this, 0, intent1, PendingIntent.FLAG_IMMUTABLE)
         // Creating a Notification
         val notification = NotificationCompat.Builder(this, R.string.channelIDService.toString())
             .setSmallIcon(R.mipmap.ic_launcher_round)
@@ -41,7 +33,6 @@ class StopwatchService : Service() {
             .setContentText(intent?.getStringExtra("projectTime"))
             .setDefaults(Notification.DEFAULT_ALL)
             .setStyle(NotificationCompat.BigTextStyle())
-            .setContentIntent(pendingIntent)
             .setOngoing(true)
             .setAutoCancel(false)
             .build()
