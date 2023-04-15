@@ -49,35 +49,35 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation "androidx.compose.ui:ui:1.4.0"
-    implementation "androidx.compose.ui:ui-tooling-preview:1.4.0"
+    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation "androidx.compose.ui:ui:1.4.1"
+    implementation "androidx.compose.ui:ui-tooling-preview:1.4.1"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
     implementation 'androidx.activity:activity-compose:1.7.0'
-    implementation 'androidx.navigation:navigation-compose:2.6.0-alpha08'
-    implementation 'androidx.games:games-activity:2.0.0'
+    implementation 'androidx.navigation:navigation-compose:2.6.0-alpha09'
+    implementation 'androidx.games:games-activity:2.0.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.4.0"
-    debugImplementation "androidx.compose.ui:ui-tooling:1.4.0"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:1.4.0"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.4.1"
+    debugImplementation "androidx.compose.ui:ui-tooling:1.4.1"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.4.1"
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
     implementation "com.google.accompanist:accompanist-navigation-animation:0.28.0"
-    implementation "androidx.compose.runtime:runtime-livedata:1.5.0-alpha01"
+    implementation "androidx.compose.runtime:runtime-livedata:1.5.0-alpha02"
     implementation "com.google.android.material:material:1.8.0"
-    implementation "androidx.compose.material:material:1.4.0"
-    implementation 'androidx.compose.material3:material3:1.1.0-beta01'
+    implementation "androidx.compose.material:material:1.4.1"
+    implementation 'androidx.compose.material3:material3:1.1.0-beta02'
 
     implementation("androidx.appcompat:appcompat:1.6.1")
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:31.2.3')
-    implementation 'com.google.android.gms:play-services-auth:20.4.1'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.2.0'
-    implementation 'com.google.firebase:firebase-database-ktx:20.1.0'
-    implementation 'com.google.firebase:firebase-auth:21.2.0'
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.3.0'
+    implementation 'com.google.firebase:firebase-database-ktx:20.2.0'
+    implementation 'com.google.firebase:firebase-auth:21.3.0'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
     // Room database

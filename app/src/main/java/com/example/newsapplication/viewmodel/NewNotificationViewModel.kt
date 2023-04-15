@@ -57,7 +57,7 @@ class NewNotificationViewModel : ViewModel() {
         val notificationManager =
             activity.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
 
-        val name = "Notification Channel"
+        val name = activity.getString(R.string.channelIDNotify)
         val desc = "A Description of the Channel"
         val importance = NotificationManager.IMPORTANCE_HIGH
         val channel = NotificationChannel(R.string.channelIDNotify.toString(), name, importance)

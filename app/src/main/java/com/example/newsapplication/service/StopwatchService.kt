@@ -55,7 +55,7 @@ class StopwatchService : Service() {
         val notificationManager =
             stopwatchService.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
 
-        val name = "Notification Channel for stopwatch"
+        val name = this.getString(R.string.channelIDService)
         val desc = "A Description of the Channel"
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(R.string.channelIDService.toString(), name, importance)

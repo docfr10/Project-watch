@@ -289,7 +289,7 @@ private fun BottomNavigationBar(
                 label = context.getString(R.string.about),
                 icon = Icons.Filled.Info,
                 route = "about"
-            ),
+            )
         )
         // Observe the backstack
         val navBackStackEntry by navController.currentBackStackEntryAsState()
