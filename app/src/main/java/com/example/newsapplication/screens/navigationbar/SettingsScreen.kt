@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.newsapplication.MainActivity
+import com.example.newsapplication.R
 
 // Markup of the "Settings" screen
 @Composable
@@ -37,16 +38,16 @@ fun SettingsScreen(
             tint = MaterialTheme.colorScheme.surfaceTint
         )
         // Text to Display the current Screen
-        Text(text = "Settings")
+        Text(text = context.getString(R.string.settings))
         // Card with the function of changing the display of icon labels
         ShowIconLabels(context = context, sharedPreference = sharedPreference)
         // Card with the function of closing the notification when you click on it
-        CloseNotificationOnPress(context = context, sharedPreference = sharedPreference)
+        DeleteNotificationOnPress(context = context, sharedPreference = sharedPreference)
     }
 }
 
 @Composable
-fun CloseNotificationOnPress(context: Context, sharedPreference: SharedPreferences) {
+fun DeleteNotificationOnPress(context: Context, sharedPreference: SharedPreferences) {
     Card(
         modifier = Modifier.padding(5.dp),
         shape = RoundedCornerShape(20.dp),
@@ -57,15 +58,16 @@ fun CloseNotificationOnPress(context: Context, sharedPreference: SharedPreferenc
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Close notification on press")
+            Text(text = context.getString(R.string.delete_notification))
             Switch(
-                checked = sharedPreference.getBoolean("closeNotification", false),
+                checked = sharedPreference.getBoolean("deleteNotification", false),
                 onCheckedChange = {
-                    sharedPreference.edit().putBoolean("closeNotification", it).apply()
+                    sharedPreference.edit().putBoolean("deleteNotification", it).apply()
                     context.startActivity(Intent(context, MainActivity::class.java))
                 })
         }
-    }}
+    }
+}
 
 @Composable
 fun ShowIconLabels(sharedPreference: SharedPreferences, context: Context) {
@@ -79,7 +81,7 @@ fun ShowIconLabels(sharedPreference: SharedPreferences, context: Context) {
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Icon labels at the bottom")
+            Text(text = context.getString(R.string.show_labels))
             Switch(
                 checked = sharedPreference.getBoolean("showIconLabels", true),
                 onCheckedChange = {

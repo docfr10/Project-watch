@@ -73,7 +73,10 @@ fun AuthenticationScreen(
             tint = MaterialTheme.colorScheme.surfaceTint
         )
         // Text to Display the current Screen
-        Text(text = "Authentication", color = MaterialTheme.colorScheme.onSurface)
+        Text(
+            text = context.getString(R.string.authentication),
+            color = MaterialTheme.colorScheme.onSurface
+        )
         // OutlinedTextField to type the Email
         OutlinedTextField(
             value = email.value,
@@ -83,10 +86,10 @@ fun AuthenticationScreen(
                 .fillMaxWidth()
                 .padding(start = 5.dp, end = 5.dp)
                 .background(MaterialTheme.colorScheme.background),
-            label = { Text(text = "Email address") },
+            label = { Text(text = context.getString(R.string.email)) },
             placeholder = {
                 Text(
-                    text = "abc@domain.com",
+                    text = context.getString(R.string.example_mail),
                     color = MaterialTheme.colorScheme.onSurface
                 )
             },
@@ -105,7 +108,7 @@ fun AuthenticationScreen(
                 .fillMaxWidth()
                 .padding(start = 5.dp, end = 5.dp)
                 .background(MaterialTheme.colorScheme.background),
-            label = { Text(text = "Password") },
+            label = { Text(text = context.getString(R.string.password)) },
             visualTransformation = PasswordVisualTransformation(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(
@@ -128,7 +131,7 @@ fun AuthenticationScreen(
                 .padding(top = 10.dp, start = 5.dp, end = 5.dp)
                 .fillMaxWidth(),
             shape = MaterialTheme.shapes.extraLarge
-        ) { Text(text = "Registered") }
+        ) { Text(text = context.getString(R.string.registered)) }
         // SignIn button
         Button(
             onClick = { // Authorized user login
@@ -144,7 +147,7 @@ fun AuthenticationScreen(
                 .padding(start = 5.dp, end = 5.dp)
                 .fillMaxWidth(),
             shape = MaterialTheme.shapes.extraLarge
-        ) { Text(text = "Sign in") }
+        ) { Text(text = context.getString(R.string.sign_in)) }
         // SignIn with Google button
         Button(
             onClick = { // Authorized user with Google login
@@ -163,7 +166,7 @@ fun AuthenticationScreen(
                 contentDescription = "Google logo"
             )
             Spacer(modifier = Modifier.size(10.dp))
-            Text(text = "Sign in with Google")
+            Text(text = context.getString(R.string.google_sign_in))
         }
     }
 }

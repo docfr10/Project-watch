@@ -61,7 +61,7 @@ fun StopwatchScreen(
             // Icon Composable
             Icon(
                 painter = painterResource(R.drawable.stopwatch),
-                contentDescription = "projects",
+                contentDescription = "stopwatch",
                 tint = MaterialTheme.colorScheme.surfaceTint
             )
             Text(
@@ -83,7 +83,7 @@ fun StopwatchScreen(
                     modifier = Modifier
                         .clickable {
                             projectsViewModel.start(
-                                context  = context,
+                                context = context,
                                 isActive = isActive,
                                 formattedTime = formattedTime
                             )

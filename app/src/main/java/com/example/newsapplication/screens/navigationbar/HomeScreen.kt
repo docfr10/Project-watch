@@ -1,5 +1,6 @@
 package com.example.newsapplication.screens.navigationbar
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +20,7 @@ import androidx.compose.material.Card
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.newsapplication.R
 import com.example.newsapplication.model.notification.NotificationModel
 import com.example.newsapplication.utils.Routes.NEW_NOTIFICATION_SCREEN
 import com.example.newsapplication.viewmodel.HomeViewModel
@@ -30,7 +32,8 @@ import me.saket.swipe.SwipeableActionsBox
 fun HomeScreen(
     navController: NavHostController,
     notificationList: State<List<NotificationModel>>,
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel,
+    context: Context
 ) {
     Scaffold(content = { padding ->
         // Column Composable
@@ -51,7 +54,7 @@ fun HomeScreen(
                 tint = MaterialTheme.colorScheme.surfaceTint
             )
             // Text to Display the current Screen
-            Text(text = "Home")
+            Text(text = context.getString(R.string.home))
             // Notification list markup
             NotificationList(
                 homeViewModel = homeViewModel,

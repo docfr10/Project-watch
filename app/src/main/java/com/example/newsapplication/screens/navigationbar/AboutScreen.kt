@@ -1,5 +1,6 @@
 package com.example.newsapplication.screens.navigationbar
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,10 +17,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.newsapplication.R
 
 // Markup of the "About" screen
 @Composable
-fun AboutScreen() {
+fun AboutScreen(context: Context) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -32,7 +34,7 @@ fun AboutScreen() {
             tint = MaterialTheme.colorScheme.surfaceTint
         )
         // Text to Display the current Screen
-        Text(text = "About")
+        Text(text = context.getString(R.string.about))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,

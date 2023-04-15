@@ -15,16 +15,23 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.newsapplication.R
+import com.example.newsapplication.model.navigationbar.BottomNavItemModel
 import com.example.newsapplication.model.notification.NotificationModel
 import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.screens.navigationbar.*
 import com.example.newsapplication.screens.separate.*
-import com.example.newsapplication.utils.Constants
 import com.example.newsapplication.utils.Routes.ABOUT_SCREEN
 import com.example.newsapplication.utils.Routes.AUTHENTICATION_SCREEN
 import com.example.newsapplication.utils.Routes.HOME_SCREEN
@@ -69,6 +76,7 @@ fun AppScreen(
             // Bottom navigation
             bottomBar = {
                 if (isShowBottomBar.value) BottomNavigationBar(
+                    context = context,
                     navController = navController,
                     sharedPreference = sharedPreference
                 )
@@ -154,6 +162,7 @@ private fun NavHostContainer(
             // route : Home
             composable(route = HOME_SCREEN) {
                 HomeScreen(
+                    context = context,
                     navController = navController,
                     homeViewModel = homeViewModel,
                     notificationList = notificationList
@@ -173,12 +182,17 @@ private fun NavHostContainer(
             }
             // route : Profile
             composable(route = PROFILE_SCREEN) {
-                ProfileScreen(auth = auth, navController = navController)
+                ProfileScreen(
+                    auth = auth,
+                    cUser = cUser,
+                    context = context,
+                    navController = navController
+                )
                 isShowBottomBar.value = true
             }
             // route : About
             composable(route = ABOUT_SCREEN) {
-                AboutScreen()
+                AboutScreen(context = context)
                 isShowBottomBar.value = true
             }
             // route : Settings
@@ -240,7 +254,8 @@ private fun NavHostContainer(
 @Composable
 private fun BottomNavigationBar(
     navController: NavHostController,
-    sharedPreference: SharedPreferences
+    sharedPreference: SharedPreferences,
+    context: Context
 ) {
     NavigationBar(
         // Set background color
@@ -248,13 +263,41 @@ private fun BottomNavigationBar(
         contentColor = MaterialTheme.colorScheme.contentColorFor(BottomAppBarDefaults.containerColor),
         tonalElevation = NavigationBarDefaults.Elevation,
     ) {
+        // An list containing information about all NavigationBar icons
+        val bottomNavItems = listOf(
+            BottomNavItemModel(
+                label = context.getString(R.string.home),
+                icon = Icons.Filled.Home,
+                route = "home"
+            ),
+            BottomNavItemModel(
+                label = context.getString(R.string.projects),
+                icon = Icons.Filled.Create,
+                route = "projects"
+            ),
+            BottomNavItemModel(
+                label = context.getString(R.string.profile),
+                icon = Icons.Filled.Person,
+                route = "profile"
+            ),
+            BottomNavItemModel(
+                label = context.getString(R.string.settings),
+                icon = Icons.Filled.Settings,
+                route = "settings"
+            ),
+            BottomNavItemModel(
+                label = context.getString(R.string.about),
+                icon = Icons.Filled.Info,
+                route = "about"
+            ),
+        )
         // Observe the backstack
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         // Observe current route to change the icon
         // Color,label color when navigated
         val currentRoute = navBackStackEntry?.destination?.route
         // Bottom nav items we declared
-        Constants.BottomNavItems.forEach { navItem ->
+        bottomNavItems.forEach { navItem ->
             // Place the bottom nav items
             NavigationBarItem(
                 // It currentRoute is equal then its selected route

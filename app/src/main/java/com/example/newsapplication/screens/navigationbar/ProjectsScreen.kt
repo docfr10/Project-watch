@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.compose.material.Card
+import com.example.newsapplication.R
 import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.service.StopwatchService
 import com.example.newsapplication.utils.Routes.NEW_PROJECT_SCREEN
@@ -67,7 +68,7 @@ fun ProjectsScreen(
                 tint = MaterialTheme.colorScheme.surfaceTint
             )
             // Text to Display the current Screen
-            Text(text = "Projects")
+            Text(text = context.getString(R.string.projects))
             // Projects list markup
             ProjectsList(
                 context = context,
@@ -178,7 +179,7 @@ fun ProjectsList(
                                 projectsViewModel.setProjectName(it.projectName)
                                 projectsViewModel.setProjectId(it.id)
                             }
-                        }) { Text(text = "Start") }
+                        }) { Text(text = context.getString(R.string.start)) }
                     }
                 }
             }

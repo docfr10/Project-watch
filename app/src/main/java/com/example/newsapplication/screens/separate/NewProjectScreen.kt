@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.newsapplication.R
 import com.example.newsapplication.model.project.ProjectModel
 import com.example.newsapplication.utils.Routes
 import com.example.newsapplication.utils.Routes.PROJECTS_SCREEN
@@ -75,12 +76,12 @@ fun NewProjectScreen(
             // Icon Composable
             Icon(
                 imageVector = Icons.Default.Create,
-                contentDescription = "newNotification",
+                contentDescription = "newProject",
                 tint = MaterialTheme.colorScheme.surfaceTint
             )
             if (newProjectViewModel.getProjectName().isEmpty()) {
                 // Text to Display the current Screen
-                Text(text = "Create new project")
+                Text(text = context.getString(R.string.create_new_project))
                 // OutlinedTextField to type the new project name
                 OutlinedTextField(
                     value = projectName.value,
@@ -88,7 +89,7 @@ fun NewProjectScreen(
                     textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
                     onValueChange = { projectName.value = it },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text(text = "Type a project name") },
+                    label = { Text(text = context.getString(R.string.type_project_name)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text, // Keyboard type
@@ -106,17 +107,16 @@ fun NewProjectScreen(
                                 navController.navigate(PROJECTS_SCREEN)
                             } else Toast.makeText(
                                 context,
-                                "Type a project name",
+                                context.getText(R.string.type_project_name),
                                 Toast.LENGTH_SHORT
-                            )
-                                .show()
+                            ).show()
                         }
                     )
                 )
                 // Displaying information about required field
                 if (projectName.value.isEmpty()) {
                     Text(
-                        text = "Required field",
+                        text = context.getString(R.string.required_field),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(end = 235.dp)
@@ -131,11 +131,15 @@ fun NewProjectScreen(
                         )
                         navController.popBackStack()
                         navController.navigate(PROJECTS_SCREEN)
-                    } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT).show()
-                }) { Text(text = "Create") }
+                    } else Toast.makeText(
+                        context,
+                        context.getString(R.string.type_project_name),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }) { Text(text = context.getString(R.string.create)) }
             } else {
                 // Text to Display the current Screen
-                Text(text = "Change the project name")
+                Text(text = context.getString(R.string.change_project_name))
                 // OutlinedTextField to type the new project name
                 OutlinedTextField(
                     value = projectName.value,
@@ -143,7 +147,7 @@ fun NewProjectScreen(
                     textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
                     onValueChange = { projectName.value = it },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text(text = "Type a new project name") },
+                    label = { Text(text = context.getString(R.string.type_new_project_name)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text, // Keyboard type
@@ -167,17 +171,16 @@ fun NewProjectScreen(
                                 navController.navigate(PROJECTS_SCREEN)
                             } else Toast.makeText(
                                 context,
-                                "Type a project name",
+                                context.getText(R.string.type_project_name),
                                 Toast.LENGTH_SHORT
-                            )
-                                .show()
+                            ).show()
                         }
                     )
                 )
                 // Displaying information about required field
                 if (projectName.value.isEmpty()) {
                     Text(
-                        text = "Required field",
+                        text = context.getString(R.string.required_field),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(end = 235.dp)
@@ -198,8 +201,12 @@ fun NewProjectScreen(
                         newProjectViewModel.setProjectName(name = "")
                         navController.popBackStack()
                         navController.navigate(PROJECTS_SCREEN)
-                    } else Toast.makeText(context, "Type a project name", Toast.LENGTH_SHORT).show()
-                }) { Text(text = "Change") }
+                    } else Toast.makeText(
+                        context,
+                        context.getText(R.string.type_project_name),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }) { Text(text = context.getString(R.string.change)) }
             }
             // Cancel button
             Button(onClick = {
@@ -207,7 +214,7 @@ fun NewProjectScreen(
                 newProjectViewModel.setProjectName(name = "")
                 navController.popBackStack()
                 navController.navigate(PROJECTS_SCREEN)
-            }) { Text(text = "Cancel") }
+            }) { Text(text = context.getString(R.string.cancel)) }
             BackHandler(enabled = true) {
                 newProjectViewModel.setProjectId(id = 0)
                 newProjectViewModel.setProjectName(name = "")

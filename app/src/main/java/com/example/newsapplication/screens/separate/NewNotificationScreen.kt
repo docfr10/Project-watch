@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
+import com.example.newsapplication.R
 import com.example.newsapplication.model.notification.NotificationModel
 import com.example.newsapplication.utils.Routes.HOME_SCREEN
 import com.example.newsapplication.viewmodel.HomeViewModel
@@ -119,7 +120,7 @@ fun NewNotificationScreen(
                 tint = MaterialTheme.colorScheme.surfaceTint
             )
             // Text to Display the current Screen
-            Text(text = "Create new notification")
+            Text(text = context.getString(R.string.create_new_notification))
             // OutlinedTextField to type the new notification title
             OutlinedTextField(
                 value = notificationTitle.value,
@@ -127,7 +128,7 @@ fun NewNotificationScreen(
                 textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
                 onValueChange = { notificationTitle.value = it },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Type a notification title") },
+                label = { Text(text = context.getString(R.string.type_notification_title)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text, // Keyboard type
@@ -138,7 +139,7 @@ fun NewNotificationScreen(
             // Displaying information about required field
             if (notificationTitle.value.isEmpty()) {
                 Text(
-                    text = "Required field",
+                    text = context.getString(R.string.required_field),
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(end = 235.dp)
@@ -150,7 +151,7 @@ fun NewNotificationScreen(
                 textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
                 onValueChange = { notificationText.value = it },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Type a notification text") },
+                label = { Text(text = context.getString(R.string.type_notification_text)) },
                 singleLine = false,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text, // Keyboard type
@@ -204,14 +205,18 @@ fun NewNotificationScreen(
                         navController.navigate(HOME_SCREEN)
                     }
                 } else
-                    Toast.makeText(context, "Type a notification text", Toast.LENGTH_SHORT).show()
-            }) { Text(text = "Create notification") }
+                    Toast.makeText(
+                        context,
+                        context.getText(R.string.type_notification_title),
+                        Toast.LENGTH_SHORT
+                    ).show()
+            }) { Text(text = context.getString(R.string.create)) }
             // Cancel button
             Button(onClick = {
                 navController.popBackStack()
                 navController.navigate(HOME_SCREEN)
             }) {
-                Text(text = "Cancel")
+                Text(text = context.getString(R.string.cancel))
             }
         }
     })
@@ -240,9 +245,19 @@ fun ShowDataAndTimeDropdownMenu(
     val expandedTime = rememberSaveable { mutableStateOf(false) }
 
     // List with possible date
-    val date = listOf("Today", "Tomorrow", "Another date")
+    val date = listOf(
+        context.getString(R.string.today),
+        context.getString(R.string.tomorrow),
+        context.getString(R.string.another_date)
+    )
     // List with possible time
-    val time = listOf("Now", "Morning", "Afternoon", "Evening", "Another time")
+    val time = listOf(
+        context.getString(R.string.now),
+        context.getString(R.string.morning),
+        context.getString(R.string.afternoon),
+        context.getString(R.string.evening),
+        context.getString(R.string.another_time)
+    )
 
     // Size of DropDownMenu for date
     val textDateFieldSize = remember { mutableStateOf(Size.Zero) }
@@ -278,11 +293,11 @@ fun ShowDataAndTimeDropdownMenu(
                         // This value is used to assign to the DropDown the same width
                         textDateFieldSize.value = coordinates.size.toSize()
                     },
-                label = { Text(text = "Type a date") },
+                label = { Text(text = context.getString(R.string.type_date)) },
                 trailingIcon = {
                     Icon(
                         iconForDatePicker,
-                        "contentDescription",
+                        contentDescription = "contentDescription",
                         Modifier.clickable { expandedDate.value = !expandedDate.value })
                 },
                 keyboardOptions = KeyboardOptions(
@@ -300,16 +315,18 @@ fun ShowDataAndTimeDropdownMenu(
                 date.forEach { label ->
                     DropdownMenuItem(onClick = {
                         when (label) {
-                            "Today" -> {
+                            context.getString(R.string.today) -> {
                                 selectedDate.value = dateFormat.format(calendar.time).toString()
                                 newNotificationViewModel.setDate(calendar = calendar)
                             }
-                            "Tomorrow" -> {
+
+                            context.getString(R.string.tomorrow) -> {
                                 calendar.add(Calendar.DAY_OF_MONTH, 1)
                                 selectedDate.value = dateFormat.format(calendar.time).toString()
                                 newNotificationViewModel.setDate(calendar = calendar)
                             }
-                            "Another date" -> DatePickerDialog(
+
+                            context.getString(R.string.another_date) -> DatePickerDialog(
                                 context,
                                 { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
                                     calendar.set(mYear, mMonth, mDayOfMonth)
@@ -328,7 +345,7 @@ fun ShowDataAndTimeDropdownMenu(
             // Displaying information about required field
             if (selectedDate.value.isEmpty()) {
                 Text(
-                    text = "Required field",
+                    text = context.getString(R.string.required_field),
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(top = 67.dp, start = 15.dp)
@@ -348,11 +365,11 @@ fun ShowDataAndTimeDropdownMenu(
                         // This value is used to assign to the DropDown the same width
                         textTimeFieldSize.value = coordinates.size.toSize()
                     },
-                label = { Text(text = "Type a time") },
+                label = { Text(text = context.getString(R.string.type_time)) },
                 trailingIcon = {
                     Icon(
                         iconForTimePicker,
-                        "contentDescription",
+                        contentDescription = "contentDescription",
                         Modifier.clickable { expandedTime.value = !expandedTime.value })
                 },
                 keyboardOptions = KeyboardOptions(
@@ -370,30 +387,34 @@ fun ShowDataAndTimeDropdownMenu(
                 time.forEach { label ->
                     DropdownMenuItem(onClick = {
                         when (label) {
-                            "Now" -> {
+                            context.getString(R.string.now) -> {
                                 selectedTime.value =
                                     timeFormat.format(calendar.time.time).toString()
                                 newNotificationViewModel.setTime(calendar = calendar)
                             }
-                            "Morning" -> {
+
+                            context.getString(R.string.morning) -> {
                                 calendar.set(Calendar.HOUR_OF_DAY, 7)
                                 calendar.set(Calendar.MINUTE, 0)
                                 selectedTime.value = timeFormat.format(calendar.time).toString()
                                 newNotificationViewModel.setTime(calendar = calendar)
                             }
-                            "Afternoon" -> {
+
+                            context.getString(R.string.afternoon) -> {
                                 calendar.set(Calendar.HOUR_OF_DAY, 13)
                                 calendar.set(Calendar.MINUTE, 0)
                                 selectedTime.value = timeFormat.format(calendar.time).toString()
                                 newNotificationViewModel.setTime(calendar = calendar)
                             }
-                            "Evening" -> {
+
+                            context.getString(R.string.evening) -> {
                                 calendar.set(Calendar.HOUR_OF_DAY, 19)
                                 calendar.set(Calendar.MINUTE, 0)
                                 selectedTime.value = timeFormat.format(calendar.time).toString()
                                 newNotificationViewModel.setTime(calendar = calendar)
                             }
-                            "Another time" -> {
+
+                            context.getString(R.string.another_time) -> {
                                 TimePickerDialog(
                                     context,
                                     0,
@@ -417,7 +438,7 @@ fun ShowDataAndTimeDropdownMenu(
             // Displaying information about required fields
             if (selectedTime.value.isEmpty()) {
                 Text(
-                    text = "Required field",
+                    text = context.getString(R.string.required_field),
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(top = 67.dp, start = 15.dp)

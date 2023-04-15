@@ -34,7 +34,7 @@ class NewNotificationViewModel : ViewModel() {
         intent.putExtra(R.string.messageExtra.toString(), notificationText.value)
         intent.putExtra(
             R.bool.setAutoCancel.toString(),
-            sharedPreference.getBoolean("closeNotification", false)
+            sharedPreference.getBoolean("deleteNotification", false)
         )
         // Creating a broadcast signal to send a notification
         val pendingIntent =
