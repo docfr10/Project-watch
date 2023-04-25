@@ -6,8 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -17,8 +15,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.newsapplication.R
 import com.example.newsapplication.utils.Routes.AUTHENTICATION_SCREEN
 import com.example.newsapplication.utils.Routes.HOME_SCREEN
 import com.google.firebase.auth.FirebaseUser
@@ -57,7 +57,7 @@ fun SplashScreen(alphaAnim: Float) {
             modifier = Modifier
                 .size(120.dp)
                 .alpha(alpha = alphaAnim),
-            imageVector = Icons.Default.Create,
+            painter = painterResource(id = R.drawable.stopwatch),
             contentDescription = "Logo icon",
             tint = MaterialTheme.colorScheme.primary
         )
