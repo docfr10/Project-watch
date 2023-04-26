@@ -26,15 +26,15 @@ class AuthenticationViewModel : ViewModel() {
             auth.createUserWithEmailAndPassword(email.value, password.value)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful)
-                        Toast.makeText(context, "User successful authorized", Toast.LENGTH_SHORT)
+                        Toast.makeText(context, R.string.user_authorized, Toast.LENGTH_SHORT)
                             .show()
                     else
-                        Toast.makeText(context, "User is already exist", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, R.string.user_exist, Toast.LENGTH_SHORT).show()
                 }
         } else {
             Toast.makeText(
                 context,
-                "Please enter an email address and a password",
+                R.string.enter_email_and_password,
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -57,13 +57,13 @@ class AuthenticationViewModel : ViewModel() {
                     } else
                         Toast.makeText(
                             context,
-                            "Please check that your email address and password are correct",
+                            R.string.check_email_and_password,
                             Toast.LENGTH_SHORT
                         ).show()
                 }
         } else {
             Toast.makeText(
-                context, "Please enter an email address and a password", Toast.LENGTH_SHORT
+                context, R.string.enter_email_and_password, Toast.LENGTH_SHORT
             ).show()
         }
     }

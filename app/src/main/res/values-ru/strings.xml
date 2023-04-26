@@ -45,4 +45,8 @@
     <string name="type_new_project_name">Введите новое название проекта</string>
     <string name="change">Изменить</string>
     <string name="profile">Профиль</string>
+    <string name="user_authorized">Пользователь успешно авторизован</string>
+    <string name="user_exist">Пользователь уже существует</string>
+    <string name="check_email_and_password">Пожалуйста, проверьте правильность вашего адреса электронной почты и пароля</string>
+    <string name="enter_email_and_password">Пожалуйста, введите адрес электронной почты и пароль</string>
 </resources>

@@ -45,4 +45,8 @@
     <string name="type_new_project_name">Type a new project name</string>
     <string name="change">Change</string>
     <string name="profile">Profile</string>
+    <string name="user_authorized">User successful authorized</string>
+    <string name="user_exist">User is already exist</string>
+    <string name="check_email_and_password">Please check that your email address and password are correct</string>
+    <string name="enter_email_and_password">Please enter an email address and a password</string>
 </resources>
