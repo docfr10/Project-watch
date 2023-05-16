@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.newsapplication.R
@@ -307,7 +308,7 @@ private fun BottomNavigationBar(
                 // Icon of navItem
                 icon = { Icon(imageVector = navItem.icon, contentDescription = navItem.label) },
                 // Label
-                label = { Text(text = navItem.label) },
+                label = { Text(text = navItem.label, fontSize = 10.sp) },
                 alwaysShowLabel = sharedPreference.getBoolean("showIconLabels", true)
             )
         }

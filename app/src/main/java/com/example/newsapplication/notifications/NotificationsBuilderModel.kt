@@ -23,7 +23,7 @@ class NotificationsBuilderModel : BroadcastReceiver() {
             PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_IMMUTABLE)
         // Creating a Notification
         val notification = NotificationCompat.Builder(context, R.string.channelIDNotify.toString())
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.stopwatch)
             .setContentTitle(intent.getStringExtra(R.string.titleExtra.toString()))
             .setContentText(intent.getStringExtra(R.string.messageExtra.toString()))
             .setDefaults(Notification.DEFAULT_ALL)
