@@ -36,7 +36,7 @@
     <string name="morning">Утром</string>
     <string name="afternoon">Днем</string>
     <string name="evening">Вечером</string>
-    <string name="another_time">Другая дата</string>
+    <string name="another_time">Другое время</string>
     <string name="type_date">Введите дату</string>
     <string name="type_time">Введите время</string>
     <string name="create_new_project">Создать новый проект</string>

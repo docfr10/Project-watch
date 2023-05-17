@@ -53,7 +53,7 @@ class AuthenticationViewModelTest {
         `when`(auth.signInWithEmailAndPassword(email.value, password.value))
             .thenReturn(authResult as Task<AuthResult>?)
 
-        viewModel.checkAuthorized(context, auth, email, password, navController)
+        viewModel.checkAuthorized(context, auth, email, password)
 
         verify(auth, times(1)).signInWithEmailAndPassword(email.value, password.value)
         verifyNoMoreInteractions(auth)
