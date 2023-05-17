@@ -152,7 +152,6 @@ private fun NavHostContainer(
             ) {
                 AuthenticationScreen(
                     context = context,
-                    navController = navController,
                     signInWithGoogleLauncher = signInWithGoogleLauncher,
                     window = window,
                     authenticationViewModel = authenticationViewModel,

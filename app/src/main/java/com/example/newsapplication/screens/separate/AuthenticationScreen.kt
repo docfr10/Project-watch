@@ -24,7 +24,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.example.newsapplication.R
 import com.example.newsapplication.viewmodel.AuthenticationViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -37,7 +36,6 @@ fun AuthenticationScreen(
     authenticationViewModel: AuthenticationViewModel,
     window: Window,
     context: Context,
-    navController: NavHostController,
     signInWithGoogleLauncher: ActivityResultLauncher<Intent>
 ) {
     // Raise the elements above the keyboard
@@ -140,7 +138,6 @@ fun AuthenticationScreen(
                     auth = auth,
                     email = email,
                     password = password,
-                    navController = navController
                 )
             },
             modifier = Modifier
