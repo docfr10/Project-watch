@@ -33,7 +33,7 @@ fun AnimatedSplashScreen(navController: NavHostController, cUser: FirebaseUser?)
         animationSpec = tween(durationMillis = 3000)
     )
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(Unit) {
         startAnimation.value = true
         delay(4000)
         navController.popBackStack()

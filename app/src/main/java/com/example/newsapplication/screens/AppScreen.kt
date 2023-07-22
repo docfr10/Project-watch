@@ -151,6 +151,7 @@ private fun NavHostContainer(
                 exitTransition = { slideOutVertically(animationSpec = tween(250)) }
             ) {
                 AuthenticationScreen(
+                    navController = navController,
                     context = context,
                     signInWithGoogleLauncher = signInWithGoogleLauncher,
                     window = window,
